@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('single')">Single Stock</button>
+    <button class="tab-btn" onclick="switchTab('portfolio')">Portfolio Analysis</button>
+</div>
+
+<!-- Single Stock Analysis -->
+<div id="single-tab" class="tab-content active">
+    <div class="card">
+        <h2>Analyze Single Stock</h2>
+        <form id="single-stock-form">
+            <div class="form-group">
+                <label for="symbol">Stock Symbol</label>
+                <input type="text" id="symbol" name="symbol" placeholder="e.g., AAPL, MSFT, GOOGL" required>
+            </div>
+            <div class="form-group">
+                <label for="period">Time Period</label>
+                <select id="period" name="period">
+                    <option value="1mo">1 Month</option>
+                    <option value="3mo">3 Months</option>
+                    <option value="6mo">6 Months</option>
+                    <option value="1y" selected>1 Year</option>
+                    <option value="2y">2 Years</option>
+                    <option value="5y">5 Years</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Analyze Stock</button>
+        </form>
+        <div id="single-results"></div>
+    </div>
+</div>
+
+<!-- Portfolio Analysis -->
+<div id="portfolio-tab" class="tab-content">
+    <div class="card">
+        <h2>Portfolio Analysis</h2>
+        <p class="info-text">Enter multiple stock symbols (comma or space separated) to get top BUY/SELL recommendations</p>
+        <form id="portfolio-form">
+            <div class="form-group">
+                <label for="symbols">Stock Symbols</label>
+                <textarea id="symbols" name="symbols" rows="4" placeholder="AAPL, MSFT, GOOGL, TSLA, NVDA, AMZN, META, NFLX, AMD, INTC" required></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="portfolio-period">Time Period</label>
+                    <select id="portfolio-period" name="period">
+                        <option value="1mo">1 Month</option>
+                        <option value="3mo">3 Months</option>
+                        <option value="6mo">6 Months</option>
+                        <option value="1y" selected>1 Year</option>
+                        <option value="2y">2 Years</option>
+                        <option value="5y">5 Years</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="top-n">Top N Recommendations</label>
+                    <input type="number" id="top-n" name="top_n" value="10" min="1" max="50">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Analyze Portfolio</button>
+        </form>
+        <div id="portfolio-results"></div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loading" class="loading-overlay hidden">
+    <div class="spinner"></div>
+    <p>Analyzing stocks...</p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function switchTab(tab) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    
+    // Show selected tab
+    document.getElementById(tab + '-tab').classList.add('active');
+    event.target.classList.add('active');
+}
+</script>
+{% endblock %}
+
