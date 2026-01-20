@@ -130,8 +130,6 @@ The recommendation engine uses a scoring system:
 │   │   └── style.css
 │   └── js/
 │       └── main.js
-├── popular_stocks.txt   # Sample portfolio file
-├── sample_portfolio.txt # Sample portfolio file
 └── README.md           # This file
 ```
 

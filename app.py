@@ -6,16 +6,75 @@ Flask Web Application for Stock Technical Analysis
 from flask import Flask, render_template, request, jsonify
 from stock_analyzer import StockAnalyzer
 import json
+import os
 from typing import List, Dict
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 
+CONFIG_PORTFOLIO_FILE = 'config_portfolio.txt'
+CONFIG_WATCHLIST_FILE = 'config_watchlist.txt'
+
+
+def load_stocks_from_config(filename: str) -> List[str]:
+    """Load stock symbols from config file"""
+    stocks = []
+    if os.path.exists(filename):
+        try:
+            with open(filename, 'r') as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith('#'):
+                        stocks.append(line.upper())
+        except Exception as e:
+            print(f"Error reading {filename}: {e}")
+    return stocks
+
 
 @app.route('/')
 def index():
-    """Home page"""
-    return render_template('index.html')
+    """Home page - Portfolio stocks"""
+    return render_template('index.html', page_type='portfolio')
+
+
+@app.route('/watchlist')
+def watchlist():
+    """Watchlist page"""
+    return render_template('index.html', page_type='watchlist')
+
+
+@app.route('/market')
+def market():
+    """US Market analysis page"""
+    return render_template('index.html', page_type='market')
+
+
+@app.route('/etf')
+def etf():
+    """ETF/Index analysis page"""
+    return render_template('index.html', page_type='etf')
+
+
+@app.route('/api/config_stocks', methods=['GET'])
+def get_config_stocks():
+    """Get stocks from config files"""
+    try:
+        config_type = request.args.get('type', 'portfolio')  # 'portfolio' or 'watchlist'
+        
+        if config_type == 'watchlist':
+            filename = CONFIG_WATCHLIST_FILE
+        else:
+            filename = CONFIG_PORTFOLIO_FILE
+        
+        stocks = load_stocks_from_config(filename)
+        
+        return jsonify({
+            'success': True,
+            'type': config_type,
+            'stocks': stocks
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 @app.route('/analyze', methods=['POST'])
@@ -81,6 +140,8 @@ def analyze_portfolio():
                     summary = analyzer.get_summary()
                     recommendation = analyzer.get_recommendation()
                     
+                    fundamental = summary.get('fundamental', {})
+                    
                     results.append({
                         'symbol': symbol,
                         'company': summary.get('company_name', 'N/A'),
@@ -92,7 +153,8 @@ def analyze_portfolio():
                         'sma_50': round(summary.get('sma_50', 0), 2),
                         'recommendation': recommendation['recommendation'],
                         'score': recommendation['score'],
-                        'reasoning': recommendation['reasoning']
+                        'reasoning': recommendation['reasoning'],
+                        'fundamental': fundamental
                     })
                 else:
                     failed_symbols.append(symbol)
@@ -135,6 +197,136 @@ def analyze_portfolio():
         }
         
         return jsonify(portfolio_result)
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+# Major US stocks for market analysis
+MAJOR_US_STOCKS = [
+    'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA', 'BRK-B',
+    'V', 'UNH', 'JNJ', 'WMT', 'MA', 'PG', 'JPM', 'HD', 'DIS', 'BAC',
+    'VZ', 'ADBE', 'CMCSA', 'NFLX', 'KO', 'PFE', 'NKE', 'MRK', 'PEP',
+    'T', 'INTC', 'CSCO', 'AMD', 'ABT', 'QCOM', 'AVGO', 'CVX', 'WFC',
+    'COST', 'MCD', 'TMO', 'MDT', 'HON', 'UPS', 'BMY', 'UNP', 'LIN',
+    'RTX', 'AMGN', 'LOW', 'PM', 'NEE', 'INTU', 'C', 'GS', 'SBUX'
+]
+
+
+# Major ETFs and Indexes
+MAJOR_ETFS = [
+    'SPY', 'QQQ', 'DIA', 'IWM', 'VTI', 'VOO', 'VEA', 'VWO', 'AGG',
+    'GLD', 'SLV', 'USO', 'TLT', 'HYG', 'LQD', 'EEM', 'EFA', 'IEFA',
+    'IEMG', 'VGK', 'VPL', 'BND', 'BSV', 'BNDX', 'VTEB', 'SCHX', 'SCHF',
+    'SCHM', 'SCHA', 'ITOT', 'IXUS', 'IJH', 'IJR', 'IEFA', 'IEMG'
+]
+
+
+@app.route('/analyze_market', methods=['POST'])
+def analyze_market():
+    """Analyze US market stocks and return top BUY recommendations"""
+    try:
+        data = request.get_json()
+        period = data.get('period', '1y')
+        top_n = int(data.get('top_n', 10))
+        
+        results = []
+        failed_symbols = []
+        
+        # Analyze major US stocks
+        for symbol in MAJOR_US_STOCKS:
+            try:
+                analyzer = StockAnalyzer(symbol, period)
+                
+                if analyzer.fetch_data():
+                    analyzer.calculate_indicators()
+                    summary = analyzer.get_summary()
+                    recommendation = analyzer.get_recommendation()
+                    
+                    # Only include BUY recommendations
+                    if 'BUY' in recommendation['recommendation']:
+                        fundamental = summary.get('fundamental', {})
+                        results.append({
+                            'symbol': symbol,
+                            'company': summary.get('company_name', 'N/A'),
+                            'price': round(summary.get('current_price', 0), 2),
+                            'change': round(summary.get('price_change_pct', 0), 2),
+                            'rsi': round(summary.get('rsi', 0), 2),
+                            'recommendation': recommendation['recommendation'],
+                            'score': recommendation['score'],
+                            'reasoning': recommendation['reasoning'],
+                            'fundamental': fundamental
+                        })
+            except Exception as e:
+                failed_symbols.append(f"{symbol} ({str(e)})")
+        
+        if not results:
+            return jsonify({'error': 'No BUY recommendations found in US market'}), 404
+        
+        # Sort by score (highest first) and take top N
+        results_sorted = sorted(results, key=lambda x: x['score'], reverse=True)[:top_n]
+        
+        return jsonify({
+            'success': True,
+            'total_analyzed': len(MAJOR_US_STOCKS),
+            'buy_recommendations': results_sorted,
+            'failed_symbols': failed_symbols
+        })
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/analyze_etf', methods=['POST'])
+def analyze_etf():
+    """Analyze ETFs/Indexes and return top BUY recommendations"""
+    try:
+        data = request.get_json()
+        period = data.get('period', '1y')
+        top_n = int(data.get('top_n', 10))
+        
+        results = []
+        failed_symbols = []
+        
+        # Analyze major ETFs
+        for symbol in MAJOR_ETFS:
+            try:
+                analyzer = StockAnalyzer(symbol, period)
+                
+                if analyzer.fetch_data():
+                    analyzer.calculate_indicators()
+                    summary = analyzer.get_summary()
+                    recommendation = analyzer.get_recommendation()
+                    
+                    # Only include BUY recommendations
+                    if 'BUY' in recommendation['recommendation']:
+                        fundamental = summary.get('fundamental', {})
+                        results.append({
+                            'symbol': symbol,
+                            'company': summary.get('company_name', 'N/A'),
+                            'price': round(summary.get('current_price', 0), 2),
+                            'change': round(summary.get('price_change_pct', 0), 2),
+                            'rsi': round(summary.get('rsi', 0), 2),
+                            'recommendation': recommendation['recommendation'],
+                            'score': recommendation['score'],
+                            'reasoning': recommendation['reasoning'],
+                            'fundamental': fundamental
+                        })
+            except Exception as e:
+                failed_symbols.append(f"{symbol} ({str(e)})")
+        
+        if not results:
+            return jsonify({'error': 'No BUY recommendations found in ETFs'}), 404
+        
+        # Sort by score (highest first) and take top N
+        results_sorted = sorted(results, key=lambda x: x['score'], reverse=True)[:top_n]
+        
+        return jsonify({
+            'success': True,
+            'total_analyzed': len(MAJOR_ETFS),
+            'buy_recommendations': results_sorted,
+            'failed_symbols': failed_symbols
+        })
     
     except Exception as e:
         return jsonify({'error': str(e)}), 500

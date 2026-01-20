@@ -64,6 +64,13 @@ class StockAnalyzer:
             if len(self.data) < 50:
                 print(f"Warning: Limited data for {self.symbol}. Need at least 50 days.")
                 return False
+            
+            # Try to pre-fetch info to have it ready (non-blocking)
+            try:
+                # Access info to trigger fetch, but don't wait too long
+                _ = self.stock.info
+            except:
+                pass  # Info fetch failed, but we can still proceed
                 
             return True
         except Exception as e:
@@ -123,6 +130,124 @@ class StockAnalyzer:
         
         # Store full dataframes for analysis
         self.data = df
+    
+    def get_fundamental_indicators(self) -> Dict:
+        """Get fundamental analysis indicators"""
+        if not self.stock:
+            return {}
+        
+        try:
+            # Try to get info, may need to fetch it explicitly with timeout handling
+            info = {}
+            try:
+                # Try regular info first
+                info = self.stock.info
+                # Sometimes info returns empty dict if not ready
+                if not info or (isinstance(info, dict) and len(info) < 5):
+                    # Try fast_info as backup
+                    try:
+                        fast_info = self.stock.fast_info
+                        if fast_info and isinstance(fast_info, dict):
+                            info.update(fast_info)
+                    except:
+                        pass
+            except Exception as e:
+                # If info fails, try fast_info
+                try:
+                    info = self.stock.fast_info or {}
+                except:
+                    info = {}
+            
+            # Continue even if info is minimal - we'll try to get what we can
+            
+            # Helper function to safely get values with fallbacks
+            def safe_get(keys, default='N/A'):
+                """Try multiple key names"""
+                if isinstance(keys, str):
+                    keys = [keys]
+                
+                for key in keys:
+                    value = info.get(key)
+                    if value is not None and value != '':
+                        # Handle string 'None' or empty strings
+                        if isinstance(value, str) and value.lower() in ['none', 'null', '']:
+                            continue
+                        return value
+                return default
+            
+            # Get market cap with multiple attempts
+            market_cap = safe_get(['marketCap', 'market_cap', 'totalMarketCap'], 0)
+            if isinstance(market_cap, (int, float)) and market_cap > 0:
+                if market_cap >= 1e12:
+                    market_cap_str = f"${market_cap/1e12:.2f}T"
+                elif market_cap >= 1e9:
+                    market_cap_str = f"${market_cap/1e9:.2f}B"
+                elif market_cap >= 1e6:
+                    market_cap_str = f"${market_cap/1e6:.2f}M"
+                else:
+                    market_cap_str = f"${market_cap:,.0f}"
+            else:
+                market_cap_str = 'N/A'
+            
+            # Get current price from data if available
+            current_price = self.indicators.get('Current_Price', 0) if self.indicators else 0
+            
+            fundamental = {
+                'pe_ratio': safe_get(['trailingPE', 'trailingP/E', 'peRatio', 'pe']),
+                'forward_pe': safe_get(['forwardPE', 'forwardP/E', 'forwardPeRatio']),
+                'pb_ratio': safe_get(['priceToBook', 'priceToBookRatio', 'pb', 'p/b']),
+                'dividend_yield': safe_get(['dividendYield', 'dividend_yield', 'yield']),
+                'market_cap': market_cap_str,
+                'market_cap_raw': market_cap if isinstance(market_cap, (int, float)) and market_cap > 0 else 0,
+                'eps': safe_get(['trailingEps', 'epsTrailing12Months', 'eps', 'earningsPerShare']),
+                'revenue_growth': safe_get(['revenueGrowth', 'revenue_growth', 'quarterlyRevenueGrowth', 'revenueGrowthRate']),
+                'earnings_growth': safe_get(['earningsQuarterlyGrowth', 'earningsGrowth', 'quarterlyEarningsGrowth', 'earnings_growth']),
+                'debt_to_equity': safe_get(['debtToEquity', 'debtToEquityRatio', 'totalDebt/totalEquity']),
+                'roe': safe_get(['returnOnEquity', 'returnOnEquityTTM', 'roe']),
+                'profit_margin': safe_get(['profitMargins', 'profitMargin', 'profit_margin', 'netProfitMargin']),
+                '52_week_high': safe_get(['fiftyTwoWeekHigh', '52WeekHigh', 'fifty_two_week_high']),
+                '52_week_low': safe_get(['fiftyTwoWeekLow', '52WeekLow', 'fifty_two_week_low']),
+                'avg_volume': safe_get(['averageVolume', 'averageVolume10days', 'avgVolume']),
+                'beta': safe_get(['beta', 'beta3Year']),
+            }
+            
+            # Format percentages (dividend yield may already be a percentage in some cases)
+            for key in ['dividend_yield']:
+                if isinstance(fundamental[key], (int, float)) and fundamental[key] != 'N/A':
+                    # Check if it's already a percentage (> 1) or a decimal (< 1)
+                    if fundamental[key] > 0 and fundamental[key] < 1:
+                        fundamental[key] = round(fundamental[key] * 100, 2)
+                    elif fundamental[key] >= 1 and fundamental[key] <= 100:
+                        fundamental[key] = round(fundamental[key], 2)
+            
+            for key in ['revenue_growth', 'earnings_growth', 'roe', 'profit_margin']:
+                if isinstance(fundamental[key], (int, float)) and fundamental[key] != 'N/A':
+                    # Usually these are already percentages, but check
+                    if abs(fundamental[key]) < 1:
+                        fundamental[key] = round(fundamental[key] * 100, 2)
+                    else:
+                        fundamental[key] = round(fundamental[key], 2)
+            
+            # Format other numeric values
+            for key in ['pe_ratio', 'forward_pe', 'pb_ratio', 'eps', 'debt_to_equity', 'beta', '52_week_high', '52_week_low', 'avg_volume']:
+                if isinstance(fundamental[key], (int, float)) and fundamental[key] != 'N/A':
+                    fundamental[key] = round(fundamental[key], 2)
+            
+            # Convert N/A strings back to proper format
+            for key in fundamental:
+                if fundamental[key] == 'N/A':
+                    fundamental[key] = 'N/A'
+                elif fundamental[key] == 0 and key not in ['pe_ratio', 'forward_pe', 'pb_ratio', 'eps', 'dividend_yield']:
+                    # Some values might legitimately be 0, but for these fields 0 usually means N/A
+                    if key in ['pe_ratio', 'forward_pe', 'pb_ratio', 'eps', 'debt_to_equity', 'roe', 'profit_margin', 'beta']:
+                        fundamental[key] = 'N/A'
+            
+            return fundamental
+        except Exception as e:
+            print(f"Error getting fundamental indicators for {self.symbol}: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return {}
     
     def get_recommendation(self) -> Dict:
         """
@@ -252,8 +377,9 @@ class StockAnalyzer:
             return {}
         
         info = self.stock.info if self.stock else {}
+        fundamental = self.get_fundamental_indicators()
         
-        return {
+        summary = {
             'symbol': self.symbol,
             'company_name': info.get('longName', 'N/A'),
             'current_price': round(self.indicators['Current_Price'], 2),
@@ -267,4 +393,9 @@ class StockAnalyzer:
             'bb_upper': round(self.indicators['BB_Upper'], 2),
             'bb_lower': round(self.indicators['BB_Lower'], 2),
         }
+        
+        # Add fundamental indicators
+        summary['fundamental'] = fundamental
+        
+        return summary
 

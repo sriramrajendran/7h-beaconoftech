@@ -3,24 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Stock Technical Analysis{% endblock %}</title>
+    <title>{% block title %}7H-Analyser{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📈 Stock Technical Analysis</h1>
-            <p class="subtitle">AI-Powered Stock Recommendations Based on Technical Indicators</p>
-        </header>
-        
-        <main>
-            {% block content %}{% endblock %}
-        </main>
-        
-        <footer>
-            <p>⚠️ Disclaimer: This tool is for educational purposes only. Not financial advice.</p>
-        </footer>
+    <div class="app-layout">
+        <!-- Side Menu -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>📈</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/" class="nav-link" id="nav-portfolio">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-text">Home</span>
+                </a>
+                <a href="/watchlist" class="nav-link" id="nav-watchlist">
+                    <span class="nav-icon">⭐</span>
+                    <span class="nav-text">Watchlist</span>
+                </a>
+                <a href="/market" class="nav-link" id="nav-market">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">US Market</span>
+                </a>
+                <a href="/etf" class="nav-link" id="nav-etf">
+                    <span class="nav-icon">📈</span>
+                    <span class="nav-text">ETFs/Indexes</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="container">
+                <header>
+                    <h1>📈 7H-Analyser</h1>
+                    <p class="subtitle">AI-Powered Stock Recommendations Based on Indicators</p>
+                </header>
+                
+                <main>
+                    {% block content %}{% endblock %}
+                </main>
+                
+                <footer>
+                    <p>⚠️ Disclaimer: This tool is for educational purposes only. Not financial advice.</p>
+                </footer>
+            </div>
+        </div>
     </div>
     
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
