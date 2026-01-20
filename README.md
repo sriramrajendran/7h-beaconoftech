@@ -21,10 +21,7 @@ A Python application that provides stock recommendations based on technical anal
 
 - **Multiple Analysis Modes:**
   - Single stock analysis
-  - Multiple stock comparison
-  - Watchlist support
   - Portfolio analysis with top BUY/SELL recommendations
-  - Portfolio file support for large stock lists
   - **Beautiful web interface** with real-time analysis
 
 ## Installation
@@ -45,7 +42,7 @@ A Python application that provides stock recommendations based on technical anal
    pip install -r requirements.txt
    ```
 
-## Quick Start - Web Application (Recommended)
+## Quick Start
 
 ### 🚀 Start the Web Application
 
@@ -98,122 +95,6 @@ A Python application that provides stock recommendations based on technical anal
 - **Detailed Indicators**: RSI, MACD, Moving Averages, Bollinger Bands
 - **Portfolio Insights**: Compare multiple stocks at once
 
-## Command Line Interface
-
-### Basic Usage - Single Stock
-
-```bash
-python3 main.py AAPL
-```
-
-
-```bash
-python3 main.py AAPL
-```
-
-### Multiple Stocks
-
-```bash
-python3 main.py AAPL MSFT GOOGL
-```
-
-### Using Watchlist
-
-```bash
-python3 main.py --watchlist AAPL,MSFT,GOOGL,TSLA
-```
-
-### Different Time Periods
-
-```bash
-python3 main.py AAPL --period 6mo
-```
-
-Available periods: `1mo`, `3mo`, `6mo`, `1y`, `2y`, `5y`
-
-### Portfolio Analysis - Top BUY/SELL Recommendations
-
-Analyze a portfolio and get top 10 BUY and SELL recommendations:
-
-```bash
-# Using watchlist
-python3 main.py --portfolio --watchlist AAPL,MSFT,GOOGL,TSLA,NVDA,AMZN,META
-
-# Using a portfolio file
-python3 main.py --portfolio-file popular_stocks.txt
-
-# Customize number of top recommendations
-python3 main.py --portfolio --watchlist AAPL,MSFT,GOOGL --top-n 20
-```
-
-The portfolio analysis will:
-- Analyze all stocks in your portfolio
-- Show **Top 10 BUY Recommendations** (sorted by score, highest first)
-- Show **Top 10 SELL Recommendations** (sorted by score, lowest first)
-- Display portfolio summary statistics
-- Provide detailed analysis for top 3 BUY recommendations
-
-### Portfolio File Format
-
-Create a text file with one stock symbol per line:
-```
-AAPL
-MSFT
-GOOGL
-TSLA
-# Comments start with #
-```
-
-### Interactive Mode
-
-Simply run without arguments:
-```bash
-python3 main.py
-```
-
-Then enter stock symbols when prompted.
-
-## Example Output
-
-```
-============================================================
-  Stock Technical Analysis & Recommendation System
-============================================================
-
-Analyzing AAPL...
-
-────────────────────────────────────────────────────────────
-  TECHNICAL INDICATORS
-────────────────────────────────────────────────────────────
-
-┌──────────────┬──────────────────────────────┐
-│ Indicator    │ Value                        │
-├──────────────┼──────────────────────────────┤
-│ Company      │ Apple Inc.                   │
-│ Current Price│ $175.43                      │
-│ Price Change │ +1.23%                       │
-│ RSI (14)     │ 45.67                        │
-│ MACD         │ 0.89                         │
-│ MACD Signal  │ 0.76                         │
-│ SMA (20)     │ $172.15                      │
-│ SMA (50)     │ $168.90                      │
-│ SMA (200)    │ $165.23                      │
-│ BB Upper     │ $178.50                      │
-│ BB Lower     │ $165.80                      │
-└──────────────┴──────────────────────────────┘
-
-────────────────────────────────────────────────────────────
-  RECOMMENDATION: BUY
-  Score: 3
-────────────────────────────────────────────────────────────
-
-Reasoning:
-  1. RSI in neutral-bullish range
-  2. MACD bullish crossover detected
-  3. Price above all major moving averages (bullish)
-  4. Golden Cross pattern (SMA50 > SMA200)
-```
-
 ## Recommendation Scoring System
 
 The recommendation engine uses a scoring system:
@@ -239,7 +120,6 @@ The recommendation engine uses a scoring system:
 ```
 7hills/
 ├── app.py               # Flask web application
-├── main.py              # CLI application entry point
 ├── stock_analyzer.py    # Core analysis engine
 ├── requirements.txt     # Python dependencies
 ├── templates/           # HTML templates
@@ -261,8 +141,6 @@ The recommendation engine uses a scoring system:
 - **pandas:** Data manipulation
 - **numpy:** Numerical operations
 - **ta:** Technical analysis library
-- **colorama:** Colored terminal output
-- **tabulate:** Formatted table output
 - **flask:** Web framework for browser interface
 
 ## Important Notes
@@ -276,11 +154,10 @@ The recommendation engine uses a scoring system:
 
 ## Tips
 
-- Use the portfolio analysis for comparing 5+ stocks
+- Use the portfolio analysis for comparing multiple stocks
 - Higher scores = Better BUY opportunities
 - Lower (negative) scores = Consider SELL
 - Check the reasoning for each recommendation
-- Web interface is recommended for best user experience
 
 ## Troubleshooting
 
@@ -290,7 +167,7 @@ The recommendation engine uses a scoring system:
 - Ensure you have an internet connection
 
 **Issue:** "Limited data" warning
-- Try a shorter period (e.g., `--period 3mo`)
+- Try selecting a shorter period in the web interface
 - Some stocks may have limited trading history
 
 **Issue:** Import errors
@@ -298,9 +175,10 @@ The recommendation engine uses a scoring system:
 - Ensure you're using Python 3.7 or higher
 
 **Issue:** Flask app won't start
-- Check if port 5000 is already in use
+- Check if port 80 is already in use (the app uses port 80)
 - Try: `python3 app.py` (not `python app.py`)
 - Ensure Flask is installed: `pip install flask`
+- On macOS/Linux, you may need to use `sudo` to run on port 80, or change the port in `app.py` to 5000
 
 ## Future Enhancements
 
