@@ -336,7 +336,11 @@ function displayPortfolioResults(data, container) {
                             <th>Symbol</th>
                             <th>Company</th>
                             <th>Price</th>
-                            <th>Change %</th>
+                            <th>1D %</th>
+                            <th>1W %</th>
+                            <th>1M %</th>
+                            <th>6M %</th>
+                            <th>1Y %</th>
                             <th>RSI</th>
                         <th>Recommendation</th>
                         <th>Score</th>
@@ -345,18 +349,30 @@ function displayPortfolioResults(data, container) {
                 </thead>
                 <tbody>
                     ${buy_stocks.map((stock, idx) => `
-                            <tr>
+                            <tr class="stock-row" data-symbol="${stock.symbol}" data-index="${idx}" onclick="showStockDetail('${stock.symbol}', ${idx})">
                                 <td>${idx + 1}</td>
                                 <td><strong>${stock.symbol}</strong></td>
                                 <td>${stock.company}</td>
                                 <td>$${stock.price.toFixed(2)}</td>
-                                <td class="${stock.change >= 0 ? 'score-positive' : 'score-negative'}">
-                                    ${stock.change >= 0 ? '+' : ''}${stock.change.toFixed(2)}%
+                                <td class="${stock.change_1d >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_1d >= 0 ? '+' : ''}${stock.change_1d.toFixed(2)}%
+                                </td>
+                                <td class="${stock.change_1w >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_1w >= 0 ? '+' : ''}${stock.change_1w.toFixed(2)}%
+                                </td>
+                                <td class="${stock.change_1m >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_1m >= 0 ? '+' : ''}${stock.change_1m.toFixed(2)}%
+                                </td>
+                                <td class="${stock.change_6m >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_6m >= 0 ? '+' : ''}${stock.change_6m.toFixed(2)}%
+                                </td>
+                                <td class="${(stock.change_1y || 0) >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${(stock.change_1y || 0) >= 0 ? '+' : ''}${(stock.change_1y || 0).toFixed(2)}%
                                 </td>
                                 <td>${stock.rsi.toFixed(2)}</td>
-                                <td><span class="recommendation-badge recommendation-buy">${stock.recommendation}</span></td>
+                                <td><span class="recommendation-badge ${getRecommendationClass(stock.recommendation)}">${stock.recommendation}</span></td>
                                 <td class="score-positive">${stock.score}</td>
-                                <td><button class="btn-detail" onclick="showStockDetail('${stock.symbol}', ${idx})">Details</button></td>
+                                <td><button class="btn-detail" onclick="event.stopPropagation(); showStockDetail('${stock.symbol}', ${idx})">Details</button></td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -379,7 +395,11 @@ function displayPortfolioResults(data, container) {
                             <th>Symbol</th>
                             <th>Company</th>
                             <th>Price</th>
-                            <th>Change %</th>
+                            <th>1D %</th>
+                            <th>1W %</th>
+                            <th>1M %</th>
+                            <th>6M %</th>
+                            <th>1Y %</th>
                             <th>RSI</th>
                         <th>Recommendation</th>
                         <th>Score</th>
@@ -388,18 +408,30 @@ function displayPortfolioResults(data, container) {
                 </thead>
                 <tbody>
                     ${sell_stocks.map((stock, idx) => `
-                            <tr>
+                            <tr class="stock-row" data-symbol="${stock.symbol}" data-index="${buy_stocks.length + idx}" onclick="showStockDetail('${stock.symbol}', ${buy_stocks.length + idx})">
                                 <td>${idx + 1}</td>
                                 <td><strong>${stock.symbol}</strong></td>
                                 <td>${stock.company}</td>
                                 <td>$${stock.price.toFixed(2)}</td>
-                                <td class="${stock.change >= 0 ? 'score-positive' : 'score-negative'}">
-                                    ${stock.change >= 0 ? '+' : ''}${stock.change.toFixed(2)}%
+                                <td class="${stock.change_1d >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_1d >= 0 ? '+' : ''}${stock.change_1d.toFixed(2)}%
+                                </td>
+                                <td class="${stock.change_1w >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_1w >= 0 ? '+' : ''}${stock.change_1w.toFixed(2)}%
+                                </td>
+                                <td class="${stock.change_1m >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_1m >= 0 ? '+' : ''}${stock.change_1m.toFixed(2)}%
+                                </td>
+                                <td class="${stock.change_6m >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_6m >= 0 ? '+' : ''}${stock.change_6m.toFixed(2)}%
+                                </td>
+                                <td class="${(stock.change_1y || 0) >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${(stock.change_1y || 0) >= 0 ? '+' : ''}${(stock.change_1y || 0).toFixed(2)}%
                                 </td>
                                 <td>${stock.rsi.toFixed(2)}</td>
                                 <td><span class="recommendation-badge recommendation-sell">${stock.recommendation}</span></td>
                                 <td class="score-negative">${stock.score}</td>
-                                <td><button class="btn-detail" onclick="showStockDetail('${stock.symbol}', ${buy_stocks.length + idx})">Details</button></td>
+                                <td><button class="btn-detail" onclick="event.stopPropagation(); showStockDetail('${stock.symbol}', ${buy_stocks.length + idx})">Details</button></td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -408,6 +440,65 @@ function displayPortfolioResults(data, container) {
         `;
     } else {
         html += '<div class="result-section"><p class="info-text">No SELL recommendations found.</p></div>';
+    }
+    
+    // HOLD Recommendations
+    if (data.hold_stocks && data.hold_stocks.length > 0) {
+        html += `
+            <div class="result-section">
+                <h3 style="color: var(--warning);">HOLD Recommendations (${data.hold_stocks.length})</h3>
+                <table class="stocks-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Symbol</th>
+                            <th>Company</th>
+                            <th>Price</th>
+                            <th>1D %</th>
+                            <th>1W %</th>
+                            <th>1M %</th>
+                            <th>6M %</th>
+                            <th>1Y %</th>
+                            <th>RSI</th>
+                        <th>Recommendation</th>
+                        <th>Score</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${data.hold_stocks.map((stock, idx) => `
+                            <tr class="stock-row" data-symbol="${stock.symbol}" data-index="${buy_stocks.length + sell_stocks.length + idx}" onclick="showStockDetail('${stock.symbol}', ${buy_stocks.length + sell_stocks.length + idx})">
+                                <td>${idx + 1}</td>
+                                <td><strong>${stock.symbol}</strong></td>
+                                <td>${stock.company}</td>
+                                <td>$${stock.price.toFixed(2)}</td>
+                                <td class="${stock.change_1d >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_1d >= 0 ? '+' : ''}${stock.change_1d.toFixed(2)}%
+                                </td>
+                                <td class="${stock.change_1w >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_1w >= 0 ? '+' : ''}${stock.change_1w.toFixed(2)}%
+                                </td>
+                                <td class="${stock.change_1m >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_1m >= 0 ? '+' : ''}${stock.change_1m.toFixed(2)}%
+                                </td>
+                                <td class="${stock.change_6m >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_6m >= 0 ? '+' : ''}${stock.change_6m.toFixed(2)}%
+                                </td>
+                                <td class="${(stock.change_1y || 0) >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${(stock.change_1y || 0) >= 0 ? '+' : ''}${(stock.change_1y || 0).toFixed(2)}%
+                                </td>
+                                <td>${stock.rsi.toFixed(2)}</td>
+                                <td><span class="recommendation-badge recommendation-hold">${stock.recommendation}</span></td>
+                                <td style="color: var(--warning);">${stock.score}</td>
+                                <td><button class="btn-detail" onclick="event.stopPropagation(); showStockDetail('${stock.symbol}', ${buy_stocks.length + sell_stocks.length + idx})">Details</button></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        `;
+    } else {
+        html += '<div class="result-section"><p class="info-text">No HOLD recommendations found.</p></div>';
     }
     
     // Store all stocks for detail view
@@ -442,7 +533,11 @@ function displayMarketResults(data, container) {
                         <th>Symbol</th>
                         <th>Company</th>
                         <th>Price</th>
-                        <th>Change %</th>
+                        <th>1D %</th>
+                        <th>1W %</th>
+                        <th>1M %</th>
+                        <th>6M %</th>
+                        <th>1Y %</th>
                         <th>RSI</th>
                         <th>Recommendation</th>
                         <th>Score</th>
@@ -451,18 +546,30 @@ function displayMarketResults(data, container) {
                 </thead>
                 <tbody>
                     ${buy_recommendations.map((stock, idx) => `
-                            <tr>
+                            <tr class="stock-row" data-symbol="${stock.symbol}" data-index="${idx}" onclick="showStockDetail('${stock.symbol}', ${idx})">
                                 <td>${idx + 1}</td>
                                 <td><strong>${stock.symbol}</strong></td>
                                 <td>${stock.company}</td>
                                 <td>$${stock.price.toFixed(2)}</td>
-                                <td class="${stock.change >= 0 ? 'score-positive' : 'score-negative'}">
-                                    ${stock.change >= 0 ? '+' : ''}${stock.change.toFixed(2)}%
+                                <td class="${stock.change_1d >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_1d >= 0 ? '+' : ''}${stock.change_1d.toFixed(2)}%
+                                </td>
+                                <td class="${stock.change_1w >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_1w >= 0 ? '+' : ''}${stock.change_1w.toFixed(2)}%
+                                </td>
+                                <td class="${stock.change_1m >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_1m >= 0 ? '+' : ''}${stock.change_1m.toFixed(2)}%
+                                </td>
+                                <td class="${stock.change_6m >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_6m >= 0 ? '+' : ''}${stock.change_6m.toFixed(2)}%
+                                </td>
+                                <td class="${(stock.change_1y || 0) >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${(stock.change_1y || 0) >= 0 ? '+' : ''}${(stock.change_1y || 0).toFixed(2)}%
                                 </td>
                                 <td>${stock.rsi.toFixed(2)}</td>
                                 <td><span class="recommendation-badge recommendation-buy">${stock.recommendation}</span></td>
                                 <td class="score-positive">${stock.score}</td>
-                                <td><button class="btn-detail" onclick="showStockDetail('${stock.symbol}', ${idx})">Details</button></td>
+                                <td><button class="btn-detail" onclick="event.stopPropagation(); showStockDetail('${stock.symbol}', ${idx})">Details</button></td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -520,9 +627,33 @@ function showStockDetail(symbol, index) {
                                 <div class="indicator-value">$${stock.price.toFixed(2)}</div>
                             </div>
                             <div class="indicator-card">
-                                <div class="indicator-label">Price Change</div>
-                                <div class="indicator-value ${stock.change >= 0 ? 'score-positive' : 'score-negative'}">
-                                    ${stock.change >= 0 ? '+' : ''}${stock.change.toFixed(2)}%
+                                <div class="indicator-label">1D Change</div>
+                                <div class="indicator-value ${stock.change_1d >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_1d >= 0 ? '+' : ''}${stock.change_1d.toFixed(2)}%
+                                </div>
+                            </div>
+                            <div class="indicator-card">
+                                <div class="indicator-label">1W Change</div>
+                                <div class="indicator-value ${stock.change_1w >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_1w >= 0 ? '+' : ''}${stock.change_1w.toFixed(2)}%
+                                </div>
+                            </div>
+                            <div class="indicator-card">
+                                <div class="indicator-label">1M Change</div>
+                                <div class="indicator-value ${stock.change_1m >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_1m >= 0 ? '+' : ''}${stock.change_1m.toFixed(2)}%
+                                </div>
+                            </div>
+                            <div class="indicator-card">
+                                <div class="indicator-label">6M Change</div>
+                                <div class="indicator-value ${stock.change_6m >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${stock.change_6m >= 0 ? '+' : ''}${stock.change_6m.toFixed(2)}%
+                                </div>
+                            </div>
+                            <div class="indicator-card">
+                                <div class="indicator-label">1Y Change</div>
+                                <div class="indicator-value ${(stock.change_1y || 0) >= 0 ? 'score-positive' : 'score-negative'}">
+                                    ${(stock.change_1y || 0) >= 0 ? '+' : ''}${(stock.change_1y || 0).toFixed(2)}%
                                 </div>
                             </div>
                             <div class="indicator-card">
@@ -618,13 +749,24 @@ function showStockDetail(symbol, index) {
             modal.remove();
         }
     });
+    
+    // Close on ESC key press
+    const handleEscape = (e) => {
+        if (e.key === 'Escape') {
+            modal.remove();
+            document.removeEventListener('keydown', handleEscape);
+        }
+    };
+    document.addEventListener('keydown', handleEscape);
 }
 
 // Make function available globally
 window.showStockDetail = showStockDetail;
 
 function getRecommendationClass(recommendation) {
-    if (recommendation.includes('BUY')) {
+    if (recommendation.includes('STRONG BUY')) {
+        return 'recommendation-strong-buy';
+    } else if (recommendation.includes('BUY')) {
         return 'recommendation-buy';
     } else if (recommendation.includes('SELL')) {
         return 'recommendation-sell';

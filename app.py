@@ -14,6 +14,8 @@ app.config['JSON_SORT_KEYS'] = False
 
 CONFIG_PORTFOLIO_FILE = 'config_portfolio.txt'
 CONFIG_WATCHLIST_FILE = 'config_watchlist.txt'
+CONFIG_US_STOCKS_FILE = 'config_us_stocks.txt'
+CONFIG_ETFS_FILE = 'config_etfs.txt'
 
 
 def load_stocks_from_config(filename: str) -> List[str]:
@@ -59,10 +61,14 @@ def etf():
 def get_config_stocks():
     """Get stocks from config files"""
     try:
-        config_type = request.args.get('type', 'portfolio')  # 'portfolio' or 'watchlist'
+        config_type = request.args.get('type', 'portfolio')  # 'portfolio', 'watchlist', 'us_stocks', or 'etfs'
         
         if config_type == 'watchlist':
             filename = CONFIG_WATCHLIST_FILE
+        elif config_type == 'us_stocks':
+            filename = CONFIG_US_STOCKS_FILE
+        elif config_type == 'etfs':
+            filename = CONFIG_ETFS_FILE
         else:
             filename = CONFIG_PORTFOLIO_FILE
         
@@ -147,6 +153,11 @@ def analyze_portfolio():
                         'company': summary.get('company_name', 'N/A'),
                         'price': round(summary.get('current_price', 0), 2),
                         'change': round(summary.get('price_change_pct', 0), 2),
+                        'change_1d': round(summary.get('price_change_1d_pct', 0), 2),
+                        'change_1w': round(summary.get('price_change_1w_pct', 0), 2),
+                        'change_1m': round(summary.get('price_change_1m_pct', 0), 2),
+                        'change_6m': round(summary.get('price_change_6m_pct', 0), 2),
+                        'change_1y': round(summary.get('price_change_1y_pct', 0), 2),
                         'rsi': round(summary.get('rsi', 0), 2),
                         'macd': round(summary.get('macd', 0), 2),
                         'sma_20': round(summary.get('sma_20', 0), 2),
@@ -202,24 +213,9 @@ def analyze_portfolio():
         return jsonify({'error': str(e)}), 500
 
 
-# Major US stocks for market analysis
-MAJOR_US_STOCKS = [
-    'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA', 'BRK-B',
-    'V', 'UNH', 'JNJ', 'WMT', 'MA', 'PG', 'JPM', 'HD', 'DIS', 'BAC',
-    'VZ', 'ADBE', 'CMCSA', 'NFLX', 'KO', 'PFE', 'NKE', 'MRK', 'PEP',
-    'T', 'INTC', 'CSCO', 'AMD', 'ABT', 'QCOM', 'AVGO', 'CVX', 'WFC',
-    'COST', 'MCD', 'TMO', 'MDT', 'HON', 'UPS', 'BMY', 'UNP', 'LIN',
-    'RTX', 'AMGN', 'LOW', 'PM', 'NEE', 'INTU', 'C', 'GS', 'SBUX'
-]
-
-
-# Major ETFs and Indexes
-MAJOR_ETFS = [
-    'SPY', 'QQQ', 'DIA', 'IWM', 'VTI', 'VOO', 'VEA', 'VWO', 'AGG',
-    'GLD', 'SLV', 'USO', 'TLT', 'HYG', 'LQD', 'EEM', 'EFA', 'IEFA',
-    'IEMG', 'VGK', 'VPL', 'BND', 'BSV', 'BNDX', 'VTEB', 'SCHX', 'SCHF',
-    'SCHM', 'SCHA', 'ITOT', 'IXUS', 'IJH', 'IJR', 'IEFA', 'IEMG'
-]
+# Load major stocks and ETFs from config files
+MAJOR_US_STOCKS = load_stocks_from_config(CONFIG_US_STOCKS_FILE)
+MAJOR_ETFS = load_stocks_from_config(CONFIG_ETFS_FILE)
 
 
 @app.route('/analyze_market', methods=['POST'])
@@ -251,6 +247,11 @@ def analyze_market():
                             'company': summary.get('company_name', 'N/A'),
                             'price': round(summary.get('current_price', 0), 2),
                             'change': round(summary.get('price_change_pct', 0), 2),
+                            'change_1d': round(summary.get('price_change_1d_pct', 0), 2),
+                            'change_1w': round(summary.get('price_change_1w_pct', 0), 2),
+                            'change_1m': round(summary.get('price_change_1m_pct', 0), 2),
+                            'change_6m': round(summary.get('price_change_6m_pct', 0), 2),
+                            'change_1y': round(summary.get('price_change_1y_pct', 0), 2),
                             'rsi': round(summary.get('rsi', 0), 2),
                             'recommendation': recommendation['recommendation'],
                             'score': recommendation['score'],
@@ -306,6 +307,11 @@ def analyze_etf():
                             'company': summary.get('company_name', 'N/A'),
                             'price': round(summary.get('current_price', 0), 2),
                             'change': round(summary.get('price_change_pct', 0), 2),
+                            'change_1d': round(summary.get('price_change_1d_pct', 0), 2),
+                            'change_1w': round(summary.get('price_change_1w_pct', 0), 2),
+                            'change_1m': round(summary.get('price_change_1m_pct', 0), 2),
+                            'change_6m': round(summary.get('price_change_6m_pct', 0), 2),
+                            'change_1y': round(summary.get('price_change_1y_pct', 0), 2),
                             'rsi': round(summary.get('rsi', 0), 2),
                             'recommendation': recommendation['recommendation'],
                             'score': recommendation['score'],

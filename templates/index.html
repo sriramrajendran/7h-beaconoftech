@@ -6,24 +6,24 @@
 <div class="card">
     {% if page_type == 'portfolio' %}
     <h2>Portfolio Analysis</h2>
-    <p class="info-text">Analyzing your portfolio stocks from config_portfolio.txt</p>
+    <p class="info-text">Comprehensive analysis of your portfolio stocks with AI-powered insights</p>
     {% elif page_type == 'watchlist' %}
     <h2>Watchlist Analysis</h2>
-    <p class="info-text">Analyzing your watchlist stocks from config_watchlist.txt</p>
+    <p class="info-text">Track and analyze your watchlist stocks with intelligent recommendations</p>
     {% elif page_type == 'market' %}
     <h2>US Market Analysis</h2>
-    <p class="info-text">Analyzing major US stocks and providing top BUY recommendations</p>
+    <p class="info-text">Discover top investment opportunities across the US stock market</p>
     {% elif page_type == 'etf' %}
-    <h2>ETF/Index Analysis</h2>
-    <p class="info-text">Analyzing major ETFs and Indexes and providing top BUY recommendations</p>
+    <h2>ETF & Index Analysis</h2>
+    <p class="info-text">Analyze major ETFs and market indexes for strategic investment decisions</p>
     {% endif %}
     
     {% if page_type in ['portfolio', 'watchlist'] %}
     <form id="portfolio-form">
         <div class="form-group">
             <label for="symbols">Stock Symbols</label>
-            <textarea id="symbols" name="symbols" rows="4" placeholder="Loading stocks from config file..." required></textarea>
-            <small class="form-hint">Edit config_portfolio.txt or config_watchlist.txt to update your stock list</small>
+            <textarea id="symbols" name="symbols" rows="2" placeholder="Loading stocks from config file..." required></textarea>
+            <small class="form-hint">Edit your configuration files to update stock lists automatically</small>
         </div>
         <div class="form-row">
             <div class="form-group">
@@ -52,10 +52,9 @@
                 <select id="market-period" name="period">
                     <option value="1mo">1 Month</option>
                     <option value="3mo">3 Months</option>
-                    <option value="6mo">6 Months</option>
-                    <option value="1y" selected>1 Year</option>
+                    <option value="6mo" selected>6 Months</option>
+                    <option value="1y">1 Year</option>
                     <option value="2y">2 Years</option>
-                    <option value="5y">5 Years</option>
                 </select>
             </div>
             <div class="form-group">
@@ -72,7 +71,7 @@
 <!-- Loading Overlay -->
 <div id="loading" class="loading-overlay hidden">
     <div class="spinner"></div>
-    <p>Analyzing stocks...</p>
+    <p>Analyzing market data...</p>
 </div>
 {% endblock %}
 
