@@ -147,3 +147,5 @@ Thumbs.db
 input/portfolio_data.json
 input/imported_portfolio.csv
 temp/
+
+input/.alerts_state.json
