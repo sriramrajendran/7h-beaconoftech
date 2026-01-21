@@ -382,7 +382,6 @@ function displayPortfolioResults(data, container) {
                         <tr>
                             <th>#</th>
                             <th>Symbol</th>
-                            <th>Company</th>
                             <th>Price</th>
                             <th>1D %</th>
                             <th>1W %</th>
@@ -394,7 +393,8 @@ function displayPortfolioResults(data, container) {
                             <th>RSI Div</th>
                             <th>MACD Div</th>
                             <th>Cross</th>
-                        <th>Recommendation</th>
+                            <th>Breakout</th>
+                        <th>Tip</th>
                         <th>Score</th>
                     </tr>
                 </thead>
@@ -402,8 +402,7 @@ function displayPortfolioResults(data, container) {
                     ${buy_stocks.map((stock, idx) => `
                             <tr class="stock-row" data-symbol="${stock.symbol}" data-index="${idx}" onclick="showStockDetail('${stock.symbol}', ${idx})">
                                 <td>${idx + 1}</td>
-                                <td><strong>${stock.symbol}</strong></td>
-                                <td>${stock.company}</td>
+                                <td data-company="${stock.company}"><strong>${stock.symbol}</strong></td>
                                 <td>$${stock.price.toFixed(2)}</td>
                                 <td class="${stock.change_1d >= 0 ? 'score-positive' : 'score-negative'}">
                                     ${stock.change_1d >= 0 ? '+' : ''}${stock.change_1d.toFixed(2)}%
@@ -425,6 +424,7 @@ function displayPortfolioResults(data, container) {
                                 <td>${getDivergenceBadge(stock.rsi_divergence)}</td>
                                 <td>${getDivergenceBadge(stock.macd_divergence)}</td>
                                 <td>${getCrossoverBadge(stock.enhanced_crossovers)}</td>
+                                <td>${getBreakoutBadge(stock.breakout_setup)}</td>
                                 <td><span class="recommendation-badge ${getRecommendationClass(stock.recommendation)}">${stock.recommendation}</span></td>
                                 <td class="score-positive">${stock.score}</td>
                             </tr>
@@ -449,7 +449,6 @@ function displayPortfolioResults(data, container) {
                         <tr>
                             <th>#</th>
                             <th>Symbol</th>
-                            <th>Company</th>
                             <th>Price</th>
                             <th>1D %</th>
                             <th>1W %</th>
@@ -461,7 +460,8 @@ function displayPortfolioResults(data, container) {
                             <th>RSI Div</th>
                             <th>MACD Div</th>
                             <th>Cross</th>
-                        <th>Recommendation</th>
+                            <th>Breakout</th>
+                        <th>Tip</th>
                         <th>Score</th>
                     </tr>
                 </thead>
@@ -469,8 +469,7 @@ function displayPortfolioResults(data, container) {
                     ${sell_stocks.map((stock, idx) => `
                             <tr class="stock-row" data-symbol="${stock.symbol}" data-index="${buy_stocks.length + idx}" onclick="showStockDetail('${stock.symbol}', ${buy_stocks.length + idx})">
                                 <td>${idx + 1}</td>
-                                <td><strong>${stock.symbol}</strong></td>
-                                <td>${stock.company}</td>
+                                <td data-company="${stock.company}"><strong>${stock.symbol}</strong></td>
                                 <td>$${stock.price.toFixed(2)}</td>
                                 <td class="${stock.change_1d >= 0 ? 'score-positive' : 'score-negative'}">
                                     ${stock.change_1d >= 0 ? '+' : ''}${stock.change_1d.toFixed(2)}%
@@ -492,6 +491,7 @@ function displayPortfolioResults(data, container) {
                                 <td>${getDivergenceBadge(stock.rsi_divergence)}</td>
                                 <td>${getDivergenceBadge(stock.macd_divergence)}</td>
                                 <td>${getCrossoverBadge(stock.enhanced_crossovers)}</td>
+                                <td>${getBreakoutBadge(stock.breakout_setup)}</td>
                                 <td><span class="recommendation-badge recommendation-sell">${stock.recommendation}</span></td>
                                 <td class="score-negative">${stock.score}</td>
                             </tr>
@@ -516,7 +516,6 @@ function displayPortfolioResults(data, container) {
                         <tr>
                             <th>#</th>
                             <th>Symbol</th>
-                            <th>Company</th>
                             <th>Price</th>
                             <th>1D %</th>
                             <th>1W %</th>
@@ -528,7 +527,8 @@ function displayPortfolioResults(data, container) {
                             <th>RSI Div</th>
                             <th>MACD Div</th>
                             <th>Cross</th>
-                        <th>Recommendation</th>
+                            <th>Breakout</th>
+                        <th>Tip</th>
                         <th>Score</th>
                     </tr>
                 </thead>
@@ -536,8 +536,7 @@ function displayPortfolioResults(data, container) {
                     ${data.hold_stocks.map((stock, idx) => `
                             <tr class="stock-row" data-symbol="${stock.symbol}" data-index="${buy_stocks.length + sell_stocks.length + idx}" onclick="showStockDetail('${stock.symbol}', ${buy_stocks.length + sell_stocks.length + idx})">
                                 <td>${idx + 1}</td>
-                                <td><strong>${stock.symbol}</strong></td>
-                                <td>${stock.company}</td>
+                                <td data-company="${stock.company}"><strong>${stock.symbol}</strong></td>
                                 <td>$${stock.price.toFixed(2)}</td>
                                 <td class="${stock.change_1d >= 0 ? 'score-positive' : 'score-negative'}">
                                     ${stock.change_1d >= 0 ? '+' : ''}${stock.change_1d.toFixed(2)}%
@@ -559,6 +558,7 @@ function displayPortfolioResults(data, container) {
                                 <td>${getDivergenceBadge(stock.rsi_divergence)}</td>
                                 <td>${getDivergenceBadge(stock.macd_divergence)}</td>
                                 <td>${getCrossoverBadge(stock.enhanced_crossovers)}</td>
+                                <td>${getBreakoutBadge(stock.breakout_setup)}</td>
                                 <td><span class="recommendation-badge recommendation-hold">${stock.recommendation}</span></td>
                                 <td style="color: var(--warning);">${stock.score}</td>
                             </tr>
@@ -603,7 +603,6 @@ function displayMarketResults(data, container) {
                     <tr>
                         <th>#</th>
                         <th>Symbol</th>
-                        <th>Company</th>
                         <th>Price</th>
                         <th>1D %</th>
                         <th>1W %</th>
@@ -615,7 +614,8 @@ function displayMarketResults(data, container) {
                         <th>RSI Div</th>
                         <th>MACD Div</th>
                         <th>Cross</th>
-                        <th>Recommendation</th>
+                        <th>Breakout</th>
+                        <th>Tip</th>
                         <th>Score</th>
                     </tr>
                 </thead>
@@ -623,8 +623,7 @@ function displayMarketResults(data, container) {
                     ${buy_recommendations.map((stock, idx) => `
                             <tr class="stock-row" data-symbol="${stock.symbol}" data-index="${idx}" onclick="showStockDetail('${stock.symbol}', ${idx})">
                                 <td>${idx + 1}</td>
-                                <td><strong>${stock.symbol}</strong></td>
-                                <td>${stock.company}</td>
+                                <td data-company="${stock.company}"><strong>${stock.symbol}</strong></td>
                                 <td>$${stock.price.toFixed(2)}</td>
                                 <td class="${stock.change_1d >= 0 ? 'score-positive' : 'score-negative'}">
                                     ${stock.change_1d >= 0 ? '+' : ''}${stock.change_1d.toFixed(2)}%
@@ -646,6 +645,7 @@ function displayMarketResults(data, container) {
                                 <td>${getDivergenceBadge(stock.rsi_divergence)}</td>
                                 <td>${getDivergenceBadge(stock.macd_divergence)}</td>
                                 <td>${getCrossoverBadge(stock.enhanced_crossovers)}</td>
+                                <td>${getBreakoutBadge(stock.breakout_setup)}</td>
                                 <td><span class="recommendation-badge recommendation-buy">${stock.recommendation}</span></td>
                                 <td class="score-positive">${stock.score}</td>
                             </tr>
@@ -841,6 +841,12 @@ function showStockDetail(symbol, index) {
                             <div class="pattern-title">Enhanced Crossovers</div>
                             <div class="pattern-details">
                                 ${getCrossoverDetails(stock.enhanced_crossovers)}
+                            </div>
+                        </div>
+                        <div class="pattern-card">
+                            <div class="pattern-title">Breakout Setup</div>
+                            <div class="pattern-details">
+                                ${getBreakoutDetails(stock.breakout_setup)}
                             </div>
                         </div>
                     </div>
@@ -1050,6 +1056,20 @@ function getCrossoverBadge(crossovers) {
     return '<span class="pattern-badge pattern-none">-</span>';
 }
 
+function getBreakoutBadge(setup) {
+    if (!setup || setup.qualified === undefined) {
+        return '<span class="pattern-badge pattern-insufficient">N/A</span>';
+    }
+    const s = setup.strength || 0;
+    if (setup.qualified) {
+        return `<span class=\"pattern-badge pattern-confirmed\" title=\"Qualified breakout setup (strength ${s})\">✓${s}</span>`;
+    }
+    if (setup.prequalified) {
+        return `<span class=\"pattern-badge pattern-weak-vcp\" title=\"Pre-breakout setup: all checks except breakout met (strength ${s})\">◔${s}</span>`;
+    }
+    return '<span class="pattern-badge pattern-unconfirmed" title="Breakout setup not qualified">◯</span>';
+}
+
 function getVCPDetails(vcp_pattern) {
     if (!vcp_pattern || vcp_pattern.pattern === 'INSUFFICIENT_DATA') {
         return '<div class="pattern-status pattern-insufficient">Insufficient data</div>';
@@ -1070,6 +1090,47 @@ function getVCPDetails(vcp_pattern) {
         html += '</ul></div>';
     }
     
+    return html;
+}
+
+function getBreakoutDetails(setup) {
+    if (!setup || setup.qualified === undefined) {
+        return '<div class="pattern-status pattern-insufficient">Insufficient data</div>';
+    }
+    const qualified = !!setup.qualified;
+    const prequalified = !!setup.prequalified;
+    const strength = setup.strength || 0;
+    const details = setup.details || [];
+    const checks = setup.checks || {};
+    let statusClass = qualified ? 'pattern-confirmed' : (prequalified ? 'pattern-weak-vcp' : 'pattern-unconfirmed');
+    let statusText = qualified ? 'Qualified Breakout Setup' : (prequalified ? 'Pre-Breakout Setup' : 'Not Qualified');
+    let html = `<div class=\"pattern-status ${statusClass}\">${statusText}</div>`;
+    html += `<div class="pattern-strength">Strength: ${strength}/6</div>`;
+    if (details.length > 0) {
+        html += '<div class="pattern-indicators"><strong>Checks:</strong><ul>';
+        details.forEach(d => {
+            html += `<li>${d}</li>`;
+        });
+        html += '</ul></div>';
+    }
+    // Render explicit check statuses if available
+    const labels = {
+        trend_ok: 'Trend alignment (Price > SMA50 [and SMA50 > SMA200 if available])',
+        rsi_ok: 'RSI > 50',
+        shrinking_pullbacks: 'Shrinking pullbacks',
+        declining_volume: 'Declining consolidation volume',
+        breakout_high_volume: 'Breakout above 20D high with volume'
+    };
+    const keys = Object.keys(labels);
+    if (Object.keys(checks).length > 0) {
+        html += '<div class="pattern-indicators"><strong>Check Status:</strong><ul>';
+        keys.forEach(k => {
+            if (k in checks) {
+                html += `<li>${labels[k]}: ${checks[k] ? '✓' : '✗'}</li>`;
+            }
+        });
+        html += '</ul></div>';
+    }
     return html;
 }
 

@@ -191,6 +191,7 @@ class StockAnalyzer:
         self.indicators['RSI_Divergence'] = self.detect_rsi_divergence()
         self.indicators['MACD_Divergence'] = self.detect_macd_divergence()
         self.indicators['Enhanced_Crossovers'] = self.detect_enhanced_crossovers()
+        self.indicators['Breakout_Setup'] = self.detect_breakout_setup()
         
         # Store full dataframes for analysis
         self.data = df
@@ -437,6 +438,7 @@ class StockAnalyzer:
         rsi_divergence = self.indicators.get('RSI_Divergence', {})
         macd_divergence = self.indicators.get('MACD_Divergence', {})
         enhanced_crossovers = self.indicators.get('Enhanced_Crossovers', {})
+        breakout_setup = self.indicators.get('Breakout_Setup', {'qualified': False})
         
         # VCP Pattern Analysis
         if vcp_pattern.get('pattern') == 'STRONG_VCP':
@@ -486,6 +488,11 @@ class StockAnalyzer:
         elif price_change < -2:
             score -= 1
             reasons.append("Strong negative price momentum")
+        
+        # Hybrid strict setup bonus
+        if breakout_setup.get('qualified'):
+            score += 2
+            reasons.append("Hybrid breakout setup qualified: trend aligned, RSI>50, shrinking pullbacks, declining consolidation volume, high-volume breakout")
         
         # Determine recommendation
         if score >= 5:
@@ -537,13 +544,125 @@ class StockAnalyzer:
             'rsi_divergence': self.indicators.get('RSI_Divergence', {}),
             'macd_divergence': self.indicators.get('MACD_Divergence', {}),
             'enhanced_crossovers': self.indicators.get('Enhanced_Crossovers', {}),
+            'breakout_setup': self.indicators.get('Breakout_Setup', {}),
         }
         
         # Add fundamental indicators
         summary['fundamental'] = fundamental
         
         return summary
-    
+
+    def detect_breakout_setup(self) -> Dict:
+        if self.data is None or len(self.data) < 60:
+            return {'qualified': False, 'strength': 0, 'details': ['INSUFFICIENT_DATA']}
+
+        df = self.data.copy()
+        details = []
+        strength = 0
+        flags = []
+        checks = {}
+
+        sma50 = SMAIndicator(close=df['Close'], window=50).sma_indicator()
+        sma200 = SMAIndicator(close=df['Close'], window=200).sma_indicator() if len(df) >= 200 else None
+        rsi_series = RSIIndicator(close=df['Close'], window=14).rsi()
+
+        current_price = df['Close'].iloc[-1]
+        curr_rsi = rsi_series.iloc[-1] if len(rsi_series.dropna()) else None
+        curr_sma50 = sma50.iloc[-1] if len(sma50.dropna()) else None
+        curr_sma200 = (sma200.iloc[-1] if isinstance(sma200, pd.Series) and len(sma200.dropna()) else None)
+
+        trend_ok = False
+        if curr_sma50 is not None:
+            # Require price > SMA50; if SMA200 available also require SMA50 > SMA200
+            if curr_sma200 is not None:
+                trend_ok = (current_price > curr_sma50) and (curr_sma50 > curr_sma200)
+            else:
+                trend_ok = (current_price > curr_sma50)
+        details.append('Trend alignment: ' + ('OK' if trend_ok else 'NO'))
+        checks['trend_ok'] = trend_ok
+        if trend_ok:
+            strength += 1
+        flags.append(trend_ok)
+
+        rsi_ok = curr_rsi is not None and curr_rsi > 50
+        details.append(f"RSI > 50: {'OK' if rsi_ok else 'NO'} (RSI={round(curr_rsi,2) if curr_rsi is not None else 'N/A'})")
+        checks['rsi_ok'] = rsi_ok
+        if rsi_ok:
+            strength += 1
+        flags.append(rsi_ok)
+
+        lookback = min(80, len(df))
+        recent = df.tail(lookback)
+        swing_highs = []
+        swing_lows = []
+        for i in range(2, len(recent)-2):
+            hi = recent['High'].iloc[i]
+            lo = recent['Low'].iloc[i]
+            if hi > recent['High'].iloc[i-1] and hi > recent['High'].iloc[i-2] and hi > recent['High'].iloc[i+1] and hi > recent['High'].iloc[i+2]:
+                swing_highs.append((recent.index[i], hi))
+            if lo < recent['Low'].iloc[i-1] and lo < recent['Low'].iloc[i-2] and lo < recent['Low'].iloc[i+1] and lo < recent['Low'].iloc[i+2]:
+                swing_lows.append((recent.index[i], lo))
+        pullbacks = []
+        j = 0
+        for h_idx, h_val in swing_highs:
+            while j < len(swing_lows) and swing_lows[j][0] <= h_idx:
+                j += 1
+            if j < len(swing_lows):
+                l_idx, l_val = swing_lows[j]
+                if l_val < h_val and h_val > 0:
+                    pullbacks.append((h_val - l_val) / h_val)
+        shrinking_ok = False
+        if len(pullbacks) >= 3:
+            a, b, c = pullbacks[-3:]
+            # Relax: allow non-increasing and reduce required overall reduction to 5%
+            shrinking_ok = (a >= b >= c) and (a - c) >= 0.05 * a
+        details.append('Shrinking pullbacks: ' + ('OK' if shrinking_ok else 'NO'))
+        checks['shrinking_pullbacks'] = shrinking_ok
+        if shrinking_ok:
+            strength += 1
+        flags.append(shrinking_ok)
+
+        vol_ok = False
+        if len(df) >= 30:
+            recent_vol = df['Volume'].tail(10).mean()
+            prior_vol = df['Volume'].tail(20).head(10).mean()
+            # Relax: 0.9 instead of 0.8
+            if prior_vol > 0 and recent_vol < prior_vol * 0.9:
+                vol_ok = True
+        details.append('Declining volume in consolidation: ' + ('OK' if vol_ok else 'NO'))
+        checks['declining_volume'] = vol_ok
+        if vol_ok:
+            strength += 1
+        flags.append(vol_ok)
+
+        N = 20
+        vol_mult = 1.3
+        rolling_high = df['High'].rolling(N).max()
+        vol_ma = df['Volume'].rolling(20).mean()
+        breakout_ok = False
+        if len(df) >= N + 1:
+            prior_high = rolling_high.shift(1).iloc[-1]
+            today_close = df['Close'].iloc[-1]
+            today_high = df['High'].iloc[-1]
+            today_vol = df['Volume'].iloc[-1]
+            vma = vol_ma.iloc[-1]
+            if pd.notna(prior_high) and pd.notna(vma):
+                # Relax: allow breakout by intraday high
+                breakout_ok = ((today_close > prior_high) or (today_high > prior_high)) and (today_vol > vol_mult * vma)
+        details.append('Breakout above high with volume: ' + ('OK' if breakout_ok else 'NO'))
+        checks['breakout_high_volume'] = breakout_ok
+        if breakout_ok:
+            strength += 2
+        flags.append(breakout_ok)
+
+        qualified = all(flags)
+        # Prequalified: all checks except the breakout itself
+        prequalified = False
+        if 'breakout_high_volume' in checks:
+            other_checks_ok = all(v for k, v in checks.items() if k != 'breakout_high_volume')
+            prequalified = other_checks_ok and not qualified
+        return {'qualified': qualified, 'prequalified': prequalified, 'strength': strength, 'details': details, 'checks': checks}
+
     def detect_vcp_pattern(self) -> Dict:
         """
         Detect Volatility Contraction Pattern (VCP)

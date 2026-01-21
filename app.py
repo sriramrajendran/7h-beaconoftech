@@ -10,11 +10,50 @@ from core.portfolio_storage import PortfolioStorage
 import json
 import os
 from typing import List, Dict
+import numpy as np
 
 from core.in_app_scheduler import start_background_schedulers
 
+
+class CustomJSONEncoder(json.JSONEncoder):
+    """Custom JSON encoder to handle NumPy types and booleans"""
+    
+    def default(self, obj):
+        if isinstance(obj, bool) or isinstance(obj, np.bool_):
+            return str(obj)
+        elif isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return super().default(obj)
+
+
+def convert_bools_to_strings(obj):
+    """
+    Recursively convert boolean values and NumPy types to JSON-serializable types
+    """
+    import numpy as np
+    
+    if isinstance(obj, bool) or isinstance(obj, np.bool_):
+        return str(obj)
+    elif isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, dict):
+        return {key: convert_bools_to_strings(value) for key, value in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_bools_to_strings(item) for item in obj]
+    else:
+        return obj
+
 app = Flask(__name__, template_folder='assets', static_folder='assets')
 app.config['JSON_SORT_KEYS'] = False
+app.json_encoder_class = CustomJSONEncoder
 
 CONFIG_PORTFOLIO_FILE = 'input/config_portfolio.txt'
 CONFIG_WATCHLIST_FILE = 'input/config_watchlist.txt'
@@ -84,7 +123,7 @@ def get_config_stocks():
             'stocks': stocks
         })
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': convert_bools_to_strings(str(e))}), 500
 
 
 @app.route('/analyze', methods=['POST'])
@@ -110,14 +149,14 @@ def analyze_stock():
         result = {
             'success': True,
             'symbol': symbol,
-            'summary': summary,
-            'recommendation': recommendation
+            'summary': convert_bools_to_strings(summary),
+            'recommendation': convert_bools_to_strings(recommendation)
         }
         
         return jsonify(result)
     
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': convert_bools_to_strings(str(e))}), 500
 
 
 @app.route('/analyze_portfolio', methods=['POST'])
@@ -166,14 +205,15 @@ def analyze_portfolio():
                         'macd': round(summary.get('macd', 0), 2),
                         'sma_20': round(summary.get('sma_20', 0), 2),
                         'sma_50': round(summary.get('sma_50', 0), 2),
-                        'vcp_pattern': summary.get('vcp_pattern', {}),
-                        'rsi_divergence': summary.get('rsi_divergence', {}),
-                        'macd_divergence': summary.get('macd_divergence', {}),
-                        'enhanced_crossovers': summary.get('enhanced_crossovers', {}),
+                        'vcp_pattern': convert_bools_to_strings(summary.get('vcp_pattern', {})),
+                        'rsi_divergence': convert_bools_to_strings(summary.get('rsi_divergence', {})),
+                        'macd_divergence': convert_bools_to_strings(summary.get('macd_divergence', {})),
+                        'enhanced_crossovers': convert_bools_to_strings(summary.get('enhanced_crossovers', {})),
+                        'breakout_setup': convert_bools_to_strings(summary.get('breakout_setup', {})),
                         'recommendation': recommendation['recommendation'],
                         'score': recommendation['score'],
                         'reasoning': recommendation['reasoning'],
-                        'fundamental': fundamental
+                        'fundamental': convert_bools_to_strings(fundamental)
                     })
                 else:
                     failed_symbols.append(symbol)
@@ -215,10 +255,10 @@ def analyze_portfolio():
             }
         }
         
-        return jsonify(portfolio_result)
+        return jsonify(convert_bools_to_strings(portfolio_result))
     
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': convert_bools_to_strings(str(e))}), 500
 
 
 # Load major stocks and ETFs from config files
@@ -261,14 +301,15 @@ def analyze_market():
                             'change_6m': round(summary.get('price_change_6m_pct', 0), 2),
                             'change_1y': round(summary.get('price_change_1y_pct', 0), 2),
                             'rsi': round(summary.get('rsi', 0), 2),
-                            'vcp_pattern': summary.get('vcp_pattern', {}),
-                            'rsi_divergence': summary.get('rsi_divergence', {}),
-                            'macd_divergence': summary.get('macd_divergence', {}),
-                            'enhanced_crossovers': summary.get('enhanced_crossovers', {}),
+                            'vcp_pattern': convert_bools_to_strings(summary.get('vcp_pattern', {})),
+                            'rsi_divergence': convert_bools_to_strings(summary.get('rsi_divergence', {})),
+                            'macd_divergence': convert_bools_to_strings(summary.get('macd_divergence', {})),
+                            'enhanced_crossovers': convert_bools_to_strings(summary.get('enhanced_crossovers', {})),
+                            'breakout_setup': convert_bools_to_strings(summary.get('breakout_setup', {})),
                             'recommendation': recommendation['recommendation'],
                             'score': recommendation['score'],
                             'reasoning': recommendation['reasoning'],
-                            'fundamental': fundamental
+                            'fundamental': convert_bools_to_strings(fundamental)
                         })
             except Exception as e:
                 failed_symbols.append(f"{symbol} ({str(e)})")
@@ -279,15 +320,17 @@ def analyze_market():
         # Sort by score (highest first) and take top N
         results_sorted = sorted(results, key=lambda x: x['score'], reverse=True)[:top_n]
         
-        return jsonify({
+        response_data = {
             'success': True,
             'total_analyzed': len(MAJOR_US_STOCKS),
             'buy_recommendations': results_sorted,
             'failed_symbols': failed_symbols
-        })
+        }
+        
+        return jsonify(convert_bools_to_strings(response_data))
     
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': convert_bools_to_strings(str(e))}), 500
 
 
 @app.route('/import_portfolio')
@@ -393,7 +436,7 @@ def get_portfolio_summary():
         })
         
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': convert_bools_to_strings(str(e))}), 500
 
 
 @app.route('/api/portfolio_data', methods=['GET'])
@@ -409,7 +452,7 @@ def get_portfolio_data():
             return jsonify(result), 404
             
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': convert_bools_to_strings(str(e))}), 500
 
 
 @app.route('/api/portfolio_data', methods=['DELETE'])
@@ -425,7 +468,7 @@ def clear_portfolio_data():
             return jsonify(result), 500
             
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': convert_bools_to_strings(str(e))}), 500
 
 
 @app.route('/api/portfolio_config', methods=['POST'])
@@ -441,7 +484,7 @@ def update_portfolio_config():
             return jsonify(result), 500
             
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': convert_bools_to_strings(str(e))}), 500
 
 
 @app.route('/analyze_etf', methods=['POST'])
@@ -479,14 +522,15 @@ def analyze_etf():
                             'change_6m': round(summary.get('price_change_6m_pct', 0), 2),
                             'change_1y': round(summary.get('price_change_1y_pct', 0), 2),
                             'rsi': round(summary.get('rsi', 0), 2),
-                            'vcp_pattern': summary.get('vcp_pattern', {}),
-                            'rsi_divergence': summary.get('rsi_divergence', {}),
-                            'macd_divergence': summary.get('macd_divergence', {}),
-                            'enhanced_crossovers': summary.get('enhanced_crossovers', {}),
+                            'vcp_pattern': convert_bools_to_strings(summary.get('vcp_pattern', {})),
+                            'rsi_divergence': convert_bools_to_strings(summary.get('rsi_divergence', {})),
+                            'macd_divergence': convert_bools_to_strings(summary.get('macd_divergence', {})),
+                            'enhanced_crossovers': convert_bools_to_strings(summary.get('enhanced_crossovers', {})),
+                            'breakout_setup': convert_bools_to_strings(summary.get('breakout_setup', {})),
                             'recommendation': recommendation['recommendation'],
                             'score': recommendation['score'],
                             'reasoning': recommendation['reasoning'],
-                            'fundamental': fundamental
+                            'fundamental': convert_bools_to_strings(fundamental)
                         })
             except Exception as e:
                 failed_symbols.append(f"{symbol} ({str(e)})")
@@ -497,15 +541,17 @@ def analyze_etf():
         # Sort by score (highest first) and take top N
         results_sorted = sorted(results, key=lambda x: x['score'], reverse=True)[:top_n]
         
-        return jsonify({
+        response_data = {
             'success': True,
             'total_analyzed': len(MAJOR_ETFS),
             'buy_recommendations': results_sorted,
             'failed_symbols': failed_symbols
-        })
+        }
+        
+        return jsonify(convert_bools_to_strings(response_data))
     
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': convert_bools_to_strings(str(e))}), 500
 
 
 if __name__ == '__main__':

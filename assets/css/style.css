@@ -333,17 +333,25 @@ textarea {
 .recommendation-buy {
     background: #d1fae5;
     color: #065f46;
+    padding: 2px 4px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    white-space: nowrap;
+    line-height: 1.1;
+    min-width: 60px;
+    text-align: center;
+    display: inline-block;
 }
 
 .recommendation-strong-buy {
     background: #065f46;
     color: white;
-    padding: 3px 6px;
-    font-size: 0.7rem;
+    padding: 2px 4px;
+    font-size: 0.65rem;
     font-weight: 700;
     white-space: nowrap;
     line-height: 1.1;
-    min-width: 70px;
+    min-width: 60px;
     text-align: center;
     display: inline-block;
 }
@@ -351,11 +359,27 @@ textarea {
 .recommendation-sell {
     background: #fee2e2;
     color: #991b1b;
+    padding: 2px 4px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    white-space: nowrap;
+    line-height: 1.1;
+    min-width: 60px;
+    text-align: center;
+    display: inline-block;
 }
 
 .recommendation-hold {
     background: #fef3c7;
     color: #92400e;
+    padding: 2px 4px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    white-space: nowrap;
+    line-height: 1.1;
+    min-width: 60px;
+    text-align: center;
+    display: inline-block;
 }
 
 .reasoning-list {
@@ -403,9 +427,10 @@ textarea {
     border-collapse: collapse;
     margin-top: 20px;
     background: white;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 8px var(--shadow);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
 }
 
 .table-wrapper {
@@ -414,50 +439,137 @@ textarea {
     -webkit-overflow-scrolling: touch;
 }
 
+.stocks-table th {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.7rem;
+    border-bottom: 2px solid #1e40af;
+}
+
 .stocks-table th,
 .stocks-table td {
-    padding: 8px 10px;
+    padding: 6px 8px;
     text-align: left;
-    font-size: 0.82rem;
-}
-
-.stocks-table th:nth-child(3),
-.stocks-table td:nth-child(3) {
     font-size: 0.75rem;
-    line-height: 1.15;
-    max-width: 160px;
-    white-space: normal;
+    line-height: 1.2;
 }
 
-.stocks-table th:not(:nth-child(3)),
-.stocks-table td:not(:nth-child(3)) {
+/* Remove company column styling - no longer needed */
+
+.stocks-table th:not(:nth-child(2)),
+.stocks-table td:not(:nth-child(2)) {
     white-space: nowrap;
 }
 
 /* Make change columns narrower */
+.stocks-table th:nth-child(4),
 .stocks-table th:nth-child(5),
 .stocks-table th:nth-child(6),
 .stocks-table th:nth-child(7),
 .stocks-table th:nth-child(8),
-.stocks-table th:nth-child(9),
+.stocks-table td:nth-child(4),
 .stocks-table td:nth-child(5),
 .stocks-table td:nth-child(6),
 .stocks-table td:nth-child(7),
-.stocks-table td:nth-child(8),
-.stocks-table td:nth-child(9) {
+.stocks-table td:nth-child(8) {
     text-align: center;
+    min-width: 50px;
+    max-width: 65px;
+    font-size: 0.7rem;
+    padding: 4px 6px;
+}
+
+/* Make pattern columns compact */
+.stocks-table th:nth-child(9),
+.stocks-table th:nth-child(10),
+.stocks-table th:nth-child(11),
+.stocks-table th:nth-child(12),
+.stocks-table th:nth-child(13),
+.stocks-table td:nth-child(9),
+.stocks-table td:nth-child(10),
+.stocks-table td:nth-child(11),
+.stocks-table td:nth-child(12),
+.stocks-table td:nth-child(13) {
+    text-align: center;
+    min-width: 45px;
+    max-width: 55px;
+    font-size: 0.7rem;
+    padding: 4px 4px;
+}
+
+/* Make recommendation and score columns compact */
+.stocks-table th:nth-child(14),
+.stocks-table th:nth-child(15),
+.stocks-table td:nth-child(14),
+.stocks-table td:nth-child(15) {
+    text-align: center;
+    min-width: 70px;
+    max-width: 85px;
+    font-size: 0.7rem;
+    padding: 4px 6px;
+}
+
+/* Symbol column */
+.stocks-table th:nth-child(2),
+.stocks-table td:nth-child(2) {
     min-width: 60px;
-    max-width: 80px;
+    max-width: 70px;
+    font-weight: 600;
+    position: relative;
+    cursor: help;
+}
+
+.stocks-table td:nth-child(2):hover::after {
+    content: attr(data-company);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    z-index: 1000;
+    pointer-events: none;
+    margin-bottom: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Rank column */
+.stocks-table th:nth-child(1),
+.stocks-table td:nth-child(1) {
+    min-width: 30px;
+    max-width: 35px;
+    text-align: center;
+    font-size: 0.7rem;
+    padding: 4px 4px;
+}
+
+/* Price column */
+.stocks-table th:nth-child(3),
+.stocks-table td:nth-child(3) {
+    min-width: 55px;
+    max-width: 65px;
+    text-align: right;
+    font-size: 0.7rem;
+    padding: 4px 6px;
 }
 
 .stocks-table tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.2s;
+    border-bottom: 1px solid #f1f5f9;
+    transition: all 0.2s ease;
     cursor: pointer;
 }
 
 .stocks-table tbody tr:hover {
-    background: var(--bg);
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    transform: translateX(2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .stocks-table tbody tr:last-child {
@@ -681,12 +793,30 @@ footer {
     }
     
     .stocks-table {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
     }
     
     .stocks-table th,
     .stocks-table td {
-        padding: 8px;
+        padding: 3px 4px;
+        font-size: 0.65rem;
+    }
+    
+    /* Make all columns even more compact on mobile */
+    .stocks-table th:nth-child(n),
+    .stocks-table td:nth-child(n) {
+        padding: 2px 3px;
+        font-size: 0.6rem;
+        min-width: 40px !important;
+        max-width: 50px !important;
+    }
+    
+    /* Keep symbol readable on mobile */
+    .stocks-table th:nth-child(2),
+    .stocks-table td:nth-child(2) {
+        min-width: 50px !important;
+        max-width: 60px !important;
+        font-size: 0.65rem;
     }
     
     .analysis-container {
@@ -822,14 +952,15 @@ input[type="file"]::file-selector-button:hover {
 /* Pattern Badge Styles */
 .pattern-badge {
     display: inline-block;
-    padding: 2px 6px;
-    border-radius: 12px;
-    font-size: 11px;
+    padding: 1px 4px;
+    border-radius: 8px;
+    font-size: 9px;
     font-weight: 600;
     text-align: center;
-    min-width: 20px;
+    min-width: 18px;
     cursor: help;
     transition: all 0.2s ease;
+    line-height: 1.2;
 }
 
 .pattern-badge:hover {
@@ -1003,9 +1134,9 @@ input[type="file"]::file-selector-button:hover {
     }
     
     .pattern-badge {
-        font-size: 10px;
-        padding: 1px 4px;
-        min-width: 18px;
+        font-size: 8px;
+        padding: 1px 3px;
+        min-width: 16px;
     }
 }
 
