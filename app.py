@@ -11,6 +11,8 @@ import json
 import os
 from typing import List, Dict
 
+from core.in_app_scheduler import start_background_schedulers
+
 app = Flask(__name__, template_folder='assets', static_folder='assets')
 app.config['JSON_SORT_KEYS'] = False
 
@@ -507,5 +509,11 @@ def analyze_etf():
 
 
 if __name__ == '__main__':
+    enable_alerts = os.getenv('ALERTS_ENABLE', '').strip().lower() in {'1', 'true', 'yes', 'y', 'on'}
+    is_reloader_child = os.getenv('WERKZEUG_RUN_MAIN') == 'true'
+
+    if enable_alerts and (not app.debug or is_reloader_child):
+        start_background_schedulers()
+
     app.run(debug=True, host='0.0.0.0', port=80)
 
