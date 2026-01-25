@@ -8,6 +8,33 @@ document.addEventListener('DOMContentLoaded', () => {
         lucide.createIcons();
     }
     
+    // Initialize sidebar visibility based on screen size
+    const sidebar = document.querySelector('.sidebar');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const icon = mobileMenuBtn?.querySelector('.icon');
+    
+    if (sidebar) {
+        if (window.innerWidth > 767) {
+            // Desktop: show sidebar
+            sidebar.classList.remove('hidden');
+            if (icon) {
+                icon.setAttribute('data-lucide', 'x');
+            }
+        } else {
+            // Mobile: keep sidebar hidden
+            sidebar.classList.add('hidden');
+            // Set menu icon for mobile
+            if (icon) {
+                icon.setAttribute('data-lucide', 'menu');
+            }
+        }
+        
+        // Reinitialize Lucide icons to apply the correct icon
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    }
+    
     // Initialize premium interactions
     initializePremiumFeatures();
     
@@ -30,6 +57,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Add active class to clicked link
                 link.classList.add('active');
+                
+                // Close mobile menu after navigation on mobile devices
+                if (window.innerWidth <= 767) {
+                    const sidebar = document.querySelector('.sidebar');
+                    if (sidebar && !sidebar.classList.contains('hidden')) {
+                        toggleMobileMenu();
+                    }
+                }
             });
         });
         
@@ -126,6 +161,7 @@ function toggleMobileMenu() {
     const icon = mobileMenuBtn?.querySelector('.icon');
     
     if (sidebar) {
+        // Toggle hidden class
         sidebar.classList.toggle('hidden');
         
         // Update icon based on menu state
@@ -135,12 +171,18 @@ function toggleMobileMenu() {
             }
             // Remove overlay when menu is hidden
             removeMobileMenuOverlay();
+            // Remove body scroll lock
+            document.body.style.overflow = '';
         } else {
             if (icon) {
                 icon.setAttribute('data-lucide', 'x');
             }
             // Add overlay to close menu when clicking outside
             addMobileMenuOverlay();
+            // Lock body scroll when menu is open on mobile
+            if (window.innerWidth <= 767) {
+                document.body.style.overflow = 'hidden';
+            }
         }
         
         // Reinitialize Lucide icons
@@ -152,6 +194,9 @@ function toggleMobileMenu() {
 
 // Add overlay for mobile menu
 function addMobileMenuOverlay() {
+    // Only add overlay on mobile
+    if (window.innerWidth > 767) return;
+    
     let overlay = document.querySelector('.mobile-menu-overlay');
     if (!overlay) {
         overlay = document.createElement('div');
@@ -219,13 +264,32 @@ function updateParentHighlightingForPage(pageType) {
 function initializeCollapsibleNav() {
     console.log('Initializing collapsible navigation...');
     
-    // Set initial state for mobile - collapse all sections by default
-    if (window.innerWidth <= 768) {
+    // Set initial state - expand first section on desktop, collapse all on mobile
+    if (window.innerWidth <= 767) {
+        // Mobile: collapse all sections
         document.querySelectorAll('.nav-parent').forEach(parent => {
             parent.classList.add('collapsed');
             const children = parent.nextElementSibling;
             if (children && children.classList.contains('nav-children')) {
                 children.classList.add('collapsed');
+            }
+        });
+    } else {
+        // Desktop: expand first section
+        const navParents = document.querySelectorAll('.nav-parent');
+        navParents.forEach((parent, index) => {
+            if (index === 0) {
+                parent.classList.remove('collapsed');
+                const children = parent.nextElementSibling;
+                if (children && children.classList.contains('nav-children')) {
+                    children.classList.remove('collapsed');
+                }
+            } else {
+                parent.classList.add('collapsed');
+                const children = parent.nextElementSibling;
+                if (children && children.classList.contains('nav-children')) {
+                    children.classList.add('collapsed');
+                }
             }
         });
     }
@@ -303,34 +367,54 @@ function initializeCollapsibleNav() {
     });
     
     // Handle window resize for navigation behavior
+    let resizeTimer;
     window.addEventListener('resize', function() {
-        if (window.innerWidth <= 768) {
-            // Mobile: collapse all sections
-            document.querySelectorAll('.nav-parent').forEach(parent => {
-                parent.classList.add('collapsed');
-                const children = parent.nextElementSibling;
-                if (children && children.classList.contains('nav-children')) {
-                    children.classList.add('collapsed');
-                }
-            });
-        } else {
-            // Desktop: expand first section, collapse others
-            const navParents = document.querySelectorAll('.nav-parent');
-            navParents.forEach((parent, index) => {
-                const children = parent.nextElementSibling;
-                if (index === 0) {
-                    parent.classList.remove('collapsed');
-                    if (children && children.classList.contains('nav-children')) {
-                        children.classList.remove('collapsed');
-                    }
-                } else {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            if (window.innerWidth <= 767) {
+                // Mobile: collapse all sections and ensure sidebar is hidden
+                document.querySelectorAll('.nav-parent').forEach(parent => {
                     parent.classList.add('collapsed');
+                    const children = parent.nextElementSibling;
                     if (children && children.classList.contains('nav-children')) {
                         children.classList.add('collapsed');
                     }
+                });
+                
+                // Hide sidebar on mobile by default
+                const sidebar = document.querySelector('.sidebar');
+                if (sidebar && !sidebar.classList.contains('hidden')) {
+                    sidebar.classList.add('hidden');
+                    removeMobileMenuOverlay();
+                    document.body.style.overflow = '';
                 }
-            });
-        }
+            } else {
+                // Desktop: expand first section, collapse others, show sidebar
+                const navParents = document.querySelectorAll('.nav-parent');
+                navParents.forEach((parent, index) => {
+                    const children = parent.nextElementSibling;
+                    if (index === 0) {
+                        parent.classList.remove('collapsed');
+                        if (children && children.classList.contains('nav-children')) {
+                            children.classList.remove('collapsed');
+                        }
+                    } else {
+                        parent.classList.add('collapsed');
+                        if (children && children.classList.contains('nav-children')) {
+                            children.classList.add('collapsed');
+                        }
+                    }
+                });
+                
+                // Show sidebar on desktop
+                const sidebar = document.querySelector('.sidebar');
+                if (sidebar) {
+                    sidebar.classList.remove('hidden');
+                    removeMobileMenuOverlay();
+                    document.body.style.overflow = '';
+                }
+            }
+        }, 250);
     });
     
     // Set initial collapsed state for all sections except first (desktop behavior)
