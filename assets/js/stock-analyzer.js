@@ -795,6 +795,309 @@ class StockAnalyzer {
         return { status: 'none', description: 'No breakout setup detected' };
     }
 
+    // Chart Pattern Detection Methods
+    detectHeadAndShoulders() {
+        if (!this.data || this.data.close.length < 50) {
+            return { detected: false, reason: 'Insufficient data' };
+        }
+
+        const closes = this.data.close.filter(v => v !== null);
+        const highs = this.data.high?.filter(v => v !== null) || [];
+        const lows = this.data.low?.filter(v => v !== null) || [];
+        
+        if (closes.length < 50) {
+            return { detected: false, reason: 'Insufficient data' };
+        }
+
+        // Find peaks in the data
+        const peaks = this.findHighs(closes);
+        if (peaks.length < 3) {
+            return { detected: false, reason: 'Not enough peaks detected' };
+        }
+
+        // Look for head and shoulders pattern (3 peaks with middle highest)
+        for (let i = 0; i <= peaks.length - 3; i++) {
+            const leftShoulder = peaks[i];
+            const head = peaks[i + 1];
+            const rightShoulder = peaks[i + 2];
+
+            // Check if head is significantly higher than shoulders
+            const shoulderAvgHeight = (leftShoulder.value + rightShoulder.value) / 2;
+            const headHeight = head.value;
+            
+            if (headHeight > shoulderAvgHeight * 1.05 && // Head is 5% higher than shoulder average
+                Math.abs(leftShoulder.value - rightShoulder.value) / shoulderAvgHeight < 0.1) { // Shoulders within 10% of each other
+                
+                // Check if we're currently at or near the right shoulder
+                const currentIndex = closes.length - 1;
+                const rightShoulderIndex = rightShoulder.index;
+                
+                if (currentIndex >= rightShoulderIndex && currentIndex <= rightShoulderIndex + 5) {
+                    return {
+                        detected: true,
+                        pattern: 'head-shoulders',
+                        type: 'bearish',
+                        confidence: 'high',
+                        description: 'Head and shoulders pattern detected - potential bearish reversal',
+                        peaks: { leftShoulder, head, rightShoulder }
+                    };
+                }
+            }
+        }
+
+        return { detected: false, reason: 'No head and shoulders pattern found' };
+    }
+
+    detectInverseHeadAndShoulders() {
+        if (!this.data || this.data.close.length < 50) {
+            return { detected: false, reason: 'Insufficient data' };
+        }
+
+        const closes = this.data.close.filter(v => v !== null);
+        
+        // Find troughs in the data
+        const troughs = this.findLows(closes);
+        if (troughs.length < 3) {
+            return { detected: false, reason: 'Not enough troughs detected' };
+        }
+
+        // Look for inverse head and shoulders pattern (3 troughs with middle lowest)
+        for (let i = 0; i <= troughs.length - 3; i++) {
+            const leftShoulder = troughs[i];
+            const head = troughs[i + 1];
+            const rightShoulder = troughs[i + 2];
+
+            // Check if head is significantly lower than shoulders
+            const shoulderAvgDepth = (leftShoulder.value + rightShoulder.value) / 2;
+            const headDepth = head.value;
+            
+            if (headDepth < shoulderAvgDepth * 0.95 && // Head is 5% lower than shoulder average
+                Math.abs(leftShoulder.value - rightShoulder.value) / shoulderAvgDepth < 0.1) { // Shoulders within 10% of each other
+                
+                // Check if we're currently at or near the right shoulder
+                const currentIndex = closes.length - 1;
+                const rightShoulderIndex = rightShoulder.index;
+                
+                if (currentIndex >= rightShoulderIndex && currentIndex <= rightShoulderIndex + 5) {
+                    return {
+                        detected: true,
+                        pattern: 'head-shoulders-inverse',
+                        type: 'bullish',
+                        confidence: 'high',
+                        description: 'Inverse head and shoulders pattern detected - potential bullish reversal',
+                        troughs: { leftShoulder, head, rightShoulder }
+                    };
+                }
+            }
+        }
+
+        return { detected: false, reason: 'No inverse head and shoulders pattern found' };
+    }
+
+    detectDoubleTop() {
+        if (!this.data || this.data.close.length < 30) {
+            return { detected: false, reason: 'Insufficient data' };
+        }
+
+        const closes = this.data.close.filter(v => v !== null);
+        const peaks = this.findHighs(closes);
+        
+        if (peaks.length < 2) {
+            return { detected: false, reason: 'Not enough peaks detected' };
+        }
+
+        // Look for double top pattern (2 peaks at similar height)
+        for (let i = 0; i < peaks.length - 1; i++) {
+            const firstTop = peaks[i];
+            const secondTop = peaks[i + 1];
+
+            // Check if peaks are at similar height (within 3%)
+            const heightDiff = Math.abs(firstTop.value - secondTop.value) / firstTop.value;
+            
+            if (heightDiff < 0.03) {
+                // Check if we're currently at or near the second top
+                const currentIndex = closes.length - 1;
+                const secondTopIndex = secondTop.index;
+                
+                if (currentIndex >= secondTopIndex && currentIndex <= secondTopIndex + 3) {
+                    return {
+                        detected: true,
+                        pattern: 'double-top',
+                        type: 'bearish',
+                        confidence: 'high',
+                        description: 'Double top pattern detected - potential bearish reversal',
+                        peaks: { firstTop, secondTop }
+                    };
+                }
+            }
+        }
+
+        return { detected: false, reason: 'No double top pattern found' };
+    }
+
+    detectDoubleBottom() {
+        if (!this.data || this.data.close.length < 30) {
+            return { detected: false, reason: 'Insufficient data' };
+        }
+
+        const closes = this.data.close.filter(v => v !== null);
+        const troughs = this.findLows(closes);
+        
+        if (troughs.length < 2) {
+            return { detected: false, reason: 'Not enough troughs detected' };
+        }
+
+        // Look for double bottom pattern (2 troughs at similar depth)
+        for (let i = 0; i < troughs.length - 1; i++) {
+            const firstBottom = troughs[i];
+            const secondBottom = troughs[i + 1];
+
+            // Check if troughs are at similar depth (within 3%)
+            const depthDiff = Math.abs(firstBottom.value - secondBottom.value) / firstBottom.value;
+            
+            if (depthDiff < 0.03) {
+                // Check if we're currently at or near the second bottom
+                const currentIndex = closes.length - 1;
+                const secondBottomIndex = secondBottom.index;
+                
+                if (currentIndex >= secondBottomIndex && currentIndex <= secondBottomIndex + 3) {
+                    return {
+                        detected: true,
+                        pattern: 'double-bottom',
+                        type: 'bullish',
+                        confidence: 'high',
+                        description: 'Double bottom pattern detected - potential bullish reversal',
+                        troughs: { firstBottom, secondBottom }
+                    };
+                }
+            }
+        }
+
+        return { detected: false, reason: 'No double bottom pattern found' };
+    }
+
+    detectTrianglePatterns() {
+        if (!this.data || this.data.close.length < 30) {
+            return { detected: false, reason: 'Insufficient data' };
+        }
+
+        const closes = this.data.close.filter(v => v !== null);
+        const highs = this.data.high?.filter(v => v !== null) || [];
+        const lows = this.data.low?.filter(v => v !== null) || [];
+        
+        if (closes.length < 30 || highs.length < 30 || lows.length < 30) {
+            return { detected: false, reason: 'Insufficient data' };
+        }
+
+        const recentData = 20; // Use last 20 data points
+        const recentHighs = highs.slice(-recentData);
+        const recentLows = lows.slice(-recentData);
+        const recentCloses = closes.slice(-recentData);
+
+        // Calculate trendlines for resistance (highs) and support (lows)
+        const resistanceTrend = this.calculateTrendline(recentHighs);
+        const supportTrend = this.calculateTrendline(recentLows);
+
+        if (!resistanceTrend || !supportTrend) {
+            return { detected: false, reason: 'Unable to calculate trendlines' };
+        }
+
+        // Detect ascending triangle (horizontal resistance, rising support)
+        if (Math.abs(resistanceTrend.slope) < 0.001 && supportTrend.slope > 0.001) {
+            return {
+                detected: true,
+                pattern: 'ascending-triangle',
+                type: 'bullish',
+                confidence: 'medium',
+                description: 'Ascending triangle pattern detected - bullish continuation likely',
+                trendlines: { resistance: resistanceTrend, support: supportTrend }
+            };
+        }
+
+        // Detect descending triangle (horizontal support, descending resistance)
+        if (Math.abs(supportTrend.slope) < 0.001 && resistanceTrend.slope < -0.001) {
+            return {
+                detected: true,
+                pattern: 'descending-triangle',
+                type: 'bearish',
+                confidence: 'medium',
+                description: 'Descending triangle pattern detected - bearish continuation likely',
+                trendlines: { resistance: resistanceTrend, support: supportTrend }
+            };
+        }
+
+        // Detect symmetrical triangle (converging trendlines)
+        if (resistanceTrend.slope < -0.001 && supportTrend.slope > 0.001) {
+            const convergenceRate = Math.abs(resistanceTrend.slope - supportTrend.slope);
+            if (convergenceRate > 0.002) {
+                return {
+                    detected: true,
+                    pattern: 'symmetrical-triangle',
+                    type: 'neutral',
+                    confidence: 'medium',
+                    description: 'Symmetrical triangle pattern detected - consolidation before breakout',
+                    trendlines: { resistance: resistanceTrend, support: supportTrend }
+                };
+            }
+        }
+
+        return { detected: false, reason: 'No triangle pattern found' };
+    }
+
+    calculateTrendline(data) {
+        if (data.length < 5) return null;
+
+        const n = data.length;
+        const indices = Array.from({ length: n }, (_, i) => i);
+        
+        // Calculate linear regression (y = mx + b)
+        const sumX = indices.reduce((a, b) => a + b, 0);
+        const sumY = data.reduce((a, b) => a + b, 0);
+        const sumXY = indices.reduce((sum, x, i) => sum + x * data[i], 0);
+        const sumX2 = indices.reduce((sum, x) => sum + x * x, 0);
+
+        const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+        const intercept = (sumY - slope * sumX) / n;
+
+        // Calculate R-squared for trendline quality
+        const yMean = sumY / n;
+        const ssTotal = data.reduce((sum, y) => sum + Math.pow(y - yMean, 2), 0);
+        const ssResidual = data.reduce((sum, y, i) => {
+            const predicted = slope * i + intercept;
+            return sum + Math.pow(y - predicted, 2);
+        }, 0);
+        
+        const rSquared = 1 - (ssResidual / ssTotal);
+
+        return {
+            slope,
+            intercept,
+            rSquared,
+            quality: rSquared > 0.7 ? 'good' : rSquared > 0.5 ? 'fair' : 'poor'
+        };
+    }
+
+    detectAllPatterns() {
+        const patterns = [];
+        
+        // Detect various patterns
+        const patternsToCheck = [
+            this.detectHeadAndShoulders(),
+            this.detectInverseHeadAndShoulders(),
+            this.detectDoubleTop(),
+            this.detectDoubleBottom(),
+            this.detectTrianglePatterns()
+        ];
+
+        patternsToCheck.forEach(result => {
+            if (result.detected) {
+                patterns.push(result);
+            }
+        });
+
+        return patterns;
+    }
+
     // Helper methods for pattern detection
     calculateVolatility(prices) {
         if (prices.length < 2) return 0;

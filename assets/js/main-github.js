@@ -1020,14 +1020,6 @@ function showError(message, container = null) {
     }
 }
 
-// Stock detail modal
-function closeStockDetail() {
-    const modal = document.getElementById('stock-detail-modal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
-}
-
 // Display functions (adapted from original main.js)
 function displayPortfolioResults(data, container) {
     const { buy_stocks, sell_stocks, summary, failed_symbols } = data;

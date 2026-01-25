@@ -676,6 +676,228 @@ class PatternsModule {
         }
     }
 
+    async showStocksWithPattern(patternId, category) {
+        // Show loading indicator
+        const modal = document.getElementById('stock-detail-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        
+        if (modal && modalTitle && modalBody) {
+            modalTitle.textContent = `Stocks with ${this.patterns[category].find(p => p.id === patternId)?.name || 'Pattern'}`;
+            modalBody.innerHTML = '<div class="loading-spinner"><div class="spinner"></div><p>Scanning stocks for patterns...</p></div>';
+            modal.style.display = 'flex';
+            document.documentElement.classList.add('modal-open');
+        }
+
+        try {
+            // Get default stock list from page manager
+            const defaultStocks = window.pageManager?.getDefaultStocks('screener') || 
+                                ['AAPL', 'MSFT', 'GOOGL', 'TSLA', 'AMZN', 'META', 'NVDA', 'NFLX', 'CRM', 'AMD'];
+            
+            const stocksWithPattern = [];
+            
+            // Scan each stock for the specified pattern
+            for (const symbol of defaultStocks) {
+                try {
+                    const analyzer = new StockAnalyzer(symbol, '1y');
+                    await analyzer.fetchStockData();
+                    
+                    const patterns = analyzer.detectAllPatterns();
+                    const matchingPattern = patterns.find(p => p.pattern === patternId);
+                    
+                    if (matchingPattern) {
+                        const recommendation = analyzer.getRecommendation();
+                        stocksWithPattern.push({
+                            symbol,
+                            pattern: matchingPattern,
+                            recommendation: recommendation.recommendation,
+                            score: recommendation.score,
+                            currentPrice: analyzer.data.meta.currentPrice,
+                            company: analyzer.data.meta.company
+                        });
+                    }
+                } catch (error) {
+                    console.warn(`Failed to analyze ${symbol}:`, error.message);
+                }
+            }
+
+            // Display results
+            this.displayPatternResults(stocksWithPattern, patternId, category);
+            
+        } catch (error) {
+            console.error('Error scanning stocks for patterns:', error);
+            if (modalBody) {
+                modalBody.innerHTML = `
+                    <div class="error-message">
+                        <i data-lucide="alert-circle"></i>
+                        <p>Failed to scan stocks for patterns. Please try again.</p>
+                    </div>
+                `;
+            }
+        }
+    }
+
+    displayPatternResults(stocksWithPattern, patternId, category) {
+        const modalBody = document.getElementById('modal-body');
+        if (!modalBody) return;
+
+        const pattern = this.patterns[category].find(p => p.id === patternId);
+        const patternName = pattern?.name || 'Pattern';
+        
+        if (stocksWithPattern.length === 0) {
+            modalBody.innerHTML = `
+                <div class="pattern-results">
+                    <div class="pattern-results-empty">
+                        <div class="empty-state">
+                            <i data-lucide="search"></i>
+                            <h3>No Stocks Found</h3>
+                            <p>No stocks currently showing the ${patternName} pattern.</p>
+                            <p class="hint">Try checking back later as patterns form dynamically.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Static Pattern Information Section -->
+                    <div class="pattern-static-info">
+                        <div class="static-info-header">
+                            <h4><i data-lucide="info"></i> About ${patternName}</h4>
+                            <p>Learn more about this pattern and how to trade it</p>
+                        </div>
+                        <div class="static-info-content">
+                            <div class="pattern-details-grid">
+                                <div class="detail-section">
+                                    <h5><i data-lucide="book-open"></i> Description</h5>
+                                    <p>${pattern.description}</p>
+                                </div>
+                                <div class="detail-section">
+                                    <h5><i data-lucide="check-circle"></i> Key Signals</h5>
+                                    <ul class="signals-list">
+                                        ${pattern.signals.map(signal => `<li>${signal}</li>`).join('')}
+                                    </ul>
+                                </div>
+                                <div class="detail-section">
+                                    <h5><i data-lucide="target"></i> Trading Strategy</h5>
+                                    <p class="strategy-text">${pattern.tradingStrategy}</p>
+                                </div>
+                                <div class="detail-section">
+                                    <h5><i data-lucide="shield"></i> Reliability</h5>
+                                    <div class="reliability-info">
+                                        <span class="reliability-badge ${pattern.reliability === 'High' ? 'success' : pattern.reliability === 'Medium-High' ? 'warning' : 'info'}">
+                                            ${pattern.reliability} Reliability
+                                        </span>
+                                        <span class="pattern-type-badge ${category === 'bullish' ? 'success' : category === 'bearish' ? 'danger' : 'info'}">
+                                            ${pattern.type}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-footer">
+                        <button class="btn btn-secondary" onclick="closeStockDetail()">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+        } else {
+            const resultsHTML = stocksWithPattern.map(stock => {
+                const recommendationClass = stock.recommendation.includes('BUY') ? 'success' : 
+                                         stock.recommendation.includes('SELL') ? 'danger' : 'warning';
+                const confidenceClass = stock.pattern.confidence === 'high' ? 'success' : 
+                                      stock.pattern.confidence === 'medium' ? 'warning' : 'info';
+                
+                return `
+                    <div class="pattern-stock-card">
+                        <div class="stock-header">
+                            <div class="stock-info">
+                                <h4 class="stock-symbol">${stock.symbol}</h4>
+                                <p class="stock-company">${stock.company}</p>
+                            </div>
+                            <div class="stock-price">
+                                <span class="price-value">$${stock.currentPrice.toFixed(2)}</span>
+                            </div>
+                        </div>
+                        <div class="stock-pattern-details">
+                            <div class="pattern-info">
+                                <span class="pattern-confidence ${confidenceClass}">
+                                    ${stock.pattern.confidence} confidence
+                                </span>
+                                <p class="pattern-description">${stock.pattern.description}</p>
+                            </div>
+                            <div class="stock-recommendation">
+                                <span class="recommendation-badge ${recommendationClass}">
+                                    ${stock.recommendation}
+                                </span>
+                                <span class="score-badge">Score: ${stock.score}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            modalBody.innerHTML = `
+                <div class="pattern-results">
+                    <div class="results-header">
+                        <h3>${stocksWithPattern.length} Stock${stocksWithPattern.length === 1 ? '' : 's'} with ${patternName}</h3>
+                        <p class="results-subtitle">Real-time pattern detection results</p>
+                    </div>
+                    <div class="stocks-list">
+                        ${resultsHTML}
+                    </div>
+                    
+                    <!-- Static Pattern Information Section -->
+                    <div class="pattern-static-info">
+                        <div class="static-info-header">
+                            <h4><i data-lucide="info"></i> About ${patternName}</h4>
+                            <p>Learn more about this pattern and how to trade it</p>
+                        </div>
+                        <div class="static-info-content">
+                            <div class="pattern-details-grid">
+                                <div class="detail-section">
+                                    <h5><i data-lucide="book-open"></i> Description</h5>
+                                    <p>${pattern.description}</p>
+                                </div>
+                                <div class="detail-section">
+                                    <h5><i data-lucide="check-circle"></i> Key Signals</h5>
+                                    <ul class="signals-list">
+                                        ${pattern.signals.map(signal => `<li>${signal}</li>`).join('')}
+                                    </ul>
+                                </div>
+                                <div class="detail-section">
+                                    <h5><i data-lucide="target"></i> Trading Strategy</h5>
+                                    <p class="strategy-text">${pattern.tradingStrategy}</p>
+                                </div>
+                                <div class="detail-section">
+                                    <h5><i data-lucide="shield"></i> Reliability</h5>
+                                    <div class="reliability-info">
+                                        <span class="reliability-badge ${pattern.reliability === 'High' ? 'success' : pattern.reliability === 'Medium-High' ? 'warning' : 'info'}">
+                                            ${pattern.reliability} Reliability
+                                        </span>
+                                        <span class="pattern-type-badge ${category === 'bullish' ? 'success' : category === 'bearish' ? 'danger' : 'info'}">
+                                            ${pattern.type}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-footer">
+                        <button class="btn btn-secondary" onclick="closeStockDetail()">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Reinitialize Lucide icons
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    }
+
     attachEventListeners() {
         const filterButtons = document.querySelectorAll('.filter-btn');
         filterButtons.forEach(btn => {
@@ -694,6 +916,27 @@ class PatternsModule {
                     }
                 });
             });
+        });
+
+        // Add click handlers to pattern cards for stock scanning
+        const patternCards = document.querySelectorAll('.pattern-card');
+        patternCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Don't trigger if clicking on the "View Details" button
+                if (e.target.closest('.btn-details')) {
+                    return;
+                }
+                
+                const patternId = card.getAttribute('data-pattern-id');
+                const category = card.closest('.pattern-section')?.getAttribute('data-category');
+                
+                if (patternId && category) {
+                    this.showStocksWithPattern(patternId, category);
+                }
+            });
+
+            // Add hover cursor to indicate clickable
+            card.style.cursor = 'pointer';
         });
     }
 }
