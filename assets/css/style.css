@@ -5495,19 +5495,19 @@ body.dark-theme .table-wrapper .stocks-table thead th:nth-child(3) {
 
 /* Pattern Section */
 .pattern-section {
-    margin-bottom: var(--space-10);
+    margin-bottom: var(--space-5);
 }
 
 .section-header {
-    margin-bottom: var(--space-6);
-    padding-bottom: var(--space-4);
-    border-bottom: 2px solid var(--border-primary);
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--border-primary);
 }
 
 .section-title {
-    font-size: var(--font-2xl);
+    font-size: var(--font-xl);
     font-weight: 700;
-    margin: 0 0 var(--space-2) 0;
+    margin: 0 0 var(--space-1) 0;
     display: flex;
     align-items: center;
     gap: var(--space-2);
@@ -5526,7 +5526,7 @@ body.dark-theme .table-wrapper .stocks-table thead th:nth-child(3) {
 }
 
 .section-description {
-    font-size: var(--font-base);
+    font-size: var(--font-sm);
     color: var(--text-secondary);
     margin: 0;
 }
@@ -5534,36 +5534,36 @@ body.dark-theme .table-wrapper .stocks-table thead th:nth-child(3) {
 /* Patterns Grid */
 .patterns-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-    gap: var(--space-6);
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-3);
 }
 
 /* Pattern Card */
 .pattern-card {
     background: var(--gradient-card);
     border: 1px solid var(--border-primary);
-    border-radius: var(--radius-xl);
-    padding: var(--space-6);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
     transition: all var(--transition-normal);
     box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-2);
 }
 
 .pattern-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-xl);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
     border-color: var(--primary);
 }
 
 /* Pattern Visual */
 .pattern-visual {
     width: 100%;
-    height: 160px;
+    height: 100px;
     background: var(--bg-secondary);
-    border-radius: var(--radius-lg);
-    padding: var(--space-4);
+    border-radius: var(--radius-sm);
+    padding: var(--space-2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -5573,38 +5573,39 @@ body.dark-theme .table-wrapper .stocks-table thead th:nth-child(3) {
 .pattern-visual svg {
     width: 100%;
     height: 100%;
-    max-width: 300px;
+    max-width: 260px;
 }
 
 /* Pattern Content */
 .pattern-content {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
+    gap: var(--space-1);
 }
 
 .pattern-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: var(--space-3);
+    gap: var(--space-1);
 }
 
 .pattern-name {
-    font-size: var(--font-lg);
+    font-size: 0.9rem;
     font-weight: 700;
     color: var(--text-primary);
     margin: 0;
     flex: 1;
+    line-height: 1.25;
 }
 
 .pattern-badge {
-    padding: var(--space-1) var(--space-3);
+    padding: 2px var(--space-2);
     border-radius: var(--radius-full);
-    font-size: var(--font-xs);
+    font-size: 0.65rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
     white-space: nowrap;
 }
 
@@ -5629,8 +5630,8 @@ body.dark-theme .table-wrapper .stocks-table thead th:nth-child(3) {
 .pattern-reliability {
     display: flex;
     align-items: center;
-    gap: var(--space-2);
-    font-size: var(--font-sm);
+    gap: var(--space-1);
+    font-size: 0.8rem;
 }
 
 .reliability-label {
@@ -5660,23 +5661,27 @@ body.dark-theme .table-wrapper .stocks-table thead th:nth-child(3) {
 }
 
 .pattern-description {
-    font-size: var(--font-sm);
+    font-size: 0.8rem;
     color: var(--text-secondary);
-    line-height: 1.6;
+    line-height: 1.4;
     margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .btn-details {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-2);
-    padding: var(--space-3) var(--space-4);
+    gap: var(--space-1);
+    padding: 6px var(--space-3);
     background: var(--primary);
     color: white;
     border: none;
-    border-radius: var(--radius-lg);
-    font-size: var(--font-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
     font-weight: 600;
     cursor: pointer;
     transition: all var(--transition-normal);
@@ -5690,8 +5695,8 @@ body.dark-theme .table-wrapper .stocks-table thead th:nth-child(3) {
 }
 
 .btn-details svg {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
 }
 
 /* Pattern Modal Content */
@@ -5910,9 +5915,13 @@ body.dark-theme .table-wrapper .stocks-table thead th:nth-child(3) {
     }
 }
 
-/* Modal Scroll Lock - Simple approach */
-body.modal-open {
-    overflow: hidden !important;
+/* Modal Scroll Lock - Use html element */
+html.modal-open {
+    overflow: hidden;
+}
+
+html.modal-open body {
+    overflow: hidden;
 }
 
 /* Ensure modal is always on top */
@@ -5929,5 +5938,30 @@ body.modal-open {
     height: 100% !important;
     background: rgba(0, 0, 0, 0.5) !important;
     z-index: 9998 !important;
+}
+
+/* CRITICAL FIX: Dark theme table cell visibility for first 3 columns */
+body.dark-theme .stocks-table tbody td:nth-child(1),
+body.dark-theme .stocks-table tbody td:nth-child(2),
+body.dark-theme .stocks-table tbody td:nth-child(3),
+body.dark-theme .stocks-table--screener tbody td:nth-child(1),
+body.dark-theme .stocks-table--screener tbody td:nth-child(2),
+body.dark-theme .stocks-table--screener tbody td:nth-child(3),
+body.dark-theme .table-wrapper .stocks-table tbody td:nth-child(1),
+body.dark-theme .table-wrapper .stocks-table tbody td:nth-child(2),
+body.dark-theme .table-wrapper .stocks-table tbody td:nth-child(3),
+body.dark-theme .modal-content .stocks-table tbody td:nth-child(1),
+body.dark-theme .modal-content .stocks-table tbody td:nth-child(2),
+body.dark-theme .modal-content .stocks-table tbody td:nth-child(3) {
+    color: var(--text) !important;
+    opacity: 1 !important;
+}
+
+/* Ensure all table cells have proper color in dark theme */
+body.dark-theme .stocks-table td,
+body.dark-theme .stocks-table--screener td,
+body.dark-theme .table-wrapper .stocks-table td,
+body.dark-theme .modal-content .stocks-table td {
+    color: var(--text) !important;
 }
 

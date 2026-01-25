@@ -1146,22 +1146,22 @@ class PageManager {
         const thead = document.createElement('thead');
         thead.innerHTML = `
             <tr>
-                <th style="width: 40px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">Rank</th>
-                <th style="width: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">Symbol</th>
-                <th style="width: 70px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">Price</th>
-                <th style="width: 55px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">1D %</th>
-                <th style="width: 55px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">1W %</th>
-                <th style="width: 55px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">1M %</th>
-                <th style="width: 55px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">6M %</th>
-                <th style="width: 55px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">1Y %</th>
-                <th style="width: 50px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">RSI</th>
-                <th style="width: 45px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">VCP</th>
-                <th style="width: 45px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">RSI Div</th>
-                <th style="width: 45px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">MACD Div</th>
-                <th style="width: 45px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">Cross</th>
-                <th style="width: 45px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">Breakout</th>
-                <th style="width: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">Recommendation</th>
-                <th style="width: 50px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">Score</th>
+                <th style="width: 40px;">Rank</th>
+                <th style="width: 80px;">Symbol</th>
+                <th style="width: 70px;">Price</th>
+                <th style="width: 55px;">1D %</th>
+                <th style="width: 55px;">1W %</th>
+                <th style="width: 55px;">1M %</th>
+                <th style="width: 55px;">6M %</th>
+                <th style="width: 55px;">1Y %</th>
+                <th style="width: 50px;">RSI</th>
+                <th style="width: 45px;">VCP</th>
+                <th style="width: 45px;">RSI Div</th>
+                <th style="width: 45px;">MACD Div</th>
+                <th style="width: 45px;">Cross</th>
+                <th style="width: 45px;">Breakout</th>
+                <th style="width: 80px;">Recommendation</th>
+                <th style="width: 50px;">Score</th>
             </tr>
         `;
         table.appendChild(thead);
@@ -1183,22 +1183,22 @@ class PageManager {
             const row = document.createElement('tr');
             row.style.cssText = 'cursor: pointer;';
             row.innerHTML = `
-                <td style="background: white; border: 1px solid #ccc; text-align: center; font-weight: bold;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${index + 1}</td>
-                <td style="background: white; border: 1px solid #ccc;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}"><strong>${result.symbol}</strong></td>
-                <td style="background: white; border: 1px solid #ccc;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">$${result.current_price?.toFixed(2) || 'N/A'}</td>
-                <td style="background: white; border: 1px solid #ccc; color: ${result.price_change_1d_pct >= 0 ? 'green' : 'red'};" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.price_change_1d_pct >= 0 ? '+' : ''}${result.price_change_1d_pct?.toFixed(2) || '0.00'}%</td>
-                <td style="background: white; border: 1px solid #ccc; color: ${result.price_change_1w_pct >= 0 ? 'green' : 'red'};" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.price_change_1w_pct >= 0 ? '+' : ''}${result.price_change_1w_pct?.toFixed(2) || '0.00'}%</td>
-                <td style="background: white; border: 1px solid #ccc; color: ${result.price_change_1m_pct >= 0 ? 'green' : 'red'};" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.price_change_1m_pct >= 0 ? '+' : ''}${result.price_change_1m_pct?.toFixed(2) || '0.00'}%</td>
-                <td style="background: white; border: 1px solid #ccc; color: ${result.price_change_6m_pct >= 0 ? 'green' : 'red'};" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.price_change_6m_pct >= 0 ? '+' : ''}${result.price_change_6m_pct?.toFixed(2) || '0.00'}%</td>
-                <td style="background: white; border: 1px solid #ccc; color: ${result.price_change_1y_pct >= 0 ? 'green' : 'red'};" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.price_change_1y_pct >= 0 ? '+' : ''}${result.price_change_1y_pct?.toFixed(2) || '0.00'}%</td>
-                <td style="background: white; border: 1px solid #ccc;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${indicators.rsi?.toFixed(2) || 'N/A'}</td>
-                <td style="background: white; border: 1px solid #ccc;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${vcpBadge}</td>
-                <td style="background: white; border: 1px solid #ccc;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${rsiDivBadge}</td>
-                <td style="background: white; border: 1px solid #ccc;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${macdDivBadge}</td>
-                <td style="background: white; border: 1px solid #ccc;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${crossBadge}</td>
-                <td style="background: white; border: 1px solid #ccc;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${breakoutBadge}</td>
-                <td style="background: white; border: 1px solid #ccc;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}"><span class="${recommendationClass}">${recommendation}</span></td>
-                <td style="background: white; border: 1px solid #ccc; font-weight: bold;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.score?.toFixed(1) || '0'}</td>
+                <td style="text-align: center; font-weight: bold;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${index + 1}</td>
+                <td data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}"><strong>${result.symbol}</strong></td>
+                <td data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">$${result.current_price?.toFixed(2) || 'N/A'}</td>
+                <td style="color: ${result.price_change_1d_pct >= 0 ? 'green' : 'red'};" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.price_change_1d_pct >= 0 ? '+' : ''}${result.price_change_1d_pct?.toFixed(2) || '0.00'}%</td>
+                <td style="color: ${result.price_change_1w_pct >= 0 ? 'green' : 'red'};" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.price_change_1w_pct >= 0 ? '+' : ''}${result.price_change_1w_pct?.toFixed(2) || '0.00'}%</td>
+                <td style="color: ${result.price_change_1m_pct >= 0 ? 'green' : 'red'};" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.price_change_1m_pct >= 0 ? '+' : ''}${result.price_change_1m_pct?.toFixed(2) || '0.00'}%</td>
+                <td style="color: ${result.price_change_6m_pct >= 0 ? 'green' : 'red'};" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.price_change_6m_pct >= 0 ? '+' : ''}${result.price_change_6m_pct?.toFixed(2) || '0.00'}%</td>
+                <td style="color: ${result.price_change_1y_pct >= 0 ? 'green' : 'red'};" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.price_change_1y_pct >= 0 ? '+' : ''}${result.price_change_1y_pct?.toFixed(2) || '0.00'}%</td>
+                <td data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${indicators.rsi?.toFixed(2) || 'N/A'}</td>
+                <td data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${vcpBadge}</td>
+                <td data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${rsiDivBadge}</td>
+                <td data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${macdDivBadge}</td>
+                <td data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${crossBadge}</td>
+                <td data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${breakoutBadge}</td>
+                <td data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}"><span class="${recommendationClass}">${recommendation}</span></td>
+                <td style="font-weight: bold;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.score?.toFixed(1) || '0'}</td>
             `;
             newTbody.appendChild(row);
         });

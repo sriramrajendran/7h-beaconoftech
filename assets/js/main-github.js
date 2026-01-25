@@ -671,8 +671,20 @@ function closeStockDetail() {
     if (modal) {
         modal.style.display = 'none';
         
-        // Simple unlock - just remove the class
+        // Remove scroll lock from html element
+        document.documentElement.classList.remove('modal-open');
         document.body.classList.remove('modal-open');
+        
+        // Clean up any inline styles
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.height = '';
+        
+        // Force reflow
+        void document.body.offsetHeight;
     }
 }
 

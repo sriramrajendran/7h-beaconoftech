@@ -667,8 +667,8 @@ class PatternsModule {
             modalBody.innerHTML = modalContent;
             modal.style.display = 'flex';
             
-            // Simple scroll lock using only overflow hidden
-            document.body.classList.add('modal-open');
+            // Apply scroll lock to html element
+            document.documentElement.classList.add('modal-open');
             
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
