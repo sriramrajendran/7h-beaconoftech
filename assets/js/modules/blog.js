@@ -169,7 +169,7 @@ class BlogModule {
                 title: "Integrating Generative AI into Modern Web Applications",
                 excerpt: "Practical strategies for implementing Gen AI capabilities in web applications, from chat interfaces to automated content generation.",
                 category: "Gen AI",
-                date: "2025-01-18",
+                date: "2025-08-18",
                 readTime: "10 min",
                 tags: ["genai", "openai", "javascript", "web-development"],
                 content: `
@@ -374,7 +374,7 @@ class CostAwareAIService extends AIService {
                 title: "GenAI Risks and Guardrails: A Practical Guide to Safe AI Implementation",
                 excerpt: "Understanding critical GenAI risks like memory poisoning and hallucinations, and implementing effective guardrails including temperature control, multi-LLM evaluation, and safety filters.",
                 category: "Gen AI",
-                date: "2025-01-25",
+                date: "2026-01-04",
                 readTime: "15 min",
                 tags: ["genai", "safety", "guardrails", "hallucinations", "ai-security"],
                 content: `
@@ -833,7 +833,7 @@ class AIIncidentResponse {
                 title: "AWS Lambda Cold Start Explained (With Fixes)",
                 excerpt: "Deep dive into AWS Lambda cold start issues, their causes, performance impact, and proven strategies to minimize or eliminate cold starts in production.",
                 category: "Serverless",
-                date: "2025-01-25",
+                date: "2025-04-25",
                 readTime: "11 min",
                 tags: ["aws", "lambda", "cold-start", "performance", "serverless"],
                 content: `
@@ -1190,7 +1190,7 @@ exports.handler = async (event) => {
                 title: "Integrating Generative AI into Modern Web Applications",
                 excerpt: "Combining serverless architecture with generative AI to create intelligent, scalable microservices for modern applications.",
                 category: "Architecture",
-                date: "2025-01-15",
+                date: "2025-10-15",
                 readTime: "15 min",
                 tags: ["serverless", "genai", "microservices", "architecture"],
                 content: `
