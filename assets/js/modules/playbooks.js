@@ -62,233 +62,216 @@ class PlaybooksModule {
             },
             {
                 id: 2,
-                title: "Building High-Performance gRPC Services",
+                title: "Building Real-Time Chatbots with WebSockets",
                 difficulty: "Intermediate",
-                duration: "75 min",
-                category: "Backend",
-                description: "Master gRPC for building efficient, type-safe microservices with Protocol Buffers, bidirectional streaming, and modern API design patterns.",
-                topics: ["gRPC", "Protocol Buffers", "Microservices", "Streaming", "Node.js", "TypeScript"],
-                prerequisites: ["JavaScript", "Node.js Basics", "API Design", "Basic Networking"],
+                duration: "60 min",
+                category: "Full Stack",
+                description: "Master WebSocket implementation for building real-time chatbots with React UI, FastAPI backend, and LLM integration with RAG setup.",
+                topics: ["WebSockets", "React", "FastAPI", "LLM Integration", "RAG", "Real-time Communication"],
+                prerequisites: ["React Basics", "Node.js/Python", "API Development", "WebSocket Concepts"],
                 steps: [
                     {
-                        title: "Understanding gRPC Architecture",
-                        content: "gRPC is a modern RPC framework that uses Protocol Buffers for serialization and HTTP/2 for transport. It provides significant performance improvements over traditional REST APIs, especially for microservices communication. gRPC supports four types of methods: unary, server streaming, client streaming, and bidirectional streaming.",
-                        code: `// gRPC Service Definition (.proto)
-syntax = "proto3";
+                        title: "Understanding WebSocket Architecture",
+                        content: "WebSockets provide full-duplex communication channels over a single TCP connection, perfect for real-time chat applications. Unlike HTTP's request-response cycle, WebSockets maintain persistent connections enabling instant bidirectional messaging. This architecture is ideal for chatbots, live notifications, collaborative applications, and real-time data streaming where immediate response times are critical.",
+                        code: `// WebSocket vs HTTP Comparison
+// HTTP: Request-Response (stateless)
+// WebSocket: Persistent connection (stateful)
 
-package users;
+// WebSocket handshake process
+// 1. Client sends HTTP Upgrade request
+// 2. Server responds with 101 Switching Protocols  
+// 3. Persistent WebSocket connection established
+// 4. Bidirectional messaging begins
 
-service UserService {
-    rpc GetUser(GetUserRequest) returns (UserResponse);
-    rpc ListUsers(ListUsersRequest) returns (stream UserResponse);
-    rpc CreateUser(stream CreateUserRequest) returns (CreateUserResponse);
-    rpc UserChat(stream ChatMessage) returns (stream ChatMessage);
-}
-
-message GetUserRequest {
-    string user_id = 1;
-}
-
-message UserResponse {
-    string user_id = 1;
-    string name = 2;
-    string email = 3;
-    int64 created_at = 4;
-}`
+// WebSocket message types
+// - Text messages (JSON, plain text)
+// - Binary messages (files, images)  
+// - Control frames (ping/pong, close)`
                     },
                     {
-                        title: "Setting up gRPC Server with Node.js",
-                        content: "Implementing a gRPC server in Node.js requires the grpc-js package and compiled Protocol Buffer definitions. The server handles incoming requests, processes business logic, and returns structured responses. Key considerations include error handling, logging, and connection management.",
-                        code: `// gRPC Server Implementation
-const grpc = require('@grpc/grpc-js');
-const protoLoader = require('@grpc/proto-loader');
+                        title: "Setting up WebSocket Server with Node.js",
+                        content: "Node.js with Socket.IO provides excellent WebSocket support with automatic fallbacks, room management, and event-driven architecture. The server handles connection management, event broadcasting, and room-based messaging. Key considerations include authentication, error handling, and connection lifecycle management.",
+                        code: `// WebSocket Server Implementation
+const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
 
-// Load proto file
-const packageDefinition = protoLoader.loadSync('users.proto');
-const usersProto = grpc.loadPackageDefinition(packageDefinition).users;
-
-// Implement service methods
-class UserService {
-    async getUser(call, callback) {
-        try {
-            const { user_id } = call.request;
-            const user = await findUserById(user_id);
-            
-            if (!user) {
-                callback({
-                    code: grpc.status.NOT_FOUND,
-                    details: 'User not found'
-                });
-                return;
-            }
-            
-            callback(null, user);
-        } catch (error) {
-            callback({
-                code: grpc.status.INTERNAL,
-                details: error.message
-            });
-        }
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server, {
+    cors: {
+        origin: process.env.CLIENT_URL,
+        methods: ["GET", "POST"]
     }
+});
+
+// Connection manager
+const connections = new Map();
+
+io.on('connection', (socket) => {
+    console.log(\`User connected: \${socket.id}\`);
+    connections.set(socket.id, socket);
     
-    async listUsers(call) {
+    // Handle chat messages
+    socket.on('send_message', async (data) => {
         try {
-            const users = await getAllUsers();
+            const { content, roomId, useAi } = data;
             
-            for (const user of users) {
-                call.write(user);
+            // Process with LLM if needed
+            let response = content;
+            if (useAi) {
+                response = await processWithLLM(content);
             }
             
-            call.end();
-        } catch (error) {
-            call.emit('error', {
-                code: grpc.status.INTERNAL,
-                details: error.message
+            // Broadcast to room
+            socket.to(roomId).emit('new_message', {
+                userId: socket.id,
+                content: response,
+                timestamp: new Date().toISOString()
             });
+            
+        } catch (error) {
+            socket.emit('error', { message: 'Failed to send message' });
         }
-    }
-}
-
-// Create and start server
-const server = new grpc.Server();
-server.addService(usersProto.UserService.service, new UserService(), {
-    interceptors: [loggingInterceptor, authInterceptor]
+    });
+    
+    socket.on('disconnect', () => {
+        connections.delete(socket.id);
+        console.log(\`User disconnected: \${socket.id}\`);
+    });
 });
 
-server.bindAsync('0.0.0.0:50051', grpc.ServerCredentials.createInsecure(), () => {
-    console.log('gRPC server running on port 50051');
-    server.start();
+server.listen(3000, () => {
+    console.log('WebSocket server running on port 3000');
+});
+
+async function processWithLLM(message) {
 });`
                     },
                     {
-                        title: "Bidirectional Streaming for Real-Time Communication",
-                        content: "Bidirectional streaming is gRPC's most powerful feature, enabling both client and server to send messages simultaneously. This is perfect for real-time applications like chat, live updates, and collaborative tools. The connection remains open, allowing continuous message exchange with low latency.",
-                        code: `// Bidirectional Streaming Chat Implementation
-async function userChat(call) {
-    try {
-        // Handle incoming messages from client
-        call.on('data', (message) => {
-            console.log('Received:', message);
-            
-            // Process message (could involve AI, validation, etc.)
-            const processedMessage = processChatMessage(message);
-            
-            // Send response back to client
-            call.write({
-                id: generateMessageId(),
-                user_id: message.user_id,
-                content: processedMessage.content,
-                timestamp: new Date().toISOString(),
-                is_ai: processedMessage.is_ai
-            });
-        });
-        
-        // Handle client disconnection
-        call.on('end', () => {
-            console.log('Client disconnected');
-        });
-        
-        // Handle errors
-        call.on('error', (error) => {
-            console.error('Stream error:', error);
-        });
-        
-    } catch (error) {
-        call.emit('error', {
-            code: grpc.status.INTERNAL,
-            details: error.message
-        });
-    }
-}`
-                    }
-                ]
-            },
-                    {
-                        title: "Creating RESTful Routes",
-                        content: "RESTful APIs use HTTP methods to perform CRUD operations. Here's how to implement standard REST routes.",
-                        code: `// GET all users
-app.get('/api/users', async (req, res) => {
-    try {
-        const users = await User.find();
-        res.json(users);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+                        title: "Service Discovery and Load Balancing",
+                        content: "Service discovery enables microservices to find and communicate with each other without hardcoded dependencies. Load balancing distributes incoming requests across multiple instances of a service to improve performance and reliability.",
+                        code: `// Service Discovery with Consul
+const consul = require('consul')({ host: 'localhost' });
+
+// Register services
+const userService = require('./services/userService');
+const productService = require('./services/productService');
+
+// Register with Consul
+consul.agent({
+    name: 'user-service',
+    address: 'localhost:3001',
+    port: 3001
 });
 
-// GET user by ID
-app.get('/api/users/:id', async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-        res.json(user);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+consul.agent({
+    name: 'product-service',
+    address: 'localhost:3002',
+    port: 3002
 });
 
-// POST new user
-app.post('/api/users', async (req, res) => {
-    try {
-        const user = new User(req.body);
-        const savedUser = await user.save();
-        res.status(201).json(savedUser);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
+// Service discovery client
+const getServiceUrl = (serviceName) => {
+    const service = consul.agent.service.list({ service: serviceName }).pop();
+    if (service) {
+        return \`\${service.Address}:\${service.Port}\`;
     }
-});`
+    throw new Error(\`Service \${serviceName} not found\`);
+};
+
+// Load balancing with round-robin
+const roundRobin = (services) => {
+    let index = 0;
+    return () => {
+        const service = services[index];
+        index = (index + 1) % services.length;
+        return service;
+    };
+};
+
+// Usage
+const productServices = ['localhost:3002', 'localhost:3003', 'localhost:3004'];
+const getNextProductService = roundRobin(productServices);`
                     }
                 ]
             },
             {
-                id: 3,
-                title: "Docker Containerization Fundamentals",
-                difficulty: "Beginner",
-                duration: "30 min",
+                id: 4,
+                title: "Advanced Docker & ECS Deployment Patterns",
+                difficulty: "Intermediate",
+                duration: "60 min",
                 category: "DevOps",
-                description: "Master the basics of Docker containerization and learn how to containerize your applications.",
-                topics: ["Docker Basics", "Dockerfile", "Docker Compose", "Container Management"],
-                prerequisites: ["Command Line", "Basic Linux", "Application Deployment"],
+                description: "Master advanced Docker patterns and AWS ECS deployment for production-ready applications with CI/CD pipelines.",
+                topics: ["Docker", "AWS ECS", "CI/CD", "Production", "Deployment"],
+                prerequisites: ["Docker Basics", "AWS Basics", "Command Line", "Application Deployment"],
                 steps: [
                     {
-                        title: "Understanding Docker Concepts",
-                        content: "Docker is a platform that uses OS-level virtualization to deliver software in packages called containers. Containers are isolated from one another and bundle their own software, libraries, and configuration files.",
-                        code: `# Basic Docker commands
-docker --version                    # Check Docker version
-docker info                         # Get system information
-docker images                       # List available images
-docker ps                           # List running containers
-docker ps -a                        # List all containers
+                        title: "Multi-Stage Docker Builds",
+                        content: "Multi-stage builds optimize Docker images by separating build-time dependencies from runtime dependencies. This reduces final image size and improves security by excluding build tools and development dependencies from production images.",
+                        code: `# Multi-Stage Dockerfile
+# Build stage
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+RUN npm test
 
-# Pull and run an image
-docker pull nginx:latest
-docker run -d -p 8080:80 --name my-nginx nginx`
+# Production stage
+FROM node:18-alpine AS production
+WORKDIR /app
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/public ./public
+EXPOSE 3000
+CMD ["node", "server.js"]`
                     },
                     {
-                        title: "Creating a Dockerfile",
-                        content: "A Dockerfile is a text document that contains all the commands a user could call on the command line to assemble an image.",
-                        code: `# Use an official Node.js runtime as a parent image
-FROM node:16-alpine
+                        title: "AWS ECS Deployment",
+                        content: "Amazon ECS (Elastic Container Service) simplifies Docker container management at scale. It provides automatic scaling, load balancing, and service discovery out of the box. ECS integrates with other AWS services like ALB, RDS, and CloudWatch.",
+                        code: `# ECS Task Definition Example
+{
+    "family": "FARGATE",
+    "taskRoleArn": "arn:aws:iam::123456789012:role/ecs-task-role",
+    "containerDefinitions": [
+        {
+            "name": "my-app",
+            "image": "my-app:latest",
+            "portMappings": [
+                {
+                    "containerPort": 3000,
+                    "protocol": "tcp",
+                    "hostPort": 80
+                }
+            ]
+        }
+    ],
+    "requiresCompatibilities": [
+        {
+            "taskDefinition": "arn:aws:iam::123456789012:role/ecs-task-role"
+        }
+    ],
+    "networkMode": "awsvpc",
+    "cpu": "256",
+    "memory": "512"
+}
 
-# Set the working directory
-WORKDIR /usr/src/app
+# ECS Service Definition
+{
+    "family": "FARGATE",
+    "serviceName": "my-app-service",
+    "taskDefinition": "arn:aws:iam::123456789012:role/ecs-task-role",
+    "desiredCount": 2
+}
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
-
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the application code
-COPY . .
-
-# Expose the port the app runs on
-EXPOSE 3000
-
-# Define the command to run the application
-CMD [ "node", "app.js" ]`
+# Auto Scaling Policy
+{
+    "targetCapacity": 10,
+    "minimumScalingStepSize": 1,
+    "maximumScalingStepSize": 2
+}`
                     }
                 ]
             }
