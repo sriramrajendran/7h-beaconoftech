@@ -197,7 +197,7 @@ CMD [ "node", "app.js" ]`
         return `
             <div class="page-header">
                 <h2>Playbooks</h2>
-                <p>hat worked out for me</p>
+                <p>That worked out for me, sharing for educational purposes only</p>
             </div>
             
             <div class="playbooks-container">

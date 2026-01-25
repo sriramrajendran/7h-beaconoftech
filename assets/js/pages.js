@@ -19,9 +19,10 @@ class PageManager {
         this.patternsModule = new PatternsModule();
         this.candlestickPatternsModule = new CandlestickPatternsModule();
         
-        // Set global reference for patterns module (needed for onclick handlers)
+        // Set global reference for modules that need onclick handlers
         window.patternsModule = this.patternsModule;
         window.candlestickPatternsModule = this.candlestickPatternsModule;
+        window.blogModule = this.blogModule;
         
         console.log('PageManager: Modules initialized');
     }

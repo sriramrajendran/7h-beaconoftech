@@ -93,7 +93,7 @@ class ProjectsModule {
         return `
             <div class="page-header">
                 <h2>Projects</h2>
-                <p>Explore our work</p>
+                <p>Explore the work - intended for educational purposes</p>
             </div>
             
             <div class="projects-container">
