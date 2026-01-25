@@ -1639,6 +1639,77 @@ footer {
     
     .main-content {
         margin-left: 60px;
+        padding: 15px;
+    }
+    
+    .container {
+        max-width: 100%;
+        padding: 0;
+    }
+    
+    /* Mobile nav children styling */
+    .nav-children .nav-link {
+        padding-left: 15px;
+        justify-content: center;
+    }
+    
+    .nav-children .nav-link .nav-icon {
+        margin-right: 0;
+        font-size: 1.1rem;
+        opacity: 1;
+    }
+    
+    .nav-children .nav-link .nav-text {
+        display: none;
+    }
+    
+    /* Mobile nav parent styling */
+    .nav-parent {
+        justify-content: center;
+        padding: 16px 8px;
+    }
+    
+    .nav-parent .nav-text {
+        display: none;
+    }
+    
+    .nav-parent .nav-arrow {
+        display: none;
+    }
+    
+    .nav-parent .nav-icon {
+        margin-right: 0;
+        font-size: 1.2rem;
+    }
+    
+    /* Regular nav links in mobile */
+    .nav-link {
+        justify-content: center;
+        padding: 14px 8px;
+    }
+    
+    .nav-link .nav-text {
+        display: none;
+    }
+    
+    .nav-link .nav-icon {
+        margin-right: 0;
+        font-size: 1.2rem;
+    }
+    
+    /* Prevent horizontal scroll */
+    body {
+        overflow-x: hidden;
+    }
+    
+    .app-layout {
+        min-width: 100vw;
+        overflow-x: hidden;
+    }
+    
+    .main-content {
+        overflow-x: hidden;
+        width: calc(100vw - 60px);
     }
     
     /* Mobile header logo adjustments */
@@ -1688,6 +1759,67 @@ footer {
         grid-template-columns: repeat(2, 1fr);
     }
     
+    /* Responsive table improvements */
+    .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 8px;
+        margin: 0 -15px;
+        padding: 0 15px;
+    }
+    
+    .stocks-table {
+        min-width: 600px !important;
+        font-size: 0.7rem;
+    }
+    
+    .stocks-table th,
+    .stocks-table td {
+        padding: 6px 4px !important;
+        font-size: 0.65rem;
+        white-space: nowrap;
+    }
+    
+    /* Hide less important columns on mobile */
+    .stocks-table--screener th:nth-child(7),
+    .stocks-table--screener td:nth-child(7),
+    .stocks-table--screener th:nth-child(8),
+    .stocks-table--screener td:nth-child(8),
+    .stocks-table--screener th:nth-child(13),
+    .stocks-table--screener td:nth-child(13),
+    .stocks-table--screener th:nth-child(14),
+    .stocks-table--screener td:nth-child(14) {
+        display: none;
+    }
+    
+    /* Responsive controls */
+    .controls-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .controls-row .form-group {
+        min-width: 100%;
+        flex: none;
+    }
+    
+    .controls-row .form-group textarea {
+        min-width: 100%;
+    }
+    
+    .table-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .search-input {
+        min-width: 100%;
+    }
+    
+    .filter-select {
+        min-width: 100%;
+    }
+    
     .stocks-table--screener {
         font-size: 0.75rem;
     }
@@ -1704,10 +1836,171 @@ footer {
     
     .modal-content {
         max-height: 95vh;
+        width: 95vw;
+        max-width: 95vw;
+        margin: 10px;
+        padding: 15px;
+    }
+    
+    .modal-header {
+        padding: 15px 20px;
+    }
+    
+    .modal-body {
+        padding: 20px 15px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    /* Responsive horizontal container */
+    .horizontal-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .indicator-row {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .indicator-item {
+        min-width: auto;
+    }
+    
+    /* Responsive card improvements */
+    .card {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .card h2 {
+        font-size: 1.2rem;
+    }
+    
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    /* Responsive tabs */
+    .tabs {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    
+    .tab-btn {
+        padding: 10px 20px;
+        font-size: 0.8rem;
+        flex: 1;
+        min-width: 80px;
+    }
+    
+    header h1 {
+        font-size: 1.6rem;
+    }
+    
+    /* Mobile footer logo adjustments */
+    .footer-content {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .footer-logo {
+        width: 28px;
+        height: 28px;
     }
     
     .modal-body {
         padding: 20px;
+    }
+}
+
+/* Tablet responsive styles */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .main-content {
+        margin-left: 180px;
+        padding: 18px;
+    }
+    
+    .container {
+        max-width: 100%;
+    }
+    
+    /* Tablet table improvements */
+    .table-wrapper {
+        margin: 0 -18px;
+        padding: 0 18px;
+    }
+    
+    .stocks-table {
+        min-width: 800px !important;
+        font-size: 0.75rem;
+    }
+    
+    .stocks-table th,
+    .stocks-table td {
+        padding: 8px 6px !important;
+        font-size: 0.7rem;
+    }
+    
+    /* Hide some columns on tablet */
+    .stocks-table--screener th:nth-child(13),
+    .stocks-table--screener td:nth-child(13),
+    .stocks-table--screener th:nth-child(14),
+    .stocks-table--screener td:nth-child(14) {
+        display: none;
+    }
+    
+    /* Tablet controls */
+    .controls-row {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    
+    .controls-row .form-group {
+        min-width: 200px;
+        flex: 1;
+    }
+    
+    .table-controls {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .search-input {
+        min-width: 250px;
+    }
+    
+    .filter-select {
+        min-width: 180px;
+    }
+    
+    /* Tablet modal improvements */
+    .modal-content {
+        width: 90vw;
+        max-width: 90vw;
+    }
+    
+    /* Tablet analysis container */
+    .analysis-container {
+        gap: 20px;
+    }
+    
+    /* Prevent horizontal scroll on tablet */
+    body {
+        overflow-x: hidden;
+    }
+    
+    .app-layout {
+        overflow-x: hidden;
+    }
+    
+    .main-content {
+        overflow-x: hidden;
     }
 }
 
