@@ -1,6 +1,6 @@
 {
   "environment": "local",
-  "name": "7H Stock Analyzer - Local Development",
+  "name": "BeaconOfTech - Local Development",
   "description": "Local development configuration with live data APIs",
   "portfolio": {
     "name": "Portfolio Analysis",
