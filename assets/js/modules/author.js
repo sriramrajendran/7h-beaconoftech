@@ -5,6 +5,7 @@ class AuthorModule {
             name: "Sriramprabhu Rajendran",
             title: "Software Engineering Leader & Technology Innovator",
             experience: "19+ years",
+            photo: "assets/images/author-photo.jpg",
             social: {
                 linkedin: "https://www.linkedin.com/in/rsri",
                 github: "https://github.com/sriramrajendran"
@@ -29,11 +30,15 @@ class AuthorModule {
         return `
             <div class="author-profile">
                 <div class="author-avatar">
-                    <div class="avatar-placeholder">👤</div>
+                    <img src="${this.authorData.photo}" alt="${this.authorData.name}" class="author-photo">
                 </div>
                 <div class="author-info">
                     <h3>${this.authorData.name}</h3>
                     <p class="author-title">${this.authorData.title}</p>
+                    <div class="author-memberships">
+                        <span class="membership-badge">🏛️ IEEE Senior Member</span>
+                        <span class="membership-badge">👑 ioasd.org Royal Fellow</span>
+                    </div>
                     <div class="author-links">
                         <a href="${this.authorData.social.linkedin}" target="_blank" class="social-link">
                             <span class="social-icon">💼</span> LinkedIn

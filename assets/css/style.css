@@ -2846,6 +2846,23 @@ footer {
     flex-shrink: 0;
 }
 
+.author-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                var(--beacon-gradient) border-box;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.author-photo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
 .avatar-placeholder {
     width: 100px;
     height: 100px;
@@ -2868,7 +2885,34 @@ footer {
 .author-title {
     color: var(--text-light);
     font-size: 1rem;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
+}
+
+.author-memberships {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.membership-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--primary);
+    transition: all 0.3s ease;
+}
+
+.membership-badge:hover {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
 }
 
 .author-links {
