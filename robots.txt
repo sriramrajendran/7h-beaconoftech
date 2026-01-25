@@ -1,0 +1,39 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://beaconoftech.com/sitemap.xml
+
+# Allow all important directories and files
+Allow: /assets/
+Allow: /assets/css/
+Allow: /assets/js/
+Allow: /assets/logo.svg
+
+# Block unnecessary files and directories
+Disallow: /tests/
+Disallow: /input/
+Disallow: /doc/
+Disallow: /.github/
+Disallow: /*.json$
+Disallow: /*.md$
+Disallow: /README.md
+Disallow: /package.json
+Disallow: /.git*
+Disallow: /node_modules/
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1
+
+# Specific instructions for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
