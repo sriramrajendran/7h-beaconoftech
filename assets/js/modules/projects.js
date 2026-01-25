@@ -93,7 +93,7 @@ class ProjectsModule {
         return `
             <div class="page-header">
                 <h2>Projects</h2>
-                <p>Explore our portfolio of innovative technology projects</p>
+                <p>Explore our work</p>
             </div>
             
             <div class="projects-container">
@@ -120,10 +120,6 @@ class ProjectsModule {
                     <div class="stat-card">
                         <h3>${stats.completed}</h3>
                         <p>Completed</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>${stats.teamMembers}</h3>
-                        <p>Team Members</p>
                     </div>
                 </div>
             </section>

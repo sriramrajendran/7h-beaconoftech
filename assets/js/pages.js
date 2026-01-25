@@ -14,7 +14,7 @@ class PageManager {
         // Initialize all modular components
         this.authorModule = new AuthorModule();
         this.blogModule = new BlogModule();
-        this.tutorialsModule = new TutorialsModule();
+        this.playbooksModule = new PlaybooksModule();
         this.projectsModule = new ProjectsModule();
         this.patternsModule = new PatternsModule();
         this.candlestickPatternsModule = new CandlestickPatternsModule();
@@ -289,7 +289,7 @@ class PageManager {
         const taglines = {
             // Technology pages
             'tech-blog': 'Tech Hub For Insights',
-            'tech-tutorials': 'Tech Hub For Insights',
+            'tech-playbooks': 'Tech Hub For Insights',
             'tech-projects': 'Tech Hub For Insights',
             
             // Analytics pages
@@ -315,7 +315,7 @@ class PageManager {
         if (typeof marketDataService !== 'undefined') {
             const analyticsPages = ['portfolio', 'watchlist', 'screener', 'patterns', 'candlestick-patterns', 'etf'];
             const marketsPages = ['us-stocks', 'crypto'];
-            const techPages = ['tech-blog', 'tech-tutorials', 'tech-projects'];
+            const techPages = ['tech-blog', 'tech-playbooks', 'tech-projects'];
             
             if (analyticsPages.includes(pageType) || marketsPages.includes(pageType)) {
                 marketDataService.show();
@@ -371,7 +371,7 @@ class PageManager {
         const marketsParent = document.getElementById('nav-markets-parent');
         
         if (techParent && analyticsParent && marketsParent) {
-            const techPages = ['tech-blog', 'tech-tutorials', 'tech-projects'];
+            const techPages = ['tech-blog', 'tech-playbooks', 'tech-projects'];
             const analyticsPages = ['portfolio', 'watchlist', 'screener', 'patterns', 'candlestick-patterns', 'etf'];
             const marketsPages = ['us-stocks', 'crypto'];
             
@@ -407,8 +407,8 @@ class PageManager {
             case 'tech-blog':
                 content = this.blogModule.generateTechBlogContent();
                 break;
-            case 'tech-tutorials':
-                content = this.tutorialsModule.generateTutorialsContent();
+            case 'tech-playbooks':
+                content = this.playbooksModule.generatePlaybooksContent();
                 break;
             case 'tech-projects':
                 content = this.projectsModule.generateProjectsContent();

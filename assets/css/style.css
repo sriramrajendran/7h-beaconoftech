@@ -4288,15 +4288,15 @@ footer {
     padding: 0;
 }
 
-/* Tutorials Styles */
-.tutorials-container {
+/* Playbooks Styles */
+.playbooks-container {
     display: flex;
     flex-direction: column;
     gap: 2rem;
     margin-top: 1rem;
 }
 
-.tutorial-filters {
+.playbook-filters {
     background: var(--card-bg);
     border-radius: 12px;
     padding: 1.5rem;
@@ -4348,17 +4348,17 @@ footer {
     border-color: var(--primary);
 }
 
-.tutorials-list {
+.playbooks-list {
     margin-top: 1rem;
 }
 
-.tutorials-grid {
+.playbooks-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 1.5rem;
 }
 
-.tutorial-card {
+.playbook-card {
     background: var(--card-bg);
     border-radius: 12px;
     padding: 1.5rem;
@@ -4367,7 +4367,7 @@ footer {
     transition: all 0.3s ease;
 }
 
-.tutorial-card:hover {
+.playbook-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
@@ -4379,7 +4379,7 @@ footer {
     margin-bottom: 1rem;
 }
 
-.tutorial-category {
+.playbook-category {
     background: var(--accent);
     color: white;
     padding: 4px 12px;
@@ -4388,7 +4388,7 @@ footer {
     font-weight: 500;
 }
 
-.tutorial-difficulty {
+.playbook-difficulty {
     padding: 4px 12px;
     border-radius: 15px;
     font-size: 0.75rem;
@@ -4396,17 +4396,17 @@ footer {
     text-transform: uppercase;
 }
 
-.tutorial-difficulty.beginner {
+.playbook-difficulty.beginner {
     background: #d1fae5;
     color: #065f46;
 }
 
-.tutorial-difficulty.intermediate {
+.playbook-difficulty.intermediate {
     background: #fef3c7;
     color: #92400e;
 }
 
-.tutorial-difficulty.advanced {
+.playbook-difficulty.advanced {
     background: #fee2e2;
     color: #991b1b;
 }
@@ -4417,7 +4417,7 @@ footer {
     gap: 1rem;
 }
 
-.tutorial-card h3 {
+.playbook-card h3 {
     margin: 0;
     color: var(--text);
     font-size: 1.15rem;
@@ -4425,14 +4425,14 @@ footer {
     line-height: 1.4;
 }
 
-.tutorial-description {
+.playbook-description {
     color: var(--text-light);
     line-height: 1.5;
     font-size: 0.9rem;
     flex-grow: 1;
 }
 
-.tutorial-meta {
+.playbook-meta {
     display: flex;
     gap: 1rem;
     font-size: 0.85rem;
@@ -4451,7 +4451,7 @@ footer {
     gap: 0.25rem;
 }
 
-.tutorial-topics {
+.playbook-topics {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
@@ -4467,7 +4467,7 @@ footer {
     font-weight: 500;
 }
 
-.start-tutorial-btn {
+.start-playbook-btn {
     background: var(--primary);
     color: white;
     border: none;
@@ -4480,18 +4480,18 @@ footer {
     align-self: flex-start;
 }
 
-.start-tutorial-btn:hover {
+.start-playbook-btn:hover {
     background: var(--primary-dark);
     transform: translateY(-1px);
 }
 
-/* Tutorial Viewer Styles */
-.tutorial-viewer {
+/* Playbook Viewer Styles */
+.playbook-viewer {
     max-width: 900px;
     margin: 0 auto;
 }
 
-.tutorial-header {
+.playbook-header {
     background: var(--card-bg);
     border-radius: 16px;
     padding: 2rem;
@@ -4499,50 +4499,50 @@ footer {
     border: 1px solid var(--border);
 }
 
-.tutorial-info h1 {
+.playbook-info h1 {
     margin: 0 0 1rem 0;
     color: var(--text);
     font-size: 2rem;
     line-height: 1.3;
 }
 
-.tutorial-info p {
+.playbook-info p {
     margin: 0 0 1.5rem 0;
     color: var(--text-light);
     font-size: 1.1rem;
     line-height: 1.6;
 }
 
-.tutorial-meta-header {
+.playbook-meta-header {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
 }
 
-.tutorial-content {
+.playbook-content {
     background: var(--card-bg);
     border-radius: 16px;
     padding: 2rem;
     border: 1px solid var(--border);
 }
 
-.tutorial-steps {
+.playbook-steps {
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
-.tutorial-step {
+.playbook-step {
     padding-bottom: 2rem;
     border-bottom: 1px solid var(--border);
 }
 
-.tutorial-step:last-child {
+.playbook-step:last-child {
     border-bottom: none;
     padding-bottom: 0;
 }
 
-.tutorial-step h3 {
+.playbook-step h3 {
     margin: 0 0 1rem 0;
     color: var(--text);
     font-size: 1.3rem;

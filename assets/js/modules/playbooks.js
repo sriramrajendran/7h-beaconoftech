@@ -1,7 +1,7 @@
-// Tutorials Module - Modular tutorials content and functionality
-class TutorialsModule {
+// Playbooks Module - Modular playbooks content and functionality
+class PlaybooksModule {
     constructor() {
-        this.tutorials = [
+        this.playbooks = [
             {
                 id: 1,
                 title: "Getting Started with React Hooks",
@@ -193,31 +193,31 @@ CMD [ "node", "app.js" ]`
         ];
     }
 
-    generateTutorialsContent() {
+    generatePlaybooksContent() {
         return `
             <div class="page-header">
-                <h2>Tutorials</h2>
-                <p>Step-by-step guides to help you master modern technologies</p>
+                <h2>Playbooks</h2>
+                <p>hat worked out for me</p>
             </div>
             
-            <div class="tutorials-container">
-                ${this.generateTutorialFilters()}
-                ${this.generateTutorialsList()}
+            <div class="playbooks-container">
+                ${this.generatePlaybookFilters()}
+                ${this.generatePlaybooksList()}
             </div>
         `;
     }
 
-    generateTutorialFilters() {
+    generatePlaybookFilters() {
         const categories = this.getCategories();
         const difficulties = this.getDifficulties();
         
         return `
-            <section class="tutorial-filters">
+            <section class="playbook-filters">
                 <div class="filter-group">
                     <h4>Category</h4>
                     <div class="filter-options">
                         ${categories.map(cat => `
-                            <button class="filter-btn" onclick="tutorialsModule.filterByCategory('${cat}')">
+                            <button class="filter-btn" onclick="playbooksModule.filterByCategory('${cat}')">
                                 ${cat}
                             </button>
                         `).join('')}
@@ -228,7 +228,7 @@ CMD [ "node", "app.js" ]`
                     <h4>Difficulty</h4>
                     <div class="filter-options">
                         ${difficulties.map(diff => `
-                            <button class="filter-btn" onclick="tutorialsModule.filterByDifficulty('${diff}')">
+                            <button class="filter-btn" onclick="playbooksModule.filterByDifficulty('${diff}')">
                                 ${diff}
                             </button>
                         `).join('')}
@@ -238,94 +238,94 @@ CMD [ "node", "app.js" ]`
         `;
     }
 
-    generateTutorialsList() {
+    generatePlaybooksList() {
         return `
-            <section class="tutorials-list">
-                <div class="tutorials-grid">
-                    ${this.tutorials.map(tutorial => this.generateTutorialCard(tutorial)).join('')}
+            <section class="playbooks-list">
+                <div class="playbooks-grid">
+                    ${this.playbooks.map(playbook => this.generatePlaybookCard(playbook)).join('')}
                 </div>
             </section>
         `;
     }
 
-    generateTutorialCard(tutorial) {
-        const difficultyClass = tutorial.difficulty.toLowerCase();
+    generatePlaybookCard(playbook) {
+        const difficultyClass = playbook.difficulty.toLowerCase();
         return `
-            <article class="tutorial-card">
+            <article class="playbook-card">
                 <div class="card-header">
-                    <span class="tutorial-category">${tutorial.category}</span>
-                    <span class="tutorial-difficulty ${difficultyClass}">${tutorial.difficulty}</span>
+                    <span class="playbook-category">${playbook.category}</span>
+                    <span class="playbook-difficulty ${difficultyClass}">${playbook.difficulty}</span>
                 </div>
                 
                 <div class="card-content">
-                    <h3>${tutorial.title}</h3>
-                    <p class="tutorial-description">${tutorial.description}</p>
+                    <h3>${playbook.title}</h3>
+                    <p class="playbook-description">${playbook.description}</p>
                     
-                    <div class="tutorial-meta">
-                        <span class="duration">⏱️ ${tutorial.duration}</span>
-                        <span class="topics-count">📚 ${tutorial.topics.length} topics</span>
+                    <div class="playbook-meta">
+                        <span class="duration">⏱️ ${playbook.duration}</span>
+                        <span class="topics-count">📚 ${playbook.topics.length} topics</span>
                     </div>
                     
-                    <div class="tutorial-topics">
-                        ${tutorial.topics.slice(0, 3).map(topic => 
+                    <div class="playbook-topics">
+                        ${playbook.topics.slice(0, 3).map(topic => 
                             `<span class="topic-tag">${topic}</span>`
                         ).join('')}
-                        ${tutorial.topics.length > 3 ? 
-                            `<span class="topic-tag">+${tutorial.topics.length - 3} more</span>` : ''
+                        ${playbook.topics.length > 3 ? 
+                            `<span class="topic-tag">+${playbook.topics.length - 3} more</span>` : ''
                         }
                     </div>
                     
-                    <button class="start-tutorial-btn" onclick="tutorialsModule.startTutorial(${tutorial.id})">
-                        Start Tutorial
+                    <button class="start-playbook-btn" onclick="playbooksModule.startPlaybook(${playbook.id})">
+                        Start Playbook
                     </button>
                 </div>
             </article>
         `;
     }
 
-    startTutorial(tutorialId) {
-        const tutorial = this.tutorials.find(t => t.id === tutorialId);
-        if (!tutorial) return;
+    startPlaybook(playbookId) {
+        const playbook = this.playbooks.find(p => p.id === playbookId);
+        if (!playbook) return;
         
         const mainContent = document.getElementById('main-content');
         mainContent.innerHTML = `
-            <div class="tutorial-viewer">
-                <button class="back-btn" onclick="tutorialsModule.showTutorialsList()">
-                    ← Back to Tutorials
+            <div class="playbook-viewer">
+                <button class="back-btn" onclick="playbooksModule.showPlaybooksList()">
+                    ← Back to Playbooks
                 </button>
                 
-                <div class="tutorial-header">
-                    <div class="tutorial-info">
-                        <h1>${tutorial.title}</h1>
-                        <p>${tutorial.description}</p>
+                <div class="playbook-header">
+                    <div class="playbook-info">
+                        <h1>${playbook.title}</h1>
+                        <p>${playbook.description}</p>
                         
-                        <div class="tutorial-meta">
-                            <span class="tutorial-category">${tutorial.category}</span>
-                            <span class="tutorial-difficulty ${tutorial.difficulty.toLowerCase()}">${tutorial.difficulty}</span>
-                            <span class="tutorial-duration">⏱️ ${tutorial.duration}</span>
+                        <div class="playbook-meta">
+                            <span class="playbook-category">${playbook.category}</span>
+                            <span class="playbook-difficulty ${playbook.difficulty.toLowerCase()}">${playbook.difficulty}</span>
+                            <span class="playbook-duration">⏱️ ${playbook.duration}</span>
                         </div>
                     </div>
                 </div>
                 
-                <div class="tutorial-content">
-                    ${this.generateTutorialSteps(tutorial)}
+                <div class="playbook-content">
+                    ${this.generatePlaybookSteps(playbook)}
                 </div>
             </div>
         `;
     }
 
-    generateTutorialSteps(tutorial) {
+    generatePlaybookSteps(playbook) {
         return `
-            <div class="tutorial-steps">
-                ${tutorial.steps.map((step, index) => `
-                    <div class="tutorial-step" id="step-${index}">
+            <div class="playbook-steps">
+                ${playbook.steps.map((step, index) => `
+                    <div class="playbook-step" id="step-${index}">
                         <h3>Step ${index + 1}: ${step.title}</h3>
                         <div class="step-content">
                             <p>${step.content}</p>
                             ${step.code ? `
                                 <div class="code-block">
                                     <pre><code>${this.escapeHtml(step.code)}</code></pre>
-                                    <button class="copy-btn" onclick="tutorialsModule.copyCode(this)">
+                                    <button class="copy-btn" onclick="playbooksModule.copyCode(this)">
                                         📋 Copy Code
                                     </button>
                                 </div>
@@ -337,38 +337,38 @@ CMD [ "node", "app.js" ]`
         `;
     }
 
-    showTutorialsList() {
+    showPlaybooksList() {
         if (typeof pageManager !== 'undefined') {
-            pageManager.loadPage('tech-tutorials');
+            pageManager.loadPage('tech-playbooks');
         }
     }
 
     filterByCategory(category) {
-        const filtered = this.tutorials.filter(t => t.category === category);
-        this.displayFilteredTutorials(filtered);
+        const filtered = this.playbooks.filter(p => p.category === category);
+        this.displayFilteredPlaybooks(filtered);
     }
 
     filterByDifficulty(difficulty) {
-        const filtered = this.tutorials.filter(t => t.difficulty === difficulty);
-        this.displayFilteredTutorials(filtered);
+        const filtered = this.playbooks.filter(p => p.difficulty === difficulty);
+        this.displayFilteredPlaybooks(filtered);
     }
 
-    displayFilteredTutorials(tutorials) {
+    displayFilteredPlaybooks(playbooks) {
         const mainContent = document.getElementById('main-content');
         mainContent.innerHTML = `
             <div class="page-header">
-                <h2>Tutorials</h2>
-                <p>Filtered results (${tutorials.length} tutorials)</p>
+                <h2>Playbooks</h2>
+                <p>Filtered results (${playbooks.length} playbooks)</p>
             </div>
             
-            <div class="tutorials-container">
-                <button class="clear-filter-btn" onclick="tutorialsModule.showTutorialsList()">
+            <div class="playbooks-container">
+                <button class="clear-filter-btn" onclick="playbooksModule.showPlaybooksList()">
                     Clear Filter
                 </button>
                 
-                <section class="tutorials-list">
-                    <div class="tutorials-grid">
-                        ${tutorials.map(tutorial => this.generateTutorialCard(tutorial)).join('')}
+                <section class="playbooks-list">
+                    <div class="playbooks-grid">
+                        ${playbooks.map(playbook => this.generatePlaybookCard(playbook)).join('')}
                     </div>
                 </section>
             </div>
@@ -394,44 +394,44 @@ CMD [ "node", "app.js" ]`
     }
 
     getCategories() {
-        return [...new Set(this.tutorials.map(t => t.category))];
+        return [...new Set(this.playbooks.map(p => p.category))];
     }
 
     getDifficulties() {
-        return [...new Set(this.tutorials.map(t => t.difficulty))];
+        return [...new Set(this.playbooks.map(p => p.difficulty))];
     }
 
     // Content management methods
-    addTutorial(tutorial) {
-        this.tutorials.push({
-            ...tutorial,
-            id: this.tutorials.length + 1
+    addPlaybook(playbook) {
+        this.playbooks.push({
+            ...playbook,
+            id: this.playbooks.length + 1
         });
     }
 
-    updateTutorial(tutorialId, updates) {
-        const index = this.tutorials.findIndex(t => t.id === tutorialId);
+    updatePlaybook(playbookId, updates) {
+        const index = this.playbooks.findIndex(p => p.id === playbookId);
         if (index !== -1) {
-            this.tutorials[index] = { ...this.tutorials[index], ...updates };
+            this.playbooks[index] = { ...this.playbooks[index], ...updates };
         }
     }
 
-    deleteTutorial(tutorialId) {
-        this.tutorials = this.tutorials.filter(t => t.id !== tutorialId);
+    deletePlaybook(playbookId) {
+        this.playbooks = this.playbooks.filter(p => p.id !== playbookId);
     }
 
-    getTutorials() {
-        return this.tutorials;
+    getPlaybooks() {
+        return this.playbooks;
     }
 
-    getTutorial(tutorialId) {
-        return this.tutorials.find(t => t.id === tutorialId);
+    getPlaybook(playbookId) {
+        return this.playbooks.find(p => p.id === playbookId);
     }
 }
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = TutorialsModule;
+    module.exports = PlaybooksModule;
 } else {
-    window.TutorialsModule = TutorialsModule;
+    window.PlaybooksModule = PlaybooksModule;
 }

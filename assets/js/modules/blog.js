@@ -146,7 +146,7 @@ class BlogModule {
         return `
             <div class="page-header">
                 <h2>Tech Blog</h2>
-                <p>Insights, tutorials, and best practices for modern software development</p>
+                <p>Insights, playbooks, and practices that worked out for me</p>
             </div>
             
             <div class="blog-container">

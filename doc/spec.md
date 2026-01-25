@@ -57,7 +57,7 @@ Functional:
 - ✅ **Enhanced modal system**: Side-by-side fundamental/technical data with full-width recommendations
 - ✅ **Interactive tables**: Clickable rows to open detailed modal (no separate Details column)
 - ✅ **Real-time data**: CORS proxy fallback system with mock data for reliability
-- ✅ **Content management**: Technology blog, tutorials, and projects showcase
+- ✅ **Content management**: Technology blog, playbooks, and projects showcase
 - ✅ **Dynamic navigation**: Section-based menu expansion and active state management
 - ✅ **Interactive headers**: Clickable header, brand text, and footer links for home navigation
 - ✅ **Mutual exclusion**: Automatic collapsing of other sections when parent menu is clicked
@@ -99,7 +99,7 @@ Running app locally:
 ## ✅ **Recently Implemented Features:**
 
 ### **� Dual-Purpose Platform Structure:**
-- **Technology Section**: Blog, tutorials, and projects showcase with modern card layouts
+- **Technology Section**: Blog, playbooks, and projects showcase with modern card layouts
 - **Stocks Section**: Complete stock analysis tools (Portfolio, Watchlist, ETFs, US Stocks)
 - **Collapsible Navigation**: Parent menu items with expandable children for better organization
 - **Dynamic Content Loading**: Section-based content management with smooth transitions
