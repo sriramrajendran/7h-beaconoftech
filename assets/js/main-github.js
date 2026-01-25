@@ -458,6 +458,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize page manager
     pageManager.loadPage('portfolio');
     
+    // Ensure global stock analyzer is available
+    if (!window.stockAnalyzer) {
+        window.stockAnalyzer = new StockAnalyzer('AAPL');
+    }
+    
     // Navigation is handled by pageManager.loadPage()
     // Form events are handled by PageManager.attachEventListeners()
 });

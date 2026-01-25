@@ -8,24 +8,61 @@ class PageManager {
 
     async loadConfig() {
         try {
-            const response = await fetch('input/config.json');
+            // Detect environment and load appropriate config
+            const isLocal = window.location.hostname === 'localhost' || 
+                           window.location.hostname === '127.0.0.1' || 
+                           window.location.hostname.startsWith('192.168.') ||
+                           window.location.hostname.startsWith('10.');
+            
+            const configFileName = isLocal ? 'config.local.json' : 'config.github.json';
+            console.log(`Loading ${isLocal ? 'local' : 'GitHub Pages'} configuration...`);
+            
+            const response = await fetch(`input/${configFileName}`);
+            if (!response.ok) {
+                throw new Error(`Failed to load ${configFileName}: ${response.status}`);
+            }
+            
             this.config = await response.json();
-            console.log('Configuration loaded:', this.config);
+            console.log(`Configuration loaded for ${this.config.environment}:`, this.config);
+            
+            // Update API strategy based on config
+            if (window.stockAnalyzer) {
+                window.stockAnalyzer.updateAPIConfig(this.config.api);
+            }
+            
+            // Show configuration status to user
+            if (this.config.api?.fallback?.useMockData) {
+                console.log(' Mock data enabled - using demo data for testing');
+            } else {
+                console.log(' Live data enabled - attempting to fetch real market data');
+            }
+            
         } catch (error) {
             console.error('Failed to load configuration:', error);
-            // Fallback to hardcoded defaults
+            console.log(' Using fallback configuration with mock data...');
+            
+            // Fallback to hardcoded defaults with mock data
             this.config = {
-                portfolio: { symbols: ['AAPL', 'MSFT', 'GOOGL', 'TSLA', 'NVDA', 'AMZN', 'META', 'NFLX'], defaultPeriod: '1y', defaultTopN: 10 },
-                watchlist: { symbols: ['SPY', 'QQQ', 'IWM', 'DIA', 'VTI', 'VOO', 'GLD', 'BTC-USD'], defaultPeriod: '6mo', defaultTopN: 3 },
-                market: { symbols: ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'TSLA', 'NVDA', 'JPM', 'JNJ', 'V', 'PG', 'UNH', 'HD', 'MA', 'BAC', 'XOM', 'CVX', 'LLY', 'ABBV', 'PFE'], defaultPeriod: '3mo', defaultTopN: 10 },
-                etf: { symbols: ['SPY', 'QQQ', 'IWM', 'DIA', 'VTI', 'VOO', 'VUG', 'VTV', 'GLD', 'SLV', 'TLT', 'HYG', 'LQD', 'XLF', 'XLK', 'XLE', 'XLV', 'XLI', 'XLU', 'XLP'], defaultPeriod: '6mo', defaultTopN: 8 }
+                environment: 'fallback',
+                portfolio: { symbols: ['AAPL', 'MSFT', 'GOOGL', 'TSLA'], defaultPeriod: '1y', defaultTopN: 5 },
+                watchlist: { symbols: ['SPY', 'QQQ', 'IWM'], defaultPeriod: '6mo', defaultTopN: 3 },
+                market: { symbols: ['AAPL', 'MSFT', 'GOOGL', 'AMZN'], defaultPeriod: '3mo', defaultTopN: 10 },
+                etf: { symbols: ['SPY', 'QQQ', 'IWM', 'DIA'], defaultPeriod: '6mo', defaultTopN: 8 },
+                api: { 
+                    strategy: 'mock',
+                    fallback: { useMockData: true }
+                }
             };
+            
+            // Update API config for fallback
+            if (window.stockAnalyzer) {
+                window.stockAnalyzer.updateAPIConfig(this.config.api);
+            }
         }
     }
 
     getDefaultStocks(pageType) {
         if (!this.config) {
-            // Return fallback defaults if config not loaded yet
             return ['AAPL', 'MSFT', 'GOOGL', 'TSLA'];
         }
         return this.config[pageType]?.symbols || ['AAPL', 'MSFT', 'GOOGL', 'TSLA'];
@@ -58,11 +95,14 @@ class PageManager {
             case 'watchlist':
                 content = this.generateWatchlistContent();
                 break;
-            case 'market':
-                content = this.generateMarketContent();
+            case 'us-stocks':
+                content = this.generateUSStocksContent();
                 break;
             case 'etf':
                 content = this.generateETFContent();
+                break;
+            case 'import':
+                content = this.generateImportContent();
                 break;
             default:
                 content = '<div class="card"><h2>Page not found</h2></div>';
@@ -78,20 +118,20 @@ class PageManager {
         const defaultTopN = this.getDefaultTopN('portfolio');
         
         return `
-            <div class="card">
+            <div class="page-header">
                 <h2>Portfolio Analysis</h2>
-                <p>Analyze your portfolio stocks and get BUY/SELL recommendations based on technical indicators.</p>
+                <p>Analyze your portfolio stocks with detailed technical indicators and recommendations.</p>
                 
                 <form id="portfolio-form">
-                    <div class="form-group">
-                        <label for="symbols">Stock Symbols (comma or space separated):</label>
-                        <textarea id="symbols" name="symbols" rows="2" placeholder="Enter stock symbols separated by commas or spaces...">${defaultStocks.join(', ')}</textarea>
-                    </div>
-                    
-                    <div class="form-row">
+                    <div class="controls-row">
                         <div class="form-group">
-                            <label for="period">Time Period:</label>
-                            <select id="period" name="period">
+                            <label for="symbols">Stock Symbols:</label>
+                            <textarea id="symbols" rows="2" placeholder="Enter symbols...">${defaultStocks.join(', ')}</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="period">Period:</label>
+                            <select id="period">
                                 <option value="1mo" ${defaultPeriod === '1mo' ? 'selected' : ''}>1 Month</option>
                                 <option value="3mo" ${defaultPeriod === '3mo' ? 'selected' : ''}>3 Months</option>
                                 <option value="6mo" ${defaultPeriod === '6mo' ? 'selected' : ''}>6 Months</option>
@@ -102,8 +142,8 @@ class PageManager {
                         </div>
                         
                         <div class="form-group">
-                            <label for="top_n">Top Recommendations:</label>
-                            <select id="top_n" name="top_n">
+                            <label for="top_n">Top N:</label>
+                            <select id="top_n">
                                 <option value="3" ${defaultTopN === 3 ? 'selected' : ''}>Top 3</option>
                                 <option value="5" ${defaultTopN === 5 ? 'selected' : ''}>Top 5</option>
                                 <option value="10" ${defaultTopN === 10 ? 'selected' : ''}>Top 10</option>
@@ -111,13 +151,50 @@ class PageManager {
                                 <option value="20" ${defaultTopN === 20 ? 'selected' : ''}>Top 20</option>
                             </select>
                         </div>
+                        
+                        <button type="submit" class="btn btn-primary">Analyze</button>
                     </div>
-                    
-                    <button type="submit" class="btn btn-primary">Analyze Portfolio</button>
                 </form>
             </div>
             
-            <div id="portfolio-results" class="results-container"></div>
+            <div class="table-container">
+                <div class="table-controls">
+                    <input type="text" id="table-search" placeholder="Search stocks..." class="search-input">
+                    <select id="table-filter" class="filter-select">
+                        <option value="all">All Stocks</option>
+                        <option value="buy">Buy Recommendations</option>
+                        <option value="sell">Sell Recommendations</option>
+                        <option value="hold">Hold</option>
+                    </select>
+                </div>
+                
+                <table id="stocks-table" class="stocks-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="rank">Rank ↕</th>
+                            <th data-sort="symbol">Symbol ↕</th>
+                            <th data-sort="price">Price ↕</th>
+                            <th data-sort="change_1d">1D % ↕</th>
+                            <th data-sort="change_1w">1W % ↕</th>
+                            <th data-sort="change_1m">1M % ↕</th>
+                            <th data-sort="change_6m">6M % ↕</th>
+                            <th data-sort="change_1y">1Y % ↕</th>
+                            <th data-sort="rsi">RSI ↕</th>
+                            <th>VCP</th>
+                            <th>RSI Div</th>
+                            <th>MACD Div</th>
+                            <th>Cross</th>
+                            <th>Breakout</th>
+                            <th data-sort="recommendation">Recommendation ↕</th>
+                            <th data-sort="score">Score ↕</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stocks-tbody">
+                        <tr><td colspan="16" class="loading-cell">Click "Analyze" to load stock data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
         `;
     }
     
@@ -127,20 +204,20 @@ class PageManager {
         const defaultTopN = this.getDefaultTopN('watchlist');
         
         return `
-            <div class="card">
+            <div class="page-header">
                 <h2>Watchlist Analysis</h2>
                 <p>Track your watchlist stocks and get investment recommendations.</p>
                 
                 <form id="watchlist-form">
-                    <div class="form-group">
-                        <label for="symbols">Watchlist Symbols:</label>
-                        <textarea id="symbols" name="symbols" rows="2" placeholder="Enter watchlist symbols...">${defaultStocks.join(', ')}</textarea>
-                    </div>
-                    
-                    <div class="form-row">
+                    <div class="controls-row">
                         <div class="form-group">
-                            <label for="period">Time Period:</label>
-                            <select id="period" name="period">
+                            <label for="symbols">Watchlist Symbols:</label>
+                            <textarea id="symbols" rows="2" placeholder="Enter watchlist symbols...">${defaultStocks.join(', ')}</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="period">Period:</label>
+                            <select id="period">
                                 <option value="1mo" ${defaultPeriod === '1mo' ? 'selected' : ''}>1 Month</option>
                                 <option value="3mo" ${defaultPeriod === '3mo' ? 'selected' : ''}>3 Months</option>
                                 <option value="6mo" ${defaultPeriod === '6mo' ? 'selected' : ''}>6 Months</option>
@@ -151,8 +228,8 @@ class PageManager {
                         </div>
                         
                         <div class="form-group">
-                            <label for="top_n">Top Recommendations:</label>
-                            <select id="top_n" name="top_n">
+                            <label for="top_n">Top N:</label>
+                            <select id="top_n">
                                 <option value="3" ${defaultTopN === 3 ? 'selected' : ''}>Top 3</option>
                                 <option value="5" ${defaultTopN === 5 ? 'selected' : ''}>Top 5</option>
                                 <option value="10" ${defaultTopN === 10 ? 'selected' : ''}>Top 10</option>
@@ -160,31 +237,68 @@ class PageManager {
                                 <option value="20" ${defaultTopN === 20 ? 'selected' : ''}>Top 20</option>
                             </select>
                         </div>
+                        
+                        <button type="submit" class="btn btn-primary">Analyze Watchlist</button>
                     </div>
-                    
-                    <button type="submit" class="btn btn-primary">Analyze Watchlist</button>
                 </form>
             </div>
             
-            <div id="watchlist-results" class="results-container"></div>
+            <div class="table-container">
+                <div class="table-controls">
+                    <input type="text" id="table-search" placeholder="Search stocks..." class="search-input">
+                    <select id="table-filter" class="filter-select">
+                        <option value="all">All Stocks</option>
+                        <option value="buy">Buy Recommendations</option>
+                        <option value="sell">Sell Recommendations</option>
+                        <option value="hold">Hold</option>
+                    </select>
+                </div>
+                
+                <table id="stocks-table" class="stocks-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="rank">Rank ↕</th>
+                            <th data-sort="symbol">Symbol ↕</th>
+                            <th data-sort="price">Price ↕</th>
+                            <th data-sort="change_1d">1D % ↕</th>
+                            <th data-sort="change_1w">1W % ↕</th>
+                            <th data-sort="change_1m">1M % ↕</th>
+                            <th data-sort="change_6m">6M % ↕</th>
+                            <th data-sort="change_1y">1Y % ↕</th>
+                            <th data-sort="rsi">RSI ↕</th>
+                            <th>VCP</th>
+                            <th>RSI Div</th>
+                            <th>MACD Div</th>
+                            <th>Cross</th>
+                            <th>Breakout</th>
+                            <th data-sort="recommendation">Recommendation ↕</th>
+                            <th data-sort="score">Score ↕</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stocks-tbody">
+                        <tr><td colspan="16" class="loading-cell">Click "Analyze Watchlist" to load data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
         `;
     }
     
-    generateMarketContent() {
+    generateUSStocksContent() {
         const defaultStocks = this.getDefaultStocks('market');
         const defaultPeriod = this.getDefaultPeriod('market');
         const defaultTopN = this.getDefaultTopN('market');
         
         return `
-            <div class="card">
-                <h2>US Market Analysis</h2>
-                <p>Get top BUY recommendations from major US stocks.</p>
+            <div class="page-header">
+                <h2>US Stocks Analysis</h2>
+                <p>Get top BUY recommendations from major US stocks with detailed technical analysis.</p>
                 
-                <form id="market-form">
-                    <div class="form-row">
+                <form id="us-stocks-form">
+                    <div class="controls-row">
                         <div class="form-group">
-                            <label for="period">Time Period:</label>
-                            <select id="period" name="period">
+                            <label for="period">Period:</label>
+                            <select id="period">
                                 <option value="1mo" ${defaultPeriod === '1mo' ? 'selected' : ''}>1 Month</option>
                                 <option value="3mo" ${defaultPeriod === '3mo' ? 'selected' : ''}>3 Months</option>
                                 <option value="6mo" ${defaultPeriod === '6mo' ? 'selected' : ''}>6 Months</option>
@@ -195,8 +309,8 @@ class PageManager {
                         </div>
                         
                         <div class="form-group">
-                            <label for="top_n">Top Recommendations:</label>
-                            <select id="top_n" name="top_n">
+                            <label for="top_n">Top N:</label>
+                            <select id="top_n">
                                 <option value="5" ${defaultTopN === 5 ? 'selected' : ''}>Top 5</option>
                                 <option value="10" ${defaultTopN === 10 ? 'selected' : ''}>Top 10</option>
                                 <option value="15" ${defaultTopN === 15 ? 'selected' : ''}>Top 15</option>
@@ -204,13 +318,50 @@ class PageManager {
                                 <option value="30" ${defaultTopN === 30 ? 'selected' : ''}>Top 30</option>
                             </select>
                         </div>
+                        
+                        <button type="submit" class="btn btn-primary">Analyze US Stocks</button>
                     </div>
-                    
-                    <button type="submit" class="btn btn-primary">Analyze US Market</button>
                 </form>
             </div>
             
-            <div id="market-results" class="results-container"></div>
+            <div class="table-container">
+                <div class="table-controls">
+                    <input type="text" id="table-search" placeholder="Search stocks..." class="search-input">
+                    <select id="table-filter" class="filter-select">
+                        <option value="all">All Stocks</option>
+                        <option value="buy">Buy Recommendations</option>
+                        <option value="sell">Sell Recommendations</option>
+                        <option value="hold">Hold</option>
+                    </select>
+                </div>
+                
+                <table id="stocks-table" class="stocks-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="rank">Rank ↕</th>
+                            <th data-sort="symbol">Symbol ↕</th>
+                            <th data-sort="price">Price ↕</th>
+                            <th data-sort="change_1d">1D % ↕</th>
+                            <th data-sort="change_1w">1W % ↕</th>
+                            <th data-sort="change_1m">1M % ↕</th>
+                            <th data-sort="change_6m">6M % ↕</th>
+                            <th data-sort="change_1y">1Y % ↕</th>
+                            <th data-sort="rsi">RSI ↕</th>
+                            <th>VCP</th>
+                            <th>RSI Div</th>
+                            <th>MACD Div</th>
+                            <th>Cross</th>
+                            <th>Breakout</th>
+                            <th data-sort="recommendation">Recommendation ↕</th>
+                            <th data-sort="score">Score ↕</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stocks-tbody">
+                        <tr><td colspan="16" class="loading-cell">Click "Analyze US Stocks" to load data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
         `;
     }
     
@@ -220,15 +371,15 @@ class PageManager {
         const defaultTopN = this.getDefaultTopN('etf');
         
         return `
-            <div class="card">
+            <div class="page-header">
                 <h2>ETF/Index Analysis</h2>
                 <p>Analyze major ETFs and index funds for investment recommendations.</p>
                 
                 <form id="etf-form">
-                    <div class="form-row">
+                    <div class="controls-row">
                         <div class="form-group">
-                            <label for="period">Time Period:</label>
-                            <select id="period" name="period">
+                            <label for="period">Period:</label>
+                            <select id="period">
                                 <option value="1mo" ${defaultPeriod === '1mo' ? 'selected' : ''}>1 Month</option>
                                 <option value="3mo" ${defaultPeriod === '3mo' ? 'selected' : ''}>3 Months</option>
                                 <option value="6mo" ${defaultPeriod === '6mo' ? 'selected' : ''}>6 Months</option>
@@ -239,8 +390,8 @@ class PageManager {
                         </div>
                         
                         <div class="form-group">
-                            <label for="top_n">Top Recommendations:</label>
-                            <select id="top_n" name="top_n">
+                            <label for="top_n">Top N:</label>
+                            <select id="top_n">
                                 <option value="3" ${defaultTopN === 3 ? 'selected' : ''}>Top 3</option>
                                 <option value="5" ${defaultTopN === 5 ? 'selected' : ''}>Top 5</option>
                                 <option value="8" ${defaultTopN === 8 ? 'selected' : ''}>Top 8</option>
@@ -248,58 +399,107 @@ class PageManager {
                                 <option value="15" ${defaultTopN === 15 ? 'selected' : ''}>Top 15</option>
                             </select>
                         </div>
+                        
+                        <button type="submit" class="btn btn-primary">Analyze ETFs</button>
                     </div>
-                    
-                    <button type="submit" class="btn btn-primary">Analyze ETFs/Indexes</button>
                 </form>
             </div>
             
-            <div id="etf-results" class="results-container"></div>
+            <div class="table-container">
+                <div class="table-controls">
+                    <input type="text" id="table-search" placeholder="Search ETFs..." class="search-input">
+                    <select id="table-filter" class="filter-select">
+                        <option value="all">All ETFs</option>
+                        <option value="buy">Buy Recommendations</option>
+                        <option value="sell">Sell Recommendations</option>
+                        <option value="hold">Hold</option>
+                    </select>
+                </div>
+                
+                <table id="stocks-table" class="stocks-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="rank">Rank ↕</th>
+                            <th data-sort="symbol">Symbol ↕</th>
+                            <th data-sort="price">Price ↕</th>
+                            <th data-sort="change_1d">1D % ↕</th>
+                            <th data-sort="change_1w">1W % ↕</th>
+                            <th data-sort="change_1m">1M % ↕</th>
+                            <th data-sort="change_6m">6M % ↕</th>
+                            <th data-sort="change_1y">1Y % ↕</th>
+                            <th data-sort="rsi">RSI ↕</th>
+                            <th>VCP</th>
+                            <th>RSI Div</th>
+                            <th>MACD Div</th>
+                            <th>Cross</th>
+                            <th>Breakout</th>
+                            <th data-sort="recommendation">Recommendation ↕</th>
+                            <th data-sort="score">Score ↕</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stocks-tbody">
+                        <tr><td colspan="16" class="loading-cell">Click "Analyze ETFs" to load data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
         `;
     }
     
-    getImportContent() {
+    generateImportContent() {
         return `
-            <div class="card">
+            <div class="page-header">
                 <h2>Import Portfolio</h2>
-                <p class="info-text">Import your portfolio from Robinhood, E-Trade, or other brokerages</p>
+                <p>Import your portfolio from a brokerage CSV file to analyze your holdings.</p>
                 
-                <div class="info-text" style="background: var(--warning-bg); border: 1px solid var(--warning); padding: 15px; border-radius: 8px; margin: 20px 0;">
-                    <strong>Note:</strong> Portfolio import functionality requires server-side processing and is not available in the GitHub Pages version. 
-                    Please use the desktop version for portfolio import features.
-                </div>
-                
-                <form id="import-form" enctype="multipart/form-data" onsubmit="event.preventDefault(); alert('Portfolio import is not available in GitHub Pages version. Please use the desktop version.');">
-                    <div class="form-group">
-                        <label for="csv-file">Portfolio CSV File</label>
-                        <input type="file" id="csv-file" name="file" accept=".csv" disabled>
-                        <small class="form-hint">Export your portfolio as CSV from your brokerage</small>
+                <form id="import-form">
+                    <div class="controls-row">
+                        <div class="form-group">
+                            <label for="csv-file">CSV File:</label>
+                            <input type="file" id="csv-file" accept=".csv" required>
+                            <div class="form-hint">Supported formats: Robinhood, E-Trade, Schwab, Fidelity</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="brokerage">Brokerage:</label>
+                            <select id="brokerage">
+                                <option value="auto">Auto-detect</option>
+                                <option value="robinhood">Robinhood</option>
+                                <option value="etrade">E-Trade</option>
+                                <option value="schwab">Schwab</option>
+                                <option value="fidelity">Fidelity</option>
+                                <option value="vanguard">Vanguard</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="broker-select">Brokerage</label>
-                        <select id="broker-select" name="broker" disabled>
-                            <option value="auto">Auto-detect</option>
-                            <option value="robinhood">Robinhood</option>
-                            <option value="etrade">E-Trade</option>
-                            <option value="fidelity">Fidelity</option>
-                            <option value="schwab">Charles Schwab</option>
-                            <option value="csv">Generic CSV</option>
-                        </select>
+                    
+                    <div class="controls-row">
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="save-portfolio" checked>
+                                Save portfolio to local storage
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="update-watchlist">
+                                Add symbols to watchlist
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Import Portfolio</button>
                     </div>
-                    <button type="submit" class="btn btn-primary" disabled>Import Portfolio (Desktop Only)</button>
                 </form>
+            </div>
+            
+            <div id="import-results" style="display: none;">
+                <!-- Results will be displayed here -->
             </div>
         `;
     }
     
     attachEventListeners(pageType) {
-        // Remove existing listeners to prevent duplicates
-        const existingForm = document.getElementById(`${pageType}-form`);
-        if (existingForm) {
-            const newForm = existingForm.cloneNode(true);
-            existingForm.parentNode.replaceChild(newForm, existingForm);
-        }
-        
         // Add form submit listener
         const form = document.getElementById(`${pageType}-form`);
         if (form) {
@@ -308,62 +508,268 @@ class PageManager {
                 this.handleFormSubmit(pageType);
             });
         }
+        
+        // Special handling for import page
+        if (pageType === 'import') {
+            const fileInput = document.getElementById('csv-file');
+            if (fileInput) {
+                fileInput.addEventListener('change', (e) => {
+                    this.handleFileSelect(e);
+                });
+            }
+        }
     }
     
     handleFormSubmit(pageType) {
+        if (pageType === 'import') {
+            this.handleImportSubmit();
+            return;
+        }
+        
         const symbolsInput = document.getElementById('symbols');
         const periodSelect = document.getElementById('period');
         const topNSelect = document.getElementById('top_n');
         
-        if (!symbolsInput || !periodSelect || !topNSelect) {
-            showError('Form elements not found');
-            return;
+        // For US Stocks and ETF pages, symbols come from config
+        let symbols = '';
+        if (pageType === 'us-stocks' || pageType === 'etf') {
+            symbols = this.getDefaultStocks(pageType === 'us-stocks' ? 'market' : 'etf').join(', ');
+        } else if (symbolsInput) {
+            symbols = symbolsInput.value.trim();
         }
-        
-        const symbols = symbolsInput.value.trim();
-        const period = periodSelect.value;
-        const topN = parseInt(topNSelect.value);
         
         if (!symbols) {
-            showError('Please enter at least one stock symbol');
+            showError('Please enter stock symbols');
             return;
         }
+        
+        const period = periodSelect ? periodSelect.value : '1y';
+        const topN = topNSelect ? parseInt(topNSelect.value) : 5;
         
         const symbolArray = symbols.split(/[\s,]+/).filter(s => s.trim()).map(s => s.toUpperCase());
         this.analyzeStocks(symbolArray, period, topN, pageType);
     }
     
-    async autoAnalyzePage(pageType) {
-        let symbols, period, topN;
-
-        switch(pageType) {
-            case 'portfolio':
-                symbols = this.getDefaultStocks('portfolio');
-                period = this.getDefaultPeriod('portfolio');
-                topN = this.getDefaultTopN('portfolio');
-                break;
-            case 'watchlist':
-                symbols = this.getDefaultStocks('watchlist');
-                period = this.getDefaultPeriod('watchlist');
-                topN = this.getDefaultTopN('watchlist');
-                break;
-            case 'market':
-                symbols = this.getDefaultStocks('market');
-                period = this.getDefaultPeriod('market');
-                topN = this.getDefaultTopN('market');
-                break;
-            case 'etf':
-                symbols = this.getDefaultStocks('etf');
-                period = this.getDefaultPeriod('etf');
-                topN = this.getDefaultTopN('etf');
-                break;
-            default:
+    handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (file) {
+            // Basic file validation
+            if (!file.name.toLowerCase().endsWith('.csv')) {
+                showError('Please select a CSV file');
                 return;
+            }
+            
+            if (file.size > 10 * 1024 * 1024) { // 10MB limit
+                showError('File size too large. Please select a smaller file.');
+                return;
+            }
+            
+            console.log('File selected:', file.name, 'Size:', file.size);
         }
-
-        await this.analyzeStocks(symbols, period, topN, pageType);
     }
-
+    
+    handleImportSubmit() {
+        const fileInput = document.getElementById('csv-file');
+        const brokerageSelect = document.getElementById('brokerage');
+        const savePortfolioCheckbox = document.getElementById('save-portfolio');
+        const updateWatchlistCheckbox = document.getElementById('update-watchlist');
+        
+        if (!fileInput || !fileInput.files[0]) {
+            showError('Please select a CSV file to import');
+            return;
+        }
+        
+        const file = fileInput.files[0];
+        const brokerage = brokerageSelect ? brokerageSelect.value : 'auto';
+        const savePortfolio = savePortfolioCheckbox ? savePortfolioCheckbox.checked : false;
+        const updateWatchlist = updateWatchlistCheckbox ? updateWatchlistCheckbox.checked : false;
+        
+        this.processImportFile(file, brokerage, savePortfolio, updateWatchlist);
+    }
+    
+    async processImportFile(file, brokerage, savePortfolio, updateWatchlist) {
+        showLoading('Processing portfolio file...');
+        
+        try {
+            const text = await file.text();
+            const holdings = this.parseCSV(text, brokerage);
+            
+            if (holdings.length === 0) {
+                showError('No valid holdings found in the CSV file');
+                return;
+            }
+            
+            // Display import results
+            this.displayImportResults(holdings);
+            
+            // Save to local storage if requested
+            if (savePortfolio) {
+                this.savePortfolioToStorage(holdings);
+            }
+            
+            // Update watchlist if requested
+            if (updateWatchlist) {
+                this.updateWatchlistWithHoldings(holdings);
+            }
+            
+        } catch (error) {
+            showError('Error processing file: ' + error.message);
+        } finally {
+            hideLoading();
+        }
+    }
+    
+    parseCSV(text, brokerage) {
+        const lines = text.split('\\n').filter(line => line.trim());
+        if (lines.length < 2) {
+            throw new Error('CSV file appears to be empty or invalid');
+        }
+        
+        const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+        const holdings = [];
+        
+        // Try to detect CSV format and extract holdings
+        for (let i = 1; i < lines.length; i++) {
+            const values = lines[i].split(',').map(v => v.trim());
+            if (values.length < 3) continue; // Skip invalid rows
+            
+            const holding = this.extractHoldingFromRow(headers, values, brokerage);
+            if (holding) {
+                holdings.push(holding);
+            }
+        }
+        
+        return holdings;
+    }
+    
+    extractHoldingFromRow(headers, values, brokerage) {
+        // Common CSV column mappings
+        const symbolIndex = headers.findIndex(h => h.includes('symbol') || h.includes('ticker'));
+        const quantityIndex = headers.findIndex(h => h.includes('quantity') || h.includes('shares') || h.includes('qty'));
+        const priceIndex = headers.findIndex(h => h.includes('price') || h.includes('avg cost'));
+        
+        if (symbolIndex === -1) return null;
+        
+        const symbol = values[symbolIndex]?.toUpperCase();
+        if (!symbol || symbol.length < 1) return null;
+        
+        const quantity = quantityIndex !== -1 ? parseFloat(values[quantityIndex]) || 0 : 0;
+        const avgPrice = priceIndex !== -1 ? parseFloat(values[priceIndex]) || 0 : 0;
+        
+        return {
+            symbol,
+            quantity,
+            avgPrice,
+            currentValue: quantity * avgPrice,
+            brokerage
+        };
+    }
+    
+    displayImportResults(holdings) {
+        const resultsDiv = document.getElementById('import-results');
+        if (!resultsDiv) return;
+        
+        const totalValue = holdings.reduce((sum, h) => sum + h.currentValue, 0);
+        const totalHoldings = holdings.length;
+        
+        let html = `
+            <div class="page-header">
+                <h3>Import Results</h3>
+                <div class="import-summary">
+                    <div class="summary-card">
+                        <div class="summary-value">${totalHoldings}</div>
+                        <div class="summary-label">Total Holdings</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-value">$${totalValue.toFixed(2)}</div>
+                        <div class="summary-label">Portfolio Value</div>
+                    </div>
+                </div>
+                
+                <div class="stock-cards">
+                    ${holdings.map(holding => `
+                        <div class="stock-card">
+                            <div class="stock-header">
+                                <strong>${holding.symbol}</strong>
+                                <span class="stock-broker">${holding.brokerage}</span>
+                            </div>
+                            <div class="stock-details">
+                                <div>Quantity: ${holding.quantity}</div>
+                                <div>Avg Price: $${holding.avgPrice.toFixed(2)}</div>
+                                <div>Value: $${holding.currentValue.toFixed(2)}</div>
+                            </div>
+                            <div class="stock-gain ${holding.currentValue >= holding.avgPrice * holding.quantity ? 'positive' : 'negative'}">
+                                $${(holding.currentValue - holding.avgPrice * holding.quantity).toFixed(2)}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                ${holdings.length > 10 ? `<div class="more-holdings">Showing first 10 of ${holdings.length} holdings</div>` : ''}
+                
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="pageManager.analyzeImportedPortfolio(['${holdings.map(h => h.symbol).join("','")}'])">
+                        Analyze Portfolio
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        resultsDiv.innerHTML = html;
+        resultsDiv.style.display = 'block';
+    }
+    
+    savePortfolioToStorage(holdings) {
+        try {
+            const portfolioData = {
+                holdings,
+                importDate: new Date().toISOString(),
+                symbols: holdings.map(h => h.symbol)
+            };
+            
+            localStorage.setItem('importedPortfolio', JSON.stringify(portfolioData));
+            console.log('Portfolio saved to local storage');
+        } catch (error) {
+            console.error('Error saving portfolio:', error);
+        }
+    }
+    
+    updateWatchlistWithHoldings(holdings) {
+        try {
+            const currentConfig = this.config || {};
+            const currentWatchlist = currentConfig.watchlist?.symbols || [];
+            
+            const newSymbols = holdings.map(h => h.symbol);
+            const combinedWatchlist = [...new Set([...currentWatchlist, ...newSymbols])];
+            
+            // Update config (in a real app, this would save to server)
+            if (this.config) {
+                this.config.watchlist.symbols = combinedWatchlist;
+            }
+            
+            console.log('Watchlist updated with imported symbols');
+        } catch (error) {
+            console.error('Error updating watchlist:', error);
+        }
+    }
+    
+    analyzeImportedPortfolio(symbols) {
+        // Navigate to portfolio page and analyze
+        this.loadPage('portfolio');
+        
+        setTimeout(() => {
+            const symbolsTextarea = document.getElementById('symbols');
+            const periodSelect = document.getElementById('period');
+            const topNSelect = document.getElementById('top_n');
+            
+            if (symbolsTextarea) {
+                symbolsTextarea.value = symbols.join(', ');
+            }
+            
+            this.handleFormSubmit('portfolio');
+        }, 500);
+    }
+    
     async analyzeStocks(symbols, period, topN, pageType) {
         showLoading();
         
@@ -373,100 +779,396 @@ class PageManager {
             
             const results = [];
             const failedSymbols = [];
-            let usingMockData = false;
             
             for (const symbol of symbols) {
                 if (analysisResults[symbol] && !analysisResults[symbol].error) {
                     const result = analysisResults[symbol];
-                    const summary = result.summary;
-                    const recommendation = result.recommendation;
-                    
-                    // Check if using mock data
-                    if (summary.fundamental && summary.fundamental.isMockData) {
-                        usingMockData = true;
-                    }
-                    
+                    // Combine summary and recommendation data
                     results.push({
                         symbol: symbol,
-                        company: summary.company_name || 'N/A',
-                        price: summary.current_price || 0,
-                        change: summary.price_change_pct || 0,
-                        change_1d: summary.price_change_1d_pct || 0,
-                        change_1w: summary.price_change_1w_pct || 0,
-                        change_1m: summary.price_change_1m_pct || 0,
-                        change_6m: summary.price_change_6m_pct || 0,
-                        change_1y: summary.price_change_1y_pct || 0,
-                        rsi: summary.rsi || 0,
-                        macd: summary.macd || 0,
-                        sma_20: summary.sma_20 || 0,
-                        sma_50: summary.sma_50 || 0,
-                        vcp_pattern: summary.vcp_pattern || {},
-                        rsi_divergence: summary.rsi_divergence || {},
-                        macd_divergence: summary.macd_divergence || {},
-                        enhanced_crossovers: summary.enhanced_crossovers || {},
-                        breakout_setup: summary.breakout_setup || {},
-                        recommendation: recommendation.recommendation,
-                        score: recommendation.score,
-                        reasoning: recommendation.reasoning,
-                        fundamental: summary.fundamental || {}
+                        company_name: result.summary?.company_name || result.summary?.symbol || symbol,
+                        current_price: result.summary?.current_price || 0,
+                        price_change_1d_pct: result.summary?.price_change_1d_pct || 0,
+                        price_change_1w_pct: result.summary?.price_change_1w_pct || 0,
+                        price_change_1m_pct: result.summary?.price_change_1m_pct || 0,
+                        price_change_6m_pct: result.summary?.price_change_6m_pct || 0,
+                        price_change_1y_pct: result.summary?.price_change_1y_pct || 0,
+                        score: result.recommendation?.score || 0,
+                        recommendation: result.recommendation?.recommendation || 'HOLD',
+                        indicators: result.recommendation?.indicators || {},
+                        vcp_pattern: result.recommendation?.vcp_pattern || { status: 'none' },
+                        rsi_divergence: result.recommendation?.rsi_divergence || { status: 'none' },
+                        macd_divergence: result.recommendation?.macd_divergence || { status: 'none' },
+                        enhanced_crossovers: result.recommendation?.enhanced_crossovers || { status: 'none' },
+                        breakout_setup: result.recommendation?.breakout_setup || { status: 'none' }
                     });
                 } else {
                     failedSymbols.push(symbol);
                 }
             }
             
-            if (results.length === 0) {
-                showError('No stocks were successfully analyzed. Please check your internet connection and try again.');
-                return;
-            }
+            // Store results for modal display
+            window.lastAnalysisResults = results;
             
-            // Show mock data warning if applicable
-            if (usingMockData) {
-                showError('Using demo data for testing purposes. Real market data will be used in production.', document.getElementById('portfolio-results'));
-            }
-            
-            // Sort by score
-            const resultsSorted = results.sort((a, b) => b.score - a.score);
-            
-            let displayData;
-            if (pageType === 'market' || pageType === 'etf') {
-                // For market/etf, only show BUY recommendations
-                const buyStocks = resultsSorted.filter(r => r.recommendation.includes('BUY'));
-                displayData = {
-                    buy_recommendations: buyStocks.slice(0, topN),
-                    total_analyzed: symbols.length,
-                    failed_symbols: failedSymbols
-                };
-                displayMarketResults(displayData, document.getElementById('portfolio-results'));
-            } else {
-                // For portfolio/watchlist, show all recommendations
-                const buyStocks = resultsSorted.filter(r => r.recommendation.includes('BUY'));
-                const sellStocks = resultsSorted.filter(r => r.recommendation.includes('SELL')).sort((a, b) => a.score - b.score);
-                const holdStocks = resultsSorted.filter(r => r.recommendation === 'HOLD');
-                
-                displayData = {
-                    buy_stocks: buyStocks.slice(0, topN),
-                    sell_stocks: sellStocks.slice(0, topN),
-                    hold_stocks: holdStocks,
-                    summary: {
-                        total: results.length,
-                        buy_count: buyStocks.length,
-                        sell_count: sellStocks.length,
-                        hold_count: holdStocks.length,
-                        avg_score: results.reduce((sum, r) => sum + r.score, 0) / results.length,
-                        highest: resultsSorted[0],
-                        lowest: resultsSorted[resultsSorted.length - 1]
-                    },
-                    failed_symbols: failedSymbols
-                };
-                displayPortfolioResults(displayData, document.getElementById('portfolio-results'));
-            }
+            this.displayTableResults(results, failedSymbols, pageType);
             
         } catch (error) {
             showError('Analysis failed: ' + error.message);
         } finally {
             hideLoading();
         }
+    }
+    
+    displayTableResults(results, failedSymbols, pageType) {
+        const tbody = document.getElementById('stocks-tbody');
+        if (!tbody) return;
+        
+        if (results.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="16" class="loading-cell">No stocks analyzed successfully</td></tr>`;
+            return;
+        }
+        
+        // Sort by score (highest first)
+        const sortedResults = results.sort((a, b) => b.score - a.score);
+        
+        let tableHTML = '';
+        sortedResults.forEach((result, index) => {
+            const recommendation = result.recommendation || 'HOLD';
+            const recommendationClass = this.getRecommendationClass(recommendation);
+            const indicators = result.indicators || {};
+            
+            // Generate pattern badges - access directly from result object
+            const vcpBadge = this.generatePatternBadge('vcp', result.vcp_pattern);
+            const rsiDivBadge = this.generatePatternBadge('rsi_div', result.rsi_divergence);
+            const macdDivBadge = this.generatePatternBadge('macd_div', result.macd_divergence);
+            const crossBadge = this.generatePatternBadge('cross', result.enhanced_crossovers);
+            const breakoutBadge = this.generatePatternBadge('breakout', result.breakout_setup);
+            
+            tableHTML += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td data-company="${result.company_name || result.company || 'N/A'}"><strong>${result.symbol}</strong></td>
+                    <td>$${result.current_price?.toFixed(2) || 'N/A'}</td>
+                    <td class="${result.price_change_1d_pct >= 0 ? 'positive' : 'negative'}">
+                        ${result.price_change_1d_pct >= 0 ? '+' : ''}${result.price_change_1d_pct?.toFixed(2) || '0.00'}%
+                    </td>
+                    <td class="${result.price_change_1w_pct >= 0 ? 'positive' : 'negative'}">
+                        ${result.price_change_1w_pct >= 0 ? '+' : ''}${result.price_change_1w_pct?.toFixed(2) || '0.00'}%
+                    </td>
+                    <td class="${result.price_change_1m_pct >= 0 ? 'positive' : 'negative'}">
+                        ${result.price_change_1m_pct >= 0 ? '+' : ''}${result.price_change_1m_pct?.toFixed(2) || '0.00'}%
+                    </td>
+                    <td class="${result.price_change_6m_pct >= 0 ? 'positive' : 'negative'}">
+                        ${result.price_change_6m_pct >= 0 ? '+' : ''}${result.price_change_6m_pct?.toFixed(2) || '0.00'}%
+                    </td>
+                    <td class="${result.price_change_1y_pct >= 0 ? 'positive' : 'negative'}">
+                        ${result.price_change_1y_pct >= 0 ? '+' : ''}${result.price_change_1y_pct?.toFixed(2) || '0.00'}%
+                    </td>
+                    <td class="${this.getRSIClass(indicators.rsi)}">${indicators.rsi?.toFixed(2) || 'N/A'}</td>
+                    <td>${vcpBadge}</td>
+                    <td>${rsiDivBadge}</td>
+                    <td>${macdDivBadge}</td>
+                    <td>${crossBadge}</td>
+                    <td>${breakoutBadge}</td>
+                    <td><span class="${recommendationClass}">${recommendation}</span></td>
+                    <td><strong>${result.score?.toFixed(1) || '0'}</strong></td>
+                    <td>
+                        <button class="btn-details" data-symbol="${result.symbol}">
+                            Details
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        // Add failed symbols at the end
+        if (failedSymbols.length > 0) {
+            tableHTML += `
+                <tr class="failed-row">
+                    <td colspan="16" class="failed-cell">
+                        Failed to analyze: ${failedSymbols.join(', ')}
+                    </td>
+                </tr>
+            `;
+        }
+        
+        tbody.innerHTML = tableHTML;
+        
+        // Add event listeners for details buttons
+        tbody.addEventListener('click', (e) => {
+            if (e.target.classList.contains('btn-details')) {
+                const symbol = e.target.getAttribute('data-symbol');
+                this.showStockDetails(symbol);
+            }
+        });
+    }
+    
+    getRecommendationClass(recommendation) {
+        if (!recommendation || typeof recommendation !== 'string') return 'recommendation-hold';
+        if (recommendation.includes('BUY')) return 'recommendation-buy';
+        if (recommendation.includes('SELL')) return 'recommendation-sell';
+        return 'recommendation-hold';
+    }
+    
+    getRSIClass(rsi) {
+        if (rsi >= 70) return 'overbought';
+        if (rsi <= 30) return 'oversold';
+        return 'neutral';
+    }
+    
+    generatePatternBadge(type, pattern) {
+        if (!pattern || pattern.status === 'none') {
+            return '<span class="pattern-badge pattern-none">—</span>';
+        }
+        
+        let badgeClass = 'pattern-none';
+        let content = '—';
+        let title = '';
+        
+        switch(type) {
+            case 'vcp':
+                if (pattern.status === 'strong') {
+                    badgeClass = 'pattern-strong-vcp';
+                    content = 'VCP';
+                    title = 'Strong Volatility Contraction Pattern';
+                } else if (pattern.status === 'weak') {
+                    badgeClass = 'pattern-weak-vcp';
+                    content = 'VCP';
+                    title = 'Weak Volatility Contraction Pattern';
+                }
+                break;
+            case 'rsi_div':
+                if (pattern.status === 'bullish') {
+                    badgeClass = 'pattern-bullish';
+                    content = '↑';
+                    title = 'Bullish RSI Divergence';
+                } else if (pattern.status === 'bearish') {
+                    badgeClass = 'pattern-bearish';
+                    content = '↓';
+                    title = 'Bearish RSI Divergence';
+                }
+                break;
+            case 'macd_div':
+                if (pattern.status === 'bullish') {
+                    badgeClass = 'pattern-bullish';
+                    content = '↑';
+                    title = 'Bullish MACD Divergence';
+                } else if (pattern.status === 'bearish') {
+                    badgeClass = 'pattern-bearish';
+                    content = '↓';
+                    title = 'Bearish MACD Divergence';
+                }
+                break;
+            case 'cross':
+                if (pattern.status === 'confirmed') {
+                    badgeClass = 'pattern-confirmed';
+                    content = '✓';
+                    title = 'Confirmed Crossover';
+                } else if (pattern.status === 'unconfirmed') {
+                    badgeClass = 'pattern-unconfirmed';
+                    content = '○';
+                    title = 'Unconfirmed Crossover';
+                }
+                break;
+            case 'breakout':
+                if (pattern.status === 'setup') {
+                    badgeClass = 'pattern-bullish';
+                    content = 'BO';
+                    title = 'Breakout Setup Detected';
+                }
+                break;
+        }
+        
+        return `<span class="pattern-badge ${badgeClass}" title="${title}">${content}</span>`;
+    }
+    
+    showStockDetails(symbol) {
+        // Find the stock data from the last analysis
+        const stockData = window.lastAnalysisResults?.find(s => s.symbol === symbol);
+        if (stockData) {
+            this.displayDetailedModal(stockData);
+        } else {
+            alert(`Stock details for ${symbol} would be shown here. This feature is coming soon!`);
+        }
+    }
+    
+    displayDetailedModal(stock) {
+        const modal = document.getElementById('stock-detail-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        
+        if (!modal || !modalTitle || !modalBody) return;
+        
+        modalTitle.textContent = `${stock.symbol} - ${stock.company_name || 'Company'}`;
+        
+        const indicators = stock.indicators || {};
+        
+        modalBody.innerHTML = `
+            <div class="analysis-container">
+                <div class="analysis-section">
+                    <h3>Basic Information</h3>
+                    <div class="indicators-grid">
+                        <div class="indicator-card">
+                            <div class="indicator-label">Current Price</div>
+                            <div class="indicator-value">$${stock.current_price?.toFixed(2) || 'N/A'}</div>
+                        </div>
+                        <div class="indicator-card">
+                            <div class="indicator-label">Recommendation</div>
+                            <div class="indicator-value">
+                                <span class="${this.getRecommendationClass(stock.recommendation)}">${stock.recommendation || 'N/A'}</span>
+                            </div>
+                        </div>
+                        <div class="indicator-card">
+                            <div class="indicator-label">Score</div>
+                            <div class="indicator-value ${stock.score >= 0 ? 'score-positive' : 'score-negative'}">
+                                ${stock.score?.toFixed(1) || '0'}
+                            </div>
+                        </div>
+                        <div class="indicator-card">
+                            <div class="indicator-label">RSI (14)</div>
+                            <div class="indicator-value ${this.getRSIClass(indicators.rsi)}">
+                                ${indicators.rsi?.toFixed(2) || 'N/A'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="analysis-section advanced-section">
+                    <h3>Advanced Pattern Analysis</h3>
+                    <div class="patterns-grid">
+                        ${this.generatePatternCard('VCP Pattern', stock.vcp_pattern)}
+                        ${this.generatePatternCard('RSI Divergence', stock.rsi_divergence)}
+                        ${this.generatePatternCard('MACD Divergence', stock.macd_divergence)}
+                        ${this.generatePatternCard('Enhanced Crossovers', stock.enhanced_crossovers)}
+                        ${this.generatePatternCard('Breakout Setup', stock.breakout_setup)}
+                    </div>
+                </div>
+                
+                <div class="analysis-section">
+                    <h3>Technical Indicators</h3>
+                    <div class="indicators-grid">
+                        <div class="indicator-card">
+                            <div class="indicator-label">MACD</div>
+                            <div class="indicator-value">${indicators.macd?.macd?.toFixed(4) || 'N/A'}</div>
+                        </div>
+                        <div class="indicator-card">
+                            <div class="indicator-label">SMA (20)</div>
+                            <div class="indicator-value">$${indicators.sma20?.toFixed(2) || 'N/A'}</div>
+                        </div>
+                        <div class="indicator-card">
+                            <div class="indicator-label">SMA (50)</div>
+                            <div class="indicator-value">$${indicators.sma50?.toFixed(2) || 'N/A'}</div>
+                        </div>
+                        <div class="indicator-card">
+                            <div class="indicator-label">SMA (200)</div>
+                            <div class="indicator-value">$${indicators.sma200?.toFixed(2) || 'N/A'}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="analysis-section">
+                    <h3>Price Performance</h3>
+                    <div class="indicators-grid">
+                        <div class="indicator-card">
+                            <div class="indicator-label">1 Day</div>
+                            <div class="indicator-value ${stock.price_change_1d_pct >= 0 ? 'positive' : 'negative'}">
+                                ${stock.price_change_1d_pct >= 0 ? '+' : ''}${stock.price_change_1d_pct?.toFixed(2) || '0.00'}%
+                            </div>
+                        </div>
+                        <div class="indicator-card">
+                            <div class="indicator-label">1 Week</div>
+                            <div class="indicator-value ${stock.price_change_1w_pct >= 0 ? 'positive' : 'negative'}">
+                                ${stock.price_change_1w_pct >= 0 ? '+' : ''}${stock.price_change_1w_pct?.toFixed(2) || '0.00'}%
+                            </div>
+                        </div>
+                        <div class="indicator-card">
+                            <div class="indicator-label">1 Month</div>
+                            <div class="indicator-value ${stock.price_change_1m_pct >= 0 ? 'positive' : 'negative'}">
+                                ${stock.price_change_1m_pct >= 0 ? '+' : ''}${stock.price_change_1m_pct?.toFixed(2) || '0.00'}%
+                            </div>
+                        </div>
+                        <div class="indicator-card">
+                            <div class="indicator-label">6 Months</div>
+                            <div class="indicator-value ${stock.price_change_6m_pct >= 0 ? 'positive' : 'negative'}">
+                                ${stock.price_change_6m_pct >= 0 ? '+' : ''}${stock.price_change_6m_pct?.toFixed(2) || '0.00'}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        modal.style.display = 'block';
+        
+        // Add event listener to close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+    
+    generatePatternCard(title, pattern) {
+        if (!pattern || pattern.status === 'none') {
+            return `
+                <div class="pattern-card">
+                    <div class="pattern-title">${title}</div>
+                    <div class="pattern-status pattern-none">No Pattern</div>
+                    <div class="pattern-description">No significant pattern detected</div>
+                </div>
+            `;
+        }
+        
+        let statusClass = 'pattern-none';
+        let statusText = 'None';
+        
+        switch(pattern.status) {
+            case 'strong':
+                statusClass = 'pattern-strong-vcp';
+                statusText = 'Strong';
+                break;
+            case 'weak':
+                statusClass = 'pattern-weak-vcp';
+                statusText = 'Weak';
+                break;
+            case 'bullish':
+                statusClass = 'pattern-bullish';
+                statusText = 'Bullish';
+                break;
+            case 'bearish':
+                statusClass = 'pattern-bearish';
+                statusText = 'Bearish';
+                break;
+            case 'confirmed':
+                statusClass = 'pattern-confirmed';
+                statusText = 'Confirmed';
+                break;
+            case 'unconfirmed':
+                statusClass = 'pattern-unconfirmed';
+                statusText = 'Unconfirmed';
+                break;
+            case 'setup':
+                statusClass = 'pattern-bullish';
+                statusText = 'Setup';
+                break;
+        }
+        
+        return `
+            <div class="pattern-card">
+                <div class="pattern-title">${title}</div>
+                <div class="pattern-status ${statusClass}">${statusText}</div>
+                ${pattern.strength ? `<div class="pattern-strength">Strength: ${pattern.strength}</div>` : ''}
+                ${pattern.confidence ? `<div class="pattern-strength">Confidence: ${pattern.confidence}</div>` : ''}
+                ${pattern.description ? `<div class="pattern-description">${pattern.description}</div>` : ''}
+                ${pattern.indicators ? `
+                    <div class="pattern-indicators">
+                        <ul>
+                            ${pattern.indicators.map(ind => `<li>${ind}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+            </div>
+        `;
     }
 }
 

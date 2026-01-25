@@ -56,6 +56,15 @@ npx serve .
 # Open http://localhost:8000
 ```
 
+### **Running Tests**
+```bash
+# Serve test runner
+python3 -m http.server 8001 --directory tests
+
+# Open http://localhost:8001
+# Click "Run All Tests" to verify functionality
+```
+
 ## 📊 **How to Use**
 
 ### **Portfolio Analysis**
@@ -239,7 +248,7 @@ The following features are not available in the GitHub Pages version:
 2. Create a feature branch
 3. Make changes to frontend code only
 4. Test locally with `python3 -m http.server 8000`
-5. Submit a pull request
+5. Submit a pull request`
 
 ## 📞 **Support**
 
