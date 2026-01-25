@@ -7,13 +7,21 @@ UI:
 - Make it a solid professional site which is equally good on mobile and desktop, use the themes so it looks modern and professional.
 - Left Menu with collapsible parent items for Technology and Stocks sections
 - Top header section which freezes even if we scroll vertically
-- Main section to have core content (tech blog or stock data)
+- Main section to have core content (blog or stock data)
 - ✅ **Enhanced table layout**: Fixed overlapping headers with horizontal scrolling and proper column widths
 - ✅ **Modern form styling**: Professional forms with proper alignment and focus states across all pages
 - ✅ **Responsive design**: Mobile-friendly layout with adaptive breakpoints
 - ✅ **Professional branding**: Custom logo with simplified sidebar header and clean main header to eliminate repetition
-- ✅ **Collapsible navigation**: Parent menu items (Technology, Stocks) with expandable children for better organization
+- ✅ **Collapsible navigation**: Parent menu items (Tech, Trade) with expandable children for better organization
+- ✅ **Mutual exclusion**: Clicking any parent menu collapses other sections automatically
+- ✅ **Smart navigation**: Clicking "Tech" or "Trade" parent opens children and closes the other section
+- ✅ **Header navigation**: Clicking top header loads home page (tech blog)
+- ✅ **Brand navigation**: Clicking "Beacon" brand text in sidebar loads home page
+- ✅ **Footer navigation**: Clicking "beaconoftech.com" in footer loads home page
 - ✅ **Dual-purpose platform**: Technology blog/content and stock analysis tools in unified interface
+- While clicking on any menu items should collapse the other ones. And clocking on parent menu should open the children menu items. Example: Clicking on "Tech" should open the children Menu and Close the others
+- Also clocking on headers in top menu should load the home page.
+- ✅ **Enhanced navigation**: Clicking "Beacon" brand text in sidebar loads home page, clicking "beaconoftech.com" in footer loads home page
 
 Functional:
 - refer to the file @doc/functionality.md for detailed functionality specification
@@ -23,6 +31,8 @@ Functional:
 - ✅ **Real-time data**: CORS proxy fallback system with mock data for reliability
 - ✅ **Content management**: Technology blog, tutorials, and projects showcase
 - ✅ **Dynamic navigation**: Section-based menu expansion and active state management
+- ✅ **Interactive headers**: Clickable header, brand text, and footer links for home navigation
+- ✅ **Mutual exclusion**: Automatic collapsing of other sections when parent menu is clicked
 
 Non functional:
 - Ensure the app is fully functional and all features work as expected.

@@ -204,6 +204,13 @@ header {
     z-index: 50;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+header:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    transform: translateY(-1px);
 }
 
 header h1 {

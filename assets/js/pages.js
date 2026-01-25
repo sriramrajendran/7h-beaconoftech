@@ -17,13 +17,25 @@ class PageManager {
                 const childrenContainer = parent.nextElementSibling;
                 const isCollapsed = parent.classList.contains('collapsed');
                 
+                // Collapse all other parent sections first
+                navParents.forEach(otherParent => {
+                    if (otherParent !== parent) {
+                        otherParent.classList.add('collapsed');
+                        otherParent.classList.remove('active');
+                        const otherChildren = otherParent.nextElementSibling;
+                        if (otherChildren && otherChildren.classList.contains('nav-children')) {
+                            otherChildren.classList.add('collapsed');
+                        }
+                    }
+                });
+                
                 // Toggle current section
                 parent.classList.toggle('collapsed');
                 if (childrenContainer && childrenContainer.classList.contains('nav-children')) {
                     childrenContainer.classList.toggle('collapsed');
                 }
                 
-                // Remove active class from all parents and add to current
+                // Set active state for current parent
                 navParents.forEach(p => p.classList.remove('active'));
                 if (!isCollapsed) {
                     parent.classList.add('active');
@@ -43,21 +55,59 @@ class PageManager {
             });
         });
         
-        // Initially expand Technology section and set tech-blog as active
+        // Initially expand Tech section and set tech-blog as active
         const techParent = document.getElementById('nav-technology-parent');
         const techChildren = document.getElementById('nav-technology-children');
-        const stocksParent = document.getElementById('nav-stocks-parent');
-        const stocksChildren = document.getElementById('nav-stocks-children');
+        const tradeParent = document.getElementById('nav-stocks-parent');
+        const tradeChildren = document.getElementById('nav-stocks-children');
         
         if (techParent) techParent.classList.add('active');
         if (techChildren) techChildren.classList.remove('collapsed');
-        if (stocksParent) stocksParent.classList.add('collapsed');
-        if (stocksChildren) stocksChildren.classList.add('collapsed');
+        if (tradeParent) tradeParent.classList.add('collapsed');
+        if (tradeChildren) tradeChildren.classList.add('collapsed');
         
         // Set tech-blog as initially active
         const techBlogLink = document.getElementById('nav-tech-blog');
         if (techBlogLink) {
             techBlogLink.classList.add('active');
+        }
+        
+        // Setup header click to load home page (tech blog)
+        const header = document.querySelector('header');
+        if (header) {
+            header.style.cursor = 'pointer';
+            header.addEventListener('click', () => {
+                this.loadPage('tech-blog');
+            });
+        }
+        
+        // Setup brand text click to load home page
+        const brandText = document.querySelector('.brand-text');
+        if (brandText) {
+            brandText.style.cursor = 'pointer';
+            brandText.addEventListener('click', () => {
+                this.loadPage('tech-blog');
+            });
+        }
+        
+        // Setup footer beaconoftech.com click to load home page
+        const footer = document.querySelector('footer');
+        if (footer) {
+            const footerText = footer.textContent;
+            if (footerText.includes('beaconoftech.com')) {
+                // Create a clickable span for beaconoftech.com
+                footer.innerHTML = footer.innerHTML.replace(
+                    'beaconoftech.com',
+                    '<span class="footer-link" style="cursor: pointer; text-decoration: underline;">beaconoftech.com</span>'
+                );
+                
+                const footerLink = footer.querySelector('.footer-link');
+                if (footerLink) {
+                    footerLink.addEventListener('click', () => {
+                        this.loadPage('tech-blog');
+                    });
+                }
+            }
         }
     }
 
@@ -190,42 +240,42 @@ class PageManager {
         
         // Update parent section active states
         const techParent = document.getElementById('nav-technology-parent');
-        const stocksParent = document.getElementById('nav-stocks-parent');
+        const tradeParent = document.getElementById('nav-stocks-parent');
         
-        if (techParent && stocksParent) {
+        if (techParent && tradeParent) {
             const techPages = ['tech-blog', 'tech-tutorials', 'tech-projects'];
-            const stockPages = ['portfolio', 'watchlist', 'etf', 'us-stocks'];
+            const tradePages = ['portfolio', 'watchlist', 'etf', 'us-stocks'];
             
             if (techPages.includes(pageType)) {
                 techParent.classList.add('active');
-                stocksParent.classList.remove('active');
+                tradeParent.classList.remove('active');
                 // Ensure tech section is expanded
                 const techChildren = document.getElementById('nav-technology-children');
-                const stocksChildren = document.getElementById('nav-stocks-children');
+                const tradeChildren = document.getElementById('nav-stocks-children');
                 if (techChildren) techChildren.classList.remove('collapsed');
-                if (stocksChildren) stocksChildren.classList.add('collapsed');
+                if (tradeChildren) tradeChildren.classList.add('collapsed');
                 techParent.classList.remove('collapsed');
-                stocksParent.classList.add('collapsed');
-            } else if (stockPages.includes(pageType)) {
-                stocksParent.classList.add('active');
+                tradeParent.classList.add('collapsed');
+            } else if (tradePages.includes(pageType)) {
+                tradeParent.classList.add('active');
                 techParent.classList.remove('active');
-                // Ensure stocks section is expanded
+                // Ensure trade section is expanded
                 const techChildren = document.getElementById('nav-technology-children');
-                const stocksChildren = document.getElementById('nav-stocks-children');
-                if (stocksChildren) stocksChildren.classList.remove('collapsed');
+                const tradeChildren = document.getElementById('nav-stocks-children');
+                if (tradeChildren) tradeChildren.classList.remove('collapsed');
                 if (techChildren) techChildren.classList.add('collapsed');
-                stocksParent.classList.remove('collapsed');
+                tradeParent.classList.remove('collapsed');
                 techParent.classList.add('collapsed');
             } else if (pageType === 'author') {
                 // Author is standalone, collapse both sections
                 techParent.classList.remove('active');
-                stocksParent.classList.remove('active');
+                tradeParent.classList.remove('active');
                 const techChildren = document.getElementById('nav-technology-children');
-                const stocksChildren = document.getElementById('nav-stocks-children');
+                const tradeChildren = document.getElementById('nav-stocks-children');
                 if (techChildren) techChildren.classList.add('collapsed');
-                if (stocksChildren) stocksChildren.classList.add('collapsed');
+                if (tradeChildren) tradeChildren.classList.add('collapsed');
                 techParent.classList.add('collapsed');
-                stocksParent.classList.add('collapsed');
+                tradeParent.classList.add('collapsed');
             }
         }
 
