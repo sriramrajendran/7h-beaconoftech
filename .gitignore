@@ -145,7 +145,6 @@ Thumbs.db
 
 # Portfolio data (user-specific, should not be committed)
 input/portfolio_data.json
-input/imported_portfolio.csv
 temp/
 
 input/.alerts_state.json

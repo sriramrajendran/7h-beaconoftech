@@ -5,21 +5,24 @@ Framework:
 
 UI:
 - Make it a solid professional site which is equally good on mobile and desktop, use the themes so it looks modern and professional.
-- Left Menu with items to navigate
+- Left Menu with collapsible parent items for Technology and Stocks sections
 - Top header section which freezes even if we scroll vertically
-- Main section to have core stock data
+- Main section to have core content (tech blog or stock data)
 - ✅ **Enhanced table layout**: Fixed overlapping headers with horizontal scrolling and proper column widths
 - ✅ **Modern form styling**: Professional forms with proper alignment and focus states across all pages
 - ✅ **Responsive design**: Mobile-friendly layout with adaptive breakpoints
 - ✅ **Professional branding**: Custom logo with simplified sidebar header and clean main header to eliminate repetition
+- ✅ **Collapsible navigation**: Parent menu items (Technology, Stocks) with expandable children for better organization
+- ✅ **Dual-purpose platform**: Technology blog/content and stock analysis tools in unified interface
 
 Functional:
 - refer to the file @doc/functionality.md for detailed functionality specification
 - ✅ **Advanced pattern analysis**: VCP, RSI/MACD divergence, enhanced crossovers, breakout detection
 - ✅ **Enhanced modal system**: Side-by-side fundamental/technical data with full-width recommendations
 - ✅ **Interactive tables**: Clickable rows to open detailed modal (no separate Details column)
-- ✅ **Import portfolio**: CSV import from multiple brokerages with local storage
 - ✅ **Real-time data**: CORS proxy fallback system with mock data for reliability
+- ✅ **Content management**: Technology blog, tutorials, and projects showcase
+- ✅ **Dynamic navigation**: Section-based menu expansion and active state management
 
 Non functional:
 - Ensure the app is fully functional and all features work as expected.
@@ -54,7 +57,29 @@ Running app locally:
 
 ## ✅ **Recently Implemented Features:**
 
-### **🎯 Advanced Modal System:**
+### **� Dual-Purpose Platform Structure:**
+- **Technology Section**: Blog, tutorials, and projects showcase with modern card layouts
+- **Stocks Section**: Complete stock analysis tools (Portfolio, Watchlist, ETFs, US Stocks)
+- **Collapsible Navigation**: Parent menu items with expandable children for better organization
+- **Dynamic Content Loading**: Section-based content management with smooth transitions
+- **Landing Page**: Technology blog as primary landing page with stock tools accessible via navigation
+
+### **💻 Technology Content Features:**
+- **Blog Grid**: Modern card-based layout with meta information, categories, and excerpts
+- **Tutorial System**: Difficulty levels, duration estimates, and technology tags
+- **Projects Showcase**: Status indicators, technology stacks, and external links
+- **Responsive Design**: Mobile-optimized layouts for all content types
+- **Professional Styling**: Consistent design language across technology and stock sections
+
+### **👤 Author Section Features:**
+- **Professional Profile**: Comprehensive author information with avatar, bio, and expertise areas
+- **Skills Showcase**: Categorized technology skills (Frontend, Backend, Cloud & DevOps, Data & AI)
+- **Social Integration**: Links to Twitter, GitHub, LinkedIn, and personal website
+- **Contact Methods**: Direct email and professional networking connections
+- **Responsive Design**: Mobile-optimized layout with adaptive content sections
+- **Standalone Navigation**: Independent menu item that collapses other sections when selected
+
+### **� Advanced Modal System:**
 - **Side-by-side layout**: Fundamental data (including price performance) and technical data columns
 - **Full-width recommendations**: Technical recommendations section spanning both columns
 - **Enhanced data display**: Realistic fundamental metrics (Market Cap, P/E, EPS, Volume)
@@ -71,13 +96,16 @@ Running app locally:
 - **Visual feedback**: Hover effects, transitions, and micro-interactions
 - **Pattern badges**: Visual indicators for VCP, divergences, crossovers, breakouts
 - **Color coding**: Consistent theme with semantic color usage
-- **Professional branding**: Custom SVG logo with gradient design, simplified sidebar header (logo + "7H"), clean main header ("Stock Analyzer"), mobile-responsive logo display
+- **Professional branding**: Custom SVG beacon logo with radiating light design, simplified sidebar header (logo + "Beacon"), clean main header ("Stock Analyzer"), mobile-responsive logo display
 
 ### **🔧 Technical Enhancements:**
 - **Pattern detection**: Advanced algorithms for VCP, RSI/MACD divergence, crossovers
 - **Mock data**: Realistic patterns for testing with proper data generation
 - **Event handling**: Efficient delegation and modal management
 - **CSS Grid**: Modern layout system for responsive design
+- **✅ **DOM manipulation optimization**: Direct element creation instead of innerHTML for table rendering
+- **✅ **ESC key modal handling**: Enhanced keyboard navigation with proper event cleanup
+- **✅ **Table layout fixes**: Forced table alignment with !important CSS overrides for consistent column widths
 
 ### **🚀 Deployment & Development:**
 - **GitHub Actions**: Automated deployment workflow with proper artifact handling

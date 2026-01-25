@@ -10,7 +10,6 @@ A comprehensive stock analysis web application that provides AI-powered investme
 - **Watchlist Analysis** - Track and analyze watchlist stocks  
 - **Market Analysis** - Discover opportunities across US market
 - **ETF/Index Analysis** - Analyze major ETFs and indexes
-- **Import Portfolio** - Import from brokerage CSV files
 
 ### 2. Technical Analysis Engine
 - **Primary Indicators**: RSI, MACD, SMA (20, 50, 200), EMA (12, 26)
@@ -41,7 +40,7 @@ A comprehensive stock analysis web application that provides AI-powered investme
 │ ⭐ Watchlist│  │                                     │ │
 │ 📊 Market   │  │  • Forms for user input             │ │
 │ 📈 ETFs     │  │  • Analysis results display          │ │
-│ 📥 Import   │  │  • Tables and charts                │ │
+│             │  │  • Tables and charts                │ │
 │             │  │  • Interactive elements             │ │
 │             │  └─────────────────────────────────────┘ │
 │             │                                           │
@@ -110,18 +109,6 @@ A comprehensive stock analysis web application that provides AI-powered investme
 - Market-wide analysis summary
 - Failed symbols handling with error messages
 
-#### 3. Import Portfolio Page
-**Upload Form:**
-- File input with drag-and-drop styling
-- Brokerage selector (Auto-detect, Robinhood, E-Trade, etc.)
-- Checkboxes for storage options
-- Import button with validation
-
-**Results Display:**
-- Import summary with portfolio statistics
-- Individual holding cards with P&L information
-- Success/error messaging
-- Storage confirmation
 
 ### Data Tables Specification
 
@@ -242,7 +229,6 @@ A comprehensive stock analysis web application that provides AI-powered investme
 - `POST /analyze_portfolio` - Portfolio analysis
 - `POST /analyze_market` - Market analysis  
 - `POST /analyze_etf` - ETF analysis
-- `POST /api/import_portfolio` - Portfolio import
 - `GET /api/config_stocks` - Load configuration
 - `GET /api/portfolio_summary` - Portfolio summary
 
@@ -275,8 +261,7 @@ A comprehensive stock analysis web application that provides AI-powered investme
 ### Phase 2: Advanced Features
 1. Pattern badge system
 2. Modal detail views
-3. Import portfolio functionality
-4. Market/ETF analysis pages
+3. Market/ETF analysis pages
 
 ### Phase 3: Polish & Optimization
 1. Responsive design refinement

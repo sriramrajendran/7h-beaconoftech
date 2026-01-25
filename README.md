@@ -1,8 +1,8 @@
-# 📈 7H Stock Analyzer
+# 📈 BeaconOfTech Stock Analyzer
 
-![7H Stock Analyzer](doc/readme.png)
+![BeaconOfTech Stock Analyzer](doc/readme.png)
 
-A **static web application** for AI-powered stock analysis that runs entirely on GitHub Pages. Analyze stocks with technical indicators, get BUY/SELL/HOLD recommendations, and make informed investment decisions - all in your browser with no backend required.
+A **static web application** by **BeaconOfTech** for AI-powered stock analysis that runs entirely on GitHub Pages. Analyze stocks with technical indicators, get BUY/SELL/HOLD recommendations, and make informed investment decisions - all in your browser with no backend required.
 
 ## 🌐 **Live Demo**
 
@@ -200,7 +200,7 @@ python3 -m http.server 8000
 ## 📁 **Project Structure**
 
 ```
-7h-stock-analysis/
+beaconoftech-stock-analysis/
 ├── index.html                 # Main entry point
 ├── assets/                    # Static assets
 │   ├── css/
@@ -244,7 +244,6 @@ python3 -m http.server 8000
 ## 🚨 **Limitations**
 
 The following features are not available in the GitHub Pages version:
-- ❌ **Portfolio Import** - Requires server-side file processing
 - ❌ **Persistent Storage** - No database for saving data
 - ❌ **Automated Alerts** - Requires backend services
 - ❌ **Advanced Pattern Detection** - Complex algorithms need more processing power
@@ -267,5 +266,5 @@ The following features are not available in the GitHub Pages version:
 
 This project is provided as-is for educational purposes.
 
-**🚀 Ready to analyze stocks?** Visit the GitHub Pages site or run locally to start your investment research today!
+**🚀 Ready to analyze stocks with BeaconOfTech?** Visit the GitHub Pages site or run locally to start your investment research today!
 

@@ -1,9 +1,108 @@
 // Page Manager - Handles dynamic content loading and default stocks
 class PageManager {
     constructor() {
-        this.currentPage = 'portfolio';
+        this.currentPage = 'tech-blog'; // Start with tech blog as landing page
         this.config = null;
         this.loadConfig();
+        this.setupCollapsibleMenus();
+    }
+
+    setupCollapsibleMenus() {
+        // Setup collapsible menu functionality
+        const navParents = document.querySelectorAll('.nav-parent');
+        
+        navParents.forEach(parent => {
+            parent.addEventListener('click', (e) => {
+                e.preventDefault();
+                const childrenContainer = parent.nextElementSibling;
+                const isCollapsed = parent.classList.contains('collapsed');
+                
+                // Toggle current section
+                parent.classList.toggle('collapsed');
+                if (childrenContainer && childrenContainer.classList.contains('nav-children')) {
+                    childrenContainer.classList.toggle('collapsed');
+                }
+                
+                // Remove active class from all parents and add to current
+                navParents.forEach(p => p.classList.remove('active'));
+                if (!isCollapsed) {
+                    parent.classList.add('active');
+                }
+            });
+        });
+        
+        // Setup child menu clicks
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageType = link.getAttribute('data-page');
+                if (pageType) {
+                    this.loadPage(pageType);
+                }
+            });
+        });
+        
+        // Initially expand Technology section and set tech-blog as active
+        const techParent = document.getElementById('nav-technology-parent');
+        const techChildren = document.getElementById('nav-technology-children');
+        const stocksParent = document.getElementById('nav-stocks-parent');
+        const stocksChildren = document.getElementById('nav-stocks-children');
+        
+        if (techParent) techParent.classList.add('active');
+        if (techChildren) techChildren.classList.remove('collapsed');
+        if (stocksParent) stocksParent.classList.add('collapsed');
+        if (stocksChildren) stocksChildren.classList.add('collapsed');
+        
+        // Set tech-blog as initially active
+        const techBlogLink = document.getElementById('nav-tech-blog');
+        if (techBlogLink) {
+            techBlogLink.classList.add('active');
+        }
+    }
+
+    setupTableControls() {
+        const searchInput = document.getElementById('table-search');
+        const filterSelect = document.getElementById('table-filter');
+
+        if (searchInput) {
+            searchInput.addEventListener('input', () => this.applyTableFilters());
+        }
+
+        if (filterSelect) {
+            filterSelect.addEventListener('change', () => this.applyTableFilters());
+        }
+    }
+
+    applyTableFilters() {
+        const tbody = document.getElementById('stocks-tbody');
+        if (!tbody) return;
+
+        const searchValue = (document.getElementById('table-search')?.value || '').trim().toLowerCase();
+        const filterValue = (document.getElementById('table-filter')?.value || 'all').toLowerCase();
+
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        rows.forEach((row) => {
+            if (row.classList.contains('loading-row')) {
+                row.style.display = '';
+                return;
+            }
+
+            const symbol = (row.getAttribute('data-symbol') || '').toLowerCase();
+            const company = (row.getAttribute('data-company') || '').toLowerCase();
+            const recommendation = (row.getAttribute('data-recommendation') || '').toLowerCase();
+
+            const matchesSearch = !searchValue || symbol.includes(searchValue) || company.includes(searchValue);
+
+            let matchesFilter = true;
+            if (filterValue !== 'all') {
+                if (filterValue === 'buy') matchesFilter = recommendation.includes('buy');
+                else if (filterValue === 'sell') matchesFilter = recommendation.includes('sell');
+                else if (filterValue === 'hold') matchesFilter = recommendation.includes('hold');
+            }
+
+            row.style.display = matchesSearch && matchesFilter ? '' : 'none';
+        });
     }
 
     async loadConfig() {
@@ -80,15 +179,68 @@ class PageManager {
         this.currentPage = pageType;
         const mainContent = document.getElementById('main-content');
         
-        // Update active nav
+        // Update active nav for child links only
         document.querySelectorAll('.nav-link').forEach(link => {
             link.classList.remove('active');
         });
-        document.getElementById(`nav-${pageType}`).classList.add('active');
+        const activeLink = document.getElementById(`nav-${pageType}`);
+        if (activeLink) {
+            activeLink.classList.add('active');
+        }
+        
+        // Update parent section active states
+        const techParent = document.getElementById('nav-technology-parent');
+        const stocksParent = document.getElementById('nav-stocks-parent');
+        
+        if (techParent && stocksParent) {
+            const techPages = ['tech-blog', 'tech-tutorials', 'tech-projects'];
+            const stockPages = ['portfolio', 'watchlist', 'etf', 'us-stocks'];
+            
+            if (techPages.includes(pageType)) {
+                techParent.classList.add('active');
+                stocksParent.classList.remove('active');
+                // Ensure tech section is expanded
+                const techChildren = document.getElementById('nav-technology-children');
+                const stocksChildren = document.getElementById('nav-stocks-children');
+                if (techChildren) techChildren.classList.remove('collapsed');
+                if (stocksChildren) stocksChildren.classList.add('collapsed');
+                techParent.classList.remove('collapsed');
+                stocksParent.classList.add('collapsed');
+            } else if (stockPages.includes(pageType)) {
+                stocksParent.classList.add('active');
+                techParent.classList.remove('active');
+                // Ensure stocks section is expanded
+                const techChildren = document.getElementById('nav-technology-children');
+                const stocksChildren = document.getElementById('nav-stocks-children');
+                if (stocksChildren) stocksChildren.classList.remove('collapsed');
+                if (techChildren) techChildren.classList.add('collapsed');
+                stocksParent.classList.remove('collapsed');
+                techParent.classList.add('collapsed');
+            } else if (pageType === 'author') {
+                // Author is standalone, collapse both sections
+                techParent.classList.remove('active');
+                stocksParent.classList.remove('active');
+                const techChildren = document.getElementById('nav-technology-children');
+                const stocksChildren = document.getElementById('nav-stocks-children');
+                if (techChildren) techChildren.classList.add('collapsed');
+                if (stocksChildren) stocksChildren.classList.add('collapsed');
+                techParent.classList.add('collapsed');
+                stocksParent.classList.add('collapsed');
+            }
+        }
 
         let content = '';
         
         switch(pageType) {
+            case 'tech-blog':
+                content = this.generateTechBlogContent();
+                break;
+            case 'tech-tutorials':
+                content = this.generateTechTutorialsContent();
+                break;
+            case 'tech-projects':
+                content = this.generateTechProjectsContent();
+                break;
             case 'portfolio':
                 content = this.generatePortfolioContent();
                 break;
@@ -101,8 +253,8 @@ class PageManager {
             case 'etf':
                 content = this.generateETFContent();
                 break;
-            case 'import':
-                content = this.generateImportContent();
+            case 'author':
+                content = this.generateAuthorContent();
                 break;
             default:
                 content = '<div class="card"><h2>Page not found</h2></div>';
@@ -110,6 +262,278 @@ class PageManager {
         
         mainContent.innerHTML = content;
         this.attachEventListeners(pageType);
+    }
+    
+    generateTechBlogContent() {
+        return `
+            <div class="page-header">
+                <h2>Technology Blog</h2>
+                <p>Exploring the latest in technology, programming, and digital innovation.</p>
+            </div>
+            
+            <div class="blog-grid">
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-date">January 24, 2026</span>
+                        <span class="blog-category">AI/ML</span>
+                    </div>
+                    <h3 class="blog-title">The Future of AI-Powered Development Tools</h3>
+                    <p class="blog-excerpt">Artificial intelligence is revolutionizing how we write, debug, and optimize code. Explore the latest AI tools that are transforming the development landscape...</p>
+                    <a href="#" class="blog-read-more">Read More →</a>
+                </article>
+                
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-date">January 20, 2026</span>
+                        <span class="blog-category">Web Development</span>
+                    </div>
+                    <h3 class="blog-title">Building Scalable Web Applications in 2026</h3>
+                    <p class="blog-excerpt">Modern web development requires a deep understanding of performance, scalability, and user experience. Learn the best practices for building applications that scale...</p>
+                    <a href="#" class="blog-read-more">Read More →</a>
+                </article>
+                
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-date">January 15, 2026</span>
+                        <span class="blog-category">Cloud Computing</span>
+                    </div>
+                    <h3 class="blog-title">Cloud-Native Architecture: Best Practices</h3>
+                    <p class="blog-excerpt">Designing applications for the cloud requires a different mindset. Discover the principles of cloud-native architecture and how to implement them effectively...</p>
+                    <a href="#" class="blog-read-more">Read More →</a>
+                </article>
+                
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-date">January 10, 2026</span>
+                        <span class="blog-category">Data Science</span>
+                    </div>
+                    <h3 class="blog-title">Data Visualization Techniques for Modern Applications</h3>
+                    <p class="blog-excerpt">Effective data visualization is crucial for making complex information accessible. Learn about the latest techniques and tools for creating compelling visualizations...</p>
+                    <a href="#" class="blog-read-more">Read More →</a>
+                </article>
+            </div>
+        `;
+    }
+    
+    generateTechTutorialsContent() {
+        return `
+            <div class="page-header">
+                <h2>Technical Tutorials</h2>
+                <p>Step-by-step guides and tutorials for modern technologies and programming languages.</p>
+            </div>
+            
+            <div class="tutorials-grid">
+                <div class="tutorial-card">
+                    <div class="tutorial-header">
+                        <span class="tutorial-difficulty intermediate">Intermediate</span>
+                        <span class="tutorial-duration">45 min</span>
+                    </div>
+                    <h3 class="tutorial-title">React Hooks Deep Dive</h3>
+                    <p class="tutorial-description">Master advanced React Hooks patterns and build custom hooks for reusable state logic.</p>
+                    <div class="tutorial-tags">
+                        <span class="tag">React</span>
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">Hooks</span>
+                    </div>
+                    <a href="#" class="tutorial-start">Start Tutorial →</a>
+                </div>
+                
+                <div class="tutorial-card">
+                    <div class="tutorial-header">
+                        <span class="tutorial-difficulty beginner">Beginner</span>
+                        <span class="tutorial-duration">30 min</span>
+                    </div>
+                    <h3 class="tutorial-title">Getting Started with Docker</h3>
+                    <p class="tutorial-description">Learn containerization basics and how to deploy applications using Docker containers.</p>
+                    <div class="tutorial-tags">
+                        <span class="tag">Docker</span>
+                        <span class="tag">DevOps</span>
+                        <span class="tag">Containers</span>
+                    </div>
+                    <a href="#" class="tutorial-start">Start Tutorial →</a>
+                </div>
+                
+                <div class="tutorial-card">
+                    <div class="tutorial-header">
+                        <span class="tutorial-difficulty advanced">Advanced</span>
+                        <span class="tutorial-duration">60 min</span>
+                    </div>
+                    <h3 class="tutorial-title">Machine Learning with Python</h3>
+                    <p class="tutorial-description">Build your first ML model using Python, scikit-learn, and popular ML algorithms.</p>
+                    <div class="tutorial-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Machine Learning</span>
+                        <span class="tag">AI</span>
+                    </div>
+                    <a href="#" class="tutorial-start">Start Tutorial →</a>
+                </div>
+            </div>
+        `;
+    }
+    
+    generateTechProjectsContent() {
+        return `
+            <div class="page-header">
+                <h2>Featured Projects</h2>
+                <p>Open-source projects and technical experiments showcasing innovative solutions.</p>
+            </div>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-status active">Active</div>
+                    <h3 class="project-title">Stock Analysis Platform</h3>
+                    <p class="project-description">AI-powered stock analysis tool with technical indicators, portfolio management, and real-time market data integration.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">TensorFlow</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">GitHub</a>
+                        <a href="#" class="project-link">Live Demo</a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-status completed">Completed</div>
+                    <h3 class="project-title">Cloud Infrastructure Automation</h3>
+                    <p class="project-description">Infrastructure as Code solution for automated cloud deployment and management across multiple providers.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Terraform</span>
+                        <span class="tech-tag">AWS</span>
+                        <span class="tech-tag">Kubernetes</span>
+                        <span class="tech-tag">Ansible</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">GitHub</a>
+                        <a href="#" class="project-link">Documentation</a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-status planning">Planning</div>
+                    <h3 class="project-title">Real-time Collaboration Tool</h3>
+                    <p class="project-description">WebRTC-based real-time collaboration platform with video conferencing, screen sharing, and collaborative editing.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">WebRTC</span>
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">Socket.io</span>
+                        <span class="tech-tag">WebSockets</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">Concept</a>
+                        <a href="#" class="project-link">Contributors Wanted</a>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    generateAuthorContent() {
+        return `
+            <div class="page-header">
+                <h2>About the Author</h2>
+                <p>Learn more about the creator behind Beacon of Tech</p>
+            </div>
+            
+            <div class="author-container">
+                <div class="author-profile">
+                    <div class="author-avatar">
+                        <div class="avatar-placeholder">👤</div>
+                    </div>
+                    <div class="author-info">
+                        <h3>Sriram Rajendran</h3>
+                        <p class="author-title">Technology Enthusiast & Investment Analyst</p>
+                        <div class="author-links">
+                            <a href="https://twitter.com/rajen.sriram" target="_blank" class="social-link">
+                                <span class="social-icon">🐦</span> @rajen.sriram
+                            </a>
+                            <a href="https://github.com/sriramrajendran" target="_blank" class="social-link">
+                                <span class="social-icon">🐙</span> GitHub
+                            </a>
+                            <a href="https://beaconoftech.com" target="_blank" class="social-link">
+                                <span class="social-icon">🌐</span> beaconoftech.com
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="author-content">
+                    <div class="author-section">
+                        <h4>🚀 Technology Background</h4>
+                        <p>Passionate developer with extensive experience in building scalable web applications, cloud infrastructure, and data-driven solutions. Specialized in modern JavaScript frameworks, cloud-native architecture, and AI/ML integration.</p>
+                    </div>
+                    
+                    <div class="author-section">
+                        <h4>📈 Investment Expertise</h4>
+                        <p>Self-taught investment analyst with a focus on technical analysis, quantitative strategies, and algorithmic trading. Developed sophisticated stock analysis tools combining traditional technical indicators with modern pattern recognition algorithms.</p>
+                    </div>
+                    
+                    <div class="author-section">
+                        <h4>💡 Project Vision</h4>
+                        <p>Beacon of Tech represents the fusion of technology and finance - a platform where cutting-edge development meets intelligent investment analysis. The goal is to democratize advanced stock analysis tools while sharing knowledge about modern technology trends.</p>
+                    </div>
+                    
+                    <div class="author-section">
+                        <h4>🛠️ Skills & Technologies</h4>
+                        <div class="skills-grid">
+                            <div class="skill-category">
+                                <h5>Frontend</h5>
+                                <div class="skill-tags">
+                                    <span class="skill-tag">JavaScript</span>
+                                    <span class="skill-tag">React</span>
+                                    <span class="skill-tag">Vue.js</span>
+                                    <span class="skill-tag">CSS3</span>
+                                </div>
+                            </div>
+                            <div class="skill-category">
+                                <h5>Backend</h5>
+                                <div class="skill-tags">
+                                    <span class="skill-tag">Node.js</span>
+                                    <span class="skill-tag">Python</span>
+                                    <span class="skill-tag">PostgreSQL</span>
+                                    <span class="skill-tag">MongoDB</span>
+                                </div>
+                            </div>
+                            <div class="skill-category">
+                                <h5>Cloud & DevOps</h5>
+                                <div class="skill-tags">
+                                    <span class="skill-tag">AWS</span>
+                                    <span class="skill-tag">Docker</span>
+                                    <span class="skill-tag">Kubernetes</span>
+                                    <span class="skill-tag">CI/CD</span>
+                                </div>
+                            </div>
+                            <div class="skill-category">
+                                <h5>Data & AI</h5>
+                                <div class="skill-tags">
+                                    <span class="skill-tag">TensorFlow</span>
+                                    <span class="skill-tag">Pandas</span>
+                                    <span class="skill-tag">NumPy</span>
+                                    <span class="skill-tag">Scikit-learn</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="author-section">
+                        <h4>📧 Get in Touch</h4>
+                        <p>Interested in collaboration, have questions about the projects, or want to discuss technology and investing? Feel free to reach out!</p>
+                        <div class="contact-methods">
+                            <a href="mailto:contact@beaconoftech.com" class="contact-method">
+                                <span class="contact-icon">📧</span>
+                                contact@beaconoftech.com
+                            </a>
+                            <a href="https://linkedin.com/in/sriramrajendran" target="_blank" class="contact-method">
+                                <span class="contact-icon">💼</span>
+                                LinkedIn Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
     }
     
     generatePortfolioContent() {
@@ -169,7 +593,7 @@ class PageManager {
                 </div>
                 
                 <div class="table-wrapper">
-                    <table id="stocks-table" class="stocks-table">
+                    <table id="stocks-table" class="stocks-table stocks-table--screener">
                     <thead>
                         <tr>
                             <th data-sort="rank">Rank ↕</th>
@@ -256,7 +680,7 @@ class PageManager {
                 </div>
                 
                 <div class="table-wrapper">
-                    <table id="stocks-table" class="stocks-table">
+                    <table id="stocks-table" class="stocks-table stocks-table--screener">
                     <thead>
                         <tr>
                             <th data-sort="rank">Rank ↕</th>
@@ -338,7 +762,7 @@ class PageManager {
                 </div>
                 
                 <div class="table-wrapper">
-                    <table id="stocks-table" class="stocks-table">
+                    <table id="stocks-table" class="stocks-table stocks-table--screener">
                     <thead>
                         <tr>
                             <th data-sort="rank">Rank ↕</th>
@@ -420,7 +844,7 @@ class PageManager {
                 </div>
                 
                 <div class="table-wrapper">
-                    <table id="stocks-table" class="stocks-table">
+                    <table id="stocks-table" class="stocks-table stocks-table--screener">
                     <thead>
                         <tr>
                             <th data-sort="rank">Rank ↕</th>
@@ -450,58 +874,6 @@ class PageManager {
         `;
     }
     
-    generateImportContent() {
-        return `
-            <div class="page-header">
-                <h2>Import Portfolio</h2>
-                <p>Import your portfolio from a brokerage CSV file to analyze your holdings.</p>
-                
-                <form id="import-form">
-                    <div class="controls-row">
-                        <div class="form-group">
-                            <label for="csv-file">CSV File:</label>
-                            <input type="file" id="csv-file" accept=".csv" required>
-                            <div class="form-hint">Supported formats: Robinhood, E-Trade, Schwab, Fidelity</div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="brokerage">Brokerage:</label>
-                            <select id="brokerage">
-                                <option value="auto">Auto-detect</option>
-                                <option value="robinhood">Robinhood</option>
-                                <option value="etrade">E-Trade</option>
-                                <option value="schwab">Schwab</option>
-                                <option value="fidelity">Fidelity</option>
-                                <option value="vanguard">Vanguard</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="controls-row">
-                        <div class="form-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="save-portfolio" checked>
-                                Save portfolio to local storage
-                            </label>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="update-watchlist">
-                                Add symbols to watchlist
-                            </label>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary">Import Portfolio</button>
-                    </div>
-                </form>
-            </div>
-            
-            <div id="import-results" style="display: none;">
-                <!-- Results will be displayed here -->
-            </div>
-        `;
-    }
     
     attachEventListeners(pageType) {
         // Add form submit listener
@@ -513,22 +885,11 @@ class PageManager {
             });
         }
         
-        // Special handling for import page
-        if (pageType === 'import') {
-            const fileInput = document.getElementById('csv-file');
-            if (fileInput) {
-                fileInput.addEventListener('change', (e) => {
-                    this.handleFileSelect(e);
-                });
-            }
-        }
+
+        this.setupTableControls();
     }
     
     handleFormSubmit(pageType) {
-        if (pageType === 'import') {
-            this.handleImportSubmit();
-            return;
-        }
         
         const symbolsInput = document.getElementById('symbols');
         const periodSelect = document.getElementById('period');
@@ -554,225 +915,6 @@ class PageManager {
         this.analyzeStocks(symbolArray, period, topN, pageType);
     }
     
-    handleFileSelect(event) {
-        const file = event.target.files[0];
-        if (file) {
-            // Basic file validation
-            if (!file.name.toLowerCase().endsWith('.csv')) {
-                showError('Please select a CSV file');
-                return;
-            }
-            
-            if (file.size > 10 * 1024 * 1024) { // 10MB limit
-                showError('File size too large. Please select a smaller file.');
-                return;
-            }
-            
-            console.log('File selected:', file.name, 'Size:', file.size);
-        }
-    }
-    
-    handleImportSubmit() {
-        const fileInput = document.getElementById('csv-file');
-        const brokerageSelect = document.getElementById('brokerage');
-        const savePortfolioCheckbox = document.getElementById('save-portfolio');
-        const updateWatchlistCheckbox = document.getElementById('update-watchlist');
-        
-        if (!fileInput || !fileInput.files[0]) {
-            showError('Please select a CSV file to import');
-            return;
-        }
-        
-        const file = fileInput.files[0];
-        const brokerage = brokerageSelect ? brokerageSelect.value : 'auto';
-        const savePortfolio = savePortfolioCheckbox ? savePortfolioCheckbox.checked : false;
-        const updateWatchlist = updateWatchlistCheckbox ? updateWatchlistCheckbox.checked : false;
-        
-        this.processImportFile(file, brokerage, savePortfolio, updateWatchlist);
-    }
-    
-    async processImportFile(file, brokerage, savePortfolio, updateWatchlist) {
-        showLoading('Processing portfolio file...');
-        
-        try {
-            const text = await file.text();
-            const holdings = this.parseCSV(text, brokerage);
-            
-            if (holdings.length === 0) {
-                showError('No valid holdings found in the CSV file');
-                return;
-            }
-            
-            // Display import results
-            this.displayImportResults(holdings);
-            
-            // Save to local storage if requested
-            if (savePortfolio) {
-                this.savePortfolioToStorage(holdings);
-            }
-            
-            // Update watchlist if requested
-            if (updateWatchlist) {
-                this.updateWatchlistWithHoldings(holdings);
-            }
-            
-        } catch (error) {
-            showError('Error processing file: ' + error.message);
-        } finally {
-            hideLoading();
-        }
-    }
-    
-    parseCSV(text, brokerage) {
-        const lines = text.split('\\n').filter(line => line.trim());
-        if (lines.length < 2) {
-            throw new Error('CSV file appears to be empty or invalid');
-        }
-        
-        const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
-        const holdings = [];
-        
-        // Try to detect CSV format and extract holdings
-        for (let i = 1; i < lines.length; i++) {
-            const values = lines[i].split(',').map(v => v.trim());
-            if (values.length < 3) continue; // Skip invalid rows
-            
-            const holding = this.extractHoldingFromRow(headers, values, brokerage);
-            if (holding) {
-                holdings.push(holding);
-            }
-        }
-        
-        return holdings;
-    }
-    
-    extractHoldingFromRow(headers, values, brokerage) {
-        // Common CSV column mappings
-        const symbolIndex = headers.findIndex(h => h.includes('symbol') || h.includes('ticker'));
-        const quantityIndex = headers.findIndex(h => h.includes('quantity') || h.includes('shares') || h.includes('qty'));
-        const priceIndex = headers.findIndex(h => h.includes('price') || h.includes('avg cost'));
-        
-        if (symbolIndex === -1) return null;
-        
-        const symbol = values[symbolIndex]?.toUpperCase();
-        if (!symbol || symbol.length < 1) return null;
-        
-        const quantity = quantityIndex !== -1 ? parseFloat(values[quantityIndex]) || 0 : 0;
-        const avgPrice = priceIndex !== -1 ? parseFloat(values[priceIndex]) || 0 : 0;
-        
-        return {
-            symbol,
-            quantity,
-            avgPrice,
-            currentValue: quantity * avgPrice,
-            brokerage
-        };
-    }
-    
-    displayImportResults(holdings) {
-        const resultsDiv = document.getElementById('import-results');
-        if (!resultsDiv) return;
-        
-        const totalValue = holdings.reduce((sum, h) => sum + h.currentValue, 0);
-        const totalHoldings = holdings.length;
-        
-        let html = `
-            <div class="page-header">
-                <h3>Import Results</h3>
-                <div class="import-summary">
-                    <div class="summary-card">
-                        <div class="summary-value">${totalHoldings}</div>
-                        <div class="summary-label">Total Holdings</div>
-                    </div>
-                    <div class="summary-card">
-                        <div class="summary-value">$${totalValue.toFixed(2)}</div>
-                        <div class="summary-label">Portfolio Value</div>
-                    </div>
-                </div>
-                
-                <div class="stock-cards">
-                    ${holdings.map(holding => `
-                        <div class="stock-card">
-                            <div class="stock-header">
-                                <strong>${holding.symbol}</strong>
-                                <span class="stock-broker">${holding.brokerage}</span>
-                            </div>
-                            <div class="stock-details">
-                                <div>Quantity: ${holding.quantity}</div>
-                                <div>Avg Price: $${holding.avgPrice.toFixed(2)}</div>
-                                <div>Value: $${holding.currentValue.toFixed(2)}</div>
-                            </div>
-                            <div class="stock-gain ${holding.currentValue >= holding.avgPrice * holding.quantity ? 'positive' : 'negative'}">
-                                $${(holding.currentValue - holding.avgPrice * holding.quantity).toFixed(2)}
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-                
-                ${holdings.length > 10 ? `<div class="more-holdings">Showing first 10 of ${holdings.length} holdings</div>` : ''}
-                
-                <div style="margin-top: 20px;">
-                    <button class="btn btn-primary" onclick="pageManager.analyzeImportedPortfolio(['${holdings.map(h => h.symbol).join("','")}'])">
-                        Analyze Portfolio
-                    </button>
-                </div>
-            </div>
-        `;
-        
-        resultsDiv.innerHTML = html;
-        resultsDiv.style.display = 'block';
-    }
-    
-    savePortfolioToStorage(holdings) {
-        try {
-            const portfolioData = {
-                holdings,
-                importDate: new Date().toISOString(),
-                symbols: holdings.map(h => h.symbol)
-            };
-            
-            localStorage.setItem('importedPortfolio', JSON.stringify(portfolioData));
-            console.log('Portfolio saved to local storage');
-        } catch (error) {
-            console.error('Error saving portfolio:', error);
-        }
-    }
-    
-    updateWatchlistWithHoldings(holdings) {
-        try {
-            const currentConfig = this.config || {};
-            const currentWatchlist = currentConfig.watchlist?.symbols || [];
-            
-            const newSymbols = holdings.map(h => h.symbol);
-            const combinedWatchlist = [...new Set([...currentWatchlist, ...newSymbols])];
-            
-            // Update config (in a real app, this would save to server)
-            if (this.config) {
-                this.config.watchlist.symbols = combinedWatchlist;
-            }
-            
-            console.log('Watchlist updated with imported symbols');
-        } catch (error) {
-            console.error('Error updating watchlist:', error);
-        }
-    }
-    
-    analyzeImportedPortfolio(symbols) {
-        // Navigate to portfolio page and analyze
-        this.loadPage('portfolio');
-        
-        setTimeout(() => {
-            const symbolsTextarea = document.getElementById('symbols');
-            const periodSelect = document.getElementById('period');
-            const topNSelect = document.getElementById('top_n');
-            
-            if (symbolsTextarea) {
-                symbolsTextarea.value = symbols.join(', ');
-            }
-            
-            this.handleFormSubmit('portfolio');
-        }, 500);
-    }
     
     async analyzeStocks(symbols, period, topN, pageType) {
         showLoading();
@@ -835,72 +977,91 @@ class PageManager {
         // Sort by score (highest first)
         const sortedResults = results.sort((a, b) => b.score - a.score);
         
-        let tableHTML = '';
+        // COMPLETE BYPASS: Create entirely new table structure
+        const table = document.createElement('table');
+        table.style.cssText = 'border-collapse: collapse; width: 100%; table-layout: fixed;';
+        
+        // Create header
+        const thead = document.createElement('thead');
+        thead.innerHTML = `
+            <tr>
+                <th style="width: 40px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">Rank</th>
+                <th style="width: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">Symbol</th>
+                <th style="width: 70px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">Price</th>
+                <th style="width: 55px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">1D %</th>
+                <th style="width: 55px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">1W %</th>
+                <th style="width: 55px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">1M %</th>
+                <th style="width: 55px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">6M %</th>
+                <th style="width: 55px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">1Y %</th>
+                <th style="width: 50px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">RSI</th>
+                <th style="width: 45px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">VCP</th>
+                <th style="width: 45px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">RSI Div</th>
+                <th style="width: 45px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">MACD Div</th>
+                <th style="width: 45px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">Cross</th>
+                <th style="width: 45px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">Breakout</th>
+                <th style="width: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">Recommendation</th>
+                <th style="width: 50px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: 1px solid #ccc;">Score</th>
+            </tr>
+        `;
+        table.appendChild(thead);
+        
+        // Create body
+        const newTbody = document.createElement('tbody');
+        
         sortedResults.forEach((result, index) => {
             const recommendation = result.recommendation || 'HOLD';
             const recommendationClass = this.getRecommendationClass(recommendation);
             const indicators = result.indicators || {};
             
-            // Generate pattern badges - access directly from result object
             const vcpBadge = this.generatePatternBadge('vcp', result.vcp_pattern);
             const rsiDivBadge = this.generatePatternBadge('rsi_div', result.rsi_divergence);
             const macdDivBadge = this.generatePatternBadge('macd_div', result.macd_divergence);
             const crossBadge = this.generatePatternBadge('cross', result.enhanced_crossovers);
             const breakoutBadge = this.generatePatternBadge('breakout', result.breakout_setup);
             
-            tableHTML += `
-                <tr class="clickable-row" data-symbol="${result.symbol}">
-                    <td>${index + 1}</td>
-                    <td data-company="${result.company_name || result.company || 'N/A'}"><strong>${result.symbol}</strong></td>
-                    <td>$${result.current_price?.toFixed(2) || 'N/A'}</td>
-                    <td class="${result.price_change_1d_pct >= 0 ? 'positive' : 'negative'}">
-                        ${result.price_change_1d_pct >= 0 ? '+' : ''}${result.price_change_1d_pct?.toFixed(2) || '0.00'}%
-                    </td>
-                    <td class="${result.price_change_1w_pct >= 0 ? 'positive' : 'negative'}">
-                        ${result.price_change_1w_pct >= 0 ? '+' : ''}${result.price_change_1w_pct?.toFixed(2) || '0.00'}%
-                    </td>
-                    <td class="${result.price_change_1m_pct >= 0 ? 'positive' : 'negative'}">
-                        ${result.price_change_1m_pct >= 0 ? '+' : ''}${result.price_change_1m_pct?.toFixed(2) || '0.00'}%
-                    </td>
-                    <td class="${result.price_change_6m_pct >= 0 ? 'positive' : 'negative'}">
-                        ${result.price_change_6m_pct >= 0 ? '+' : ''}${result.price_change_6m_pct?.toFixed(2) || '0.00'}%
-                    </td>
-                    <td class="${result.price_change_1y_pct >= 0 ? 'positive' : 'negative'}">
-                        ${result.price_change_1y_pct >= 0 ? '+' : ''}${result.price_change_1y_pct?.toFixed(2) || '0.00'}%
-                    </td>
-                    <td class="${this.getRSIClass(indicators.rsi)}">${indicators.rsi?.toFixed(2) || 'N/A'}</td>
-                    <td>${vcpBadge}</td>
-                    <td>${rsiDivBadge}</td>
-                    <td>${macdDivBadge}</td>
-                    <td>${crossBadge}</td>
-                    <td>${breakoutBadge}</td>
-                    <td><span class="${recommendationClass}">${recommendation}</span></td>
-                    <td><strong>${result.score?.toFixed(1) || '0'}</strong></td>
-                </tr>
+            const row = document.createElement('tr');
+            row.style.cssText = 'cursor: pointer;';
+            row.innerHTML = `
+                <td style="background: white; border: 1px solid #ccc; text-align: center; font-weight: bold;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${index + 1}</td>
+                <td style="background: white; border: 1px solid #ccc;" data-company="${result.company_name || result.company || ''}"><strong>${result.symbol}</strong></td>
+                <td style="background: white; border: 1px solid #ccc;">$${result.current_price?.toFixed(2) || 'N/A'}</td>
+                <td style="background: white; border: 1px solid #ccc; color: ${result.price_change_1d_pct >= 0 ? 'green' : 'red'};" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.price_change_1d_pct >= 0 ? '+' : ''}${result.price_change_1d_pct?.toFixed(2) || '0.00'}%</td>
+                <td style="background: white; border: 1px solid #ccc; color: ${result.price_change_1w_pct >= 0 ? 'green' : 'red'};" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.price_change_1w_pct >= 0 ? '+' : ''}${result.price_change_1w_pct?.toFixed(2) || '0.00'}%</td>
+                <td style="background: white; border: 1px solid #ccc; color: ${result.price_change_1m_pct >= 0 ? 'green' : 'red'};" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.price_change_1m_pct >= 0 ? '+' : ''}${result.price_change_1m_pct?.toFixed(2) || '0.00'}%</td>
+                <td style="background: white; border: 1px solid #ccc; color: ${result.price_change_6m_pct >= 0 ? 'green' : 'red'};" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.price_change_6m_pct >= 0 ? '+' : ''}${result.price_change_6m_pct?.toFixed(2) || '0.00'}%</td>
+                <td style="background: white; border: 1px solid #ccc; color: ${result.price_change_1y_pct >= 0 ? 'green' : 'red'};" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.price_change_1y_pct >= 0 ? '+' : ''}${result.price_change_1y_pct?.toFixed(2) || '0.00'}%</td>
+                <td style="background: white; border: 1px solid #ccc;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${indicators.rsi?.toFixed(2) || 'N/A'}</td>
+                <td style="background: white; border: 1px solid #ccc;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${vcpBadge}</td>
+                <td style="background: white; border: 1px solid #ccc;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${rsiDivBadge}</td>
+                <td style="background: white; border: 1px solid #ccc;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${macdDivBadge}</td>
+                <td style="background: white; border: 1px solid #ccc;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${crossBadge}</td>
+                <td style="background: white; border: 1px solid #ccc;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${breakoutBadge}</td>
+                <td style="background: white; border: 1px solid #ccc;"><span class="${recommendationClass}">${recommendation}</span></td>
+                <td style="background: white; border: 1px solid #ccc; font-weight: bold;" data-symbol="${result.symbol}" data-company="${result.company_name || result.company || ''}" data-recommendation="${recommendation}">${result.score?.toFixed(1) || '0'}</td>
             `;
+            newTbody.appendChild(row);
         });
         
-        // Add failed symbols at the end
-        if (failedSymbols.length > 0) {
-            tableHTML += `
-                <tr class="failed-row">
-                    <td colspan="16" class="failed-cell">
-                        Failed to analyze: ${failedSymbols.join(', ')}
-                    </td>
-                </tr>
-            `;
+        table.appendChild(newTbody);
+        
+        // Replace the entire table
+        const tableWrapper = document.querySelector('.table-wrapper');
+        if (tableWrapper) {
+            tableWrapper.innerHTML = '';
+            tableWrapper.appendChild(table);
         }
         
-        tbody.innerHTML = tableHTML;
-        
-        // Add event listeners for clickable rows
-        tbody.addEventListener('click', (e) => {
-            const row = e.target.closest('.clickable-row');
-            if (row) {
+        // Add event listeners
+        newTbody.addEventListener('click', (e) => {
+            const row = e.target.closest('tr');
+            if (row && row.getAttribute('data-symbol')) {
                 const symbol = row.getAttribute('data-symbol');
                 this.showStockDetails(symbol);
             }
         });
+        
+        // Apply filters to the new table
+        this.applyTableFilters();
     }
     
     getRecommendationClass(recommendation) {
@@ -1221,6 +1382,15 @@ class PageManager {
                 modal.style.display = 'none';
             }
         });
+        
+        // Add ESC key handler to close modal
+        const escHandler = (e) => {
+            if (e.key === 'Escape') {
+                modal.style.display = 'none';
+                document.removeEventListener('keydown', escHandler);
+            }
+        };
+        document.addEventListener('keydown', escHandler);
     }
     
     generatePatternCard(title, pattern) {
