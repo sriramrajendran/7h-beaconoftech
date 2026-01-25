@@ -1,65 +1,126 @@
-<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
   <defs>
+    <!-- Premium Gradients -->
     <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#7c3aed;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
     </linearGradient>
-    <radialGradient id="beaconGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:0.8" />
-      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:0.2" />
+    
+    <radialGradient id="beaconCore" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9" />
+      <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.6" />
     </radialGradient>
-    <filter id="glow">
+    
+    <radialGradient id="beaconGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.1" />
+    </radialGradient>
+    
+    <!-- Premium Filters -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="innerGlow" x="-50%" y="-50%" width="200%" height="200%">
       <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
       <feMerge>
         <feMergeNode in="coloredBlur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
+    
+    <!-- Animation Patterns -->
+    <pattern id="techPattern" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="0.5" fill="url(#logoGradient)" opacity="0.6"/>
+      <circle cx="6" cy="6" r="0.5" fill="url(#logoGradient)" opacity="0.6"/>
+    </pattern>
   </defs>
   
-  <!-- Outer ring with gradient -->
-  <circle cx="16" cy="16" r="14" fill="none" stroke="url(#logoGradient)" stroke-width="0.5" opacity="0.3"/>
+  <!-- Background Circle with Glow -->
+  <circle cx="32" cy="32" r="30" fill="url(#beaconGlow)" opacity="0.4"/>
   
-  <!-- Beacon core with glow effect -->
-  <circle cx="16" cy="16" r="10" fill="url(#beaconGlow)" opacity="0.15"/>
-  <circle cx="16" cy="16" r="6" fill="url(#logoGradient)" opacity="0.9" filter="url(#glow)"/>
+  <!-- Outer Ring -->
+  <circle cx="32" cy="32" r="28" fill="none" stroke="url(#logoGradient)" stroke-width="1" opacity="0.6"/>
   
-  <!-- Inner beacon point -->
-  <circle cx="16" cy="16" r="2.5" fill="#ffffff" opacity="0.9"/>
+  <!-- Middle Ring -->
+  <circle cx="32" cy="32" r="24" fill="none" stroke="url(#logoGradient)" stroke-width="0.5" opacity="0.4"/>
   
-  <!-- Technology circuit pattern -->
-  <g opacity="0.6">
-    <!-- Top circuit node -->
-    <circle cx="16" cy="6" r="1.5" fill="url(#logoGradient)"/>
-    <line x1="16" y1="7.5" x2="16" y2="10" stroke="url(#logoGradient)" stroke-width="1"/>
+  <!-- Tech Pattern Background -->
+  <circle cx="32" cy="32" r="22" fill="url(#techPattern)" opacity="0.3"/>
+  
+  <!-- Beacon Core -->
+  <circle cx="32" cy="32" r="18" fill="url(#beaconCore)" filter="url(#innerGlow)"/>
+  
+  <!-- Center Beacon Point -->
+  <circle cx="32" cy="32" r="8" fill="url(#logoGradient)" filter="url(#glow)"/>
+  <circle cx="32" cy="32" r="4" fill="#ffffff" opacity="0.9"/>
+  
+  <!-- Premium Circuit Pattern -->
+  <g opacity="0.7">
+    <!-- Top Circuit -->
+    <line x1="32" y1="14" x2="32" y2="8" stroke="url(#logoGradient)" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="32" cy="8" r="2" fill="url(#logoGradient)"/>
+    <circle cx="32" cy="8" r="1" fill="#ffffff"/>
     
-    <!-- Right circuit node -->
-    <circle cx="26" cy="16" r="1.5" fill="url(#logoGradient)"/>
-    <line x1="24.5" y1="16" x2="22" y2="16" stroke="url(#logoGradient)" stroke-width="1"/>
+    <!-- Right Circuit -->
+    <line x1="50" y1="32" x2="56" y2="32" stroke="url(#logoGradient)" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="56" cy="32" r="2" fill="url(#logoGradient)"/>
+    <circle cx="56" cy="32" r="1" fill="#ffffff"/>
     
-    <!-- Bottom circuit node -->
-    <circle cx="16" cy="26" r="1.5" fill="url(#logoGradient)"/>
-    <line x1="16" y1="24.5" x2="16" y2="22" stroke="url(#logoGradient)" stroke-width="1"/>
+    <!-- Bottom Circuit -->
+    <line x1="32" y1="50" x2="32" y2="56" stroke="url(#logoGradient)" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="32" cy="56" r="2" fill="url(#logoGradient)"/>
+    <circle cx="32" cy="56" r="1" fill="#ffffff"/>
     
-    <!-- Left circuit node -->
-    <circle cx="6" cy="16" r="1.5" fill="url(#logoGradient)"/>
-    <line x1="7.5" y1="16" x2="10" y2="16" stroke="url(#logoGradient)" stroke-width="1"/>
+    <!-- Left Circuit -->
+    <line x1="14" y1="32" x2="8" y2="32" stroke="url(#logoGradient)" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="8" cy="32" r="2" fill="url(#logoGradient)"/>
+    <circle cx="8" cy="32" r="1" fill="#ffffff"/>
   </g>
   
-  <!-- Diagonal light rays -->
-  <g opacity="0.4">
-    <line x1="16" y1="16" x2="20" y2="12" stroke="url(#logoGradient)" stroke-width="1" stroke-linecap="round"/>
-    <line x1="16" y1="16" x2="12" y2="12" stroke="url(#logoGradient)" stroke-width="1" stroke-linecap="round"/>
-    <line x1="16" y1="16" x2="20" y2="20" stroke="url(#logoGradient)" stroke-width="1" stroke-linecap="round"/>
-    <line x1="16" y1="16" x2="12" y2="20" stroke="url(#logoGradient)" stroke-width="1" stroke-linecap="round"/>
+  <!-- Diagonal Light Rays -->
+  <g opacity="0.5">
+    <line x1="32" y1="32" x2="44" y2="20" stroke="url(#logoGradient)" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+    <line x1="32" y1="32" x2="20" y2="20" stroke="url(#logoGradient)" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+    <line x1="32" y1="32" x2="44" y2="44" stroke="url(#logoGradient)" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+    <line x1="32" y1="32" x2="20" y2="44" stroke="url(#logoGradient)" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
   </g>
   
-  <!-- Subtle data points -->
+  <!-- Secondary Light Rays -->
   <g opacity="0.3">
-    <circle cx="11" cy="11" r="0.8" fill="url(#logoGradient)"/>
-    <circle cx="21" cy="11" r="0.8" fill="url(#logoGradient)"/>
-    <circle cx="21" cy="21" r="0.8" fill="url(#logoGradient)"/>
-    <circle cx="11" cy="21" r="0.8" fill="url(#logoGradient)"/>
+    <line x1="32" y1="32" x2="40" y2="24" stroke="url(#logoGradient)" stroke-width="1" stroke-linecap="round"/>
+    <line x1="32" y1="32" x2="24" y2="24" stroke="url(#logoGradient)" stroke-width="1" stroke-linecap="round"/>
+    <line x1="32" y1="32" x2="40" y2="40" stroke="url(#logoGradient)" stroke-width="1" stroke-linecap="round"/>
+    <line x1="32" y1="32" x2="24" y2="40" stroke="url(#logoGradient)" stroke-width="1" stroke-linecap="round"/>
   </g>
+  
+  <!-- Data Points -->
+  <g opacity="0.6">
+    <circle cx="22" cy="22" r="1" fill="url(#logoGradient)"/>
+    <circle cx="42" cy="22" r="1" fill="url(#logoGradient)"/>
+    <circle cx="42" cy="42" r="1" fill="url(#logoGradient)"/>
+    <circle cx="22" cy="42" r="1" fill="url(#logoGradient)"/>
+    
+    <circle cx="18" cy="32" r="0.8" fill="url(#logoGradient)"/>
+    <circle cx="46" cy="32" r="0.8" fill="url(#logoGradient)"/>
+    <circle cx="32" cy="18" r="0.8" fill="url(#logoGradient)"/>
+    <circle cx="32" cy="46" r="0.8" fill="url(#logoGradient)"/>
+  </g>
+  
+  <!-- Animated Pulse Rings -->
+  <circle cx="32" cy="32" r="12" fill="none" stroke="url(#logoGradient)" stroke-width="0.5" opacity="0.4">
+    <animate attributeName="r" values="12;20;12" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.4;0.1;0.4" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  
+  <circle cx="32" cy="32" r="16" fill="none" stroke="url(#logoGradient)" stroke-width="0.3" opacity="0.3">
+    <animate attributeName="r" values="16;24;16" dur="3s" begin="1s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0.05;0.3" dur="3s" begin="1s" repeatCount="indefinite"/>
+  </circle>
 </svg>

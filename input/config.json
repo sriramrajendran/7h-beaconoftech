@@ -13,6 +13,13 @@
     "defaultPeriod": "6mo",
     "defaultTopN": 3
   },
+  "screener": {
+    "name": "Stock Screener",
+    "description": "Default stocks for screening analysis",
+    "symbols": ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "NVDA", "JPM", "JNJ", "V", "PG", "UNH", "HD", "MA", "PYPL", "DIS", "NFLX", "ADBE", "CRM", "BAC"],
+    "defaultPeriod": "6mo",
+    "defaultTopN": 15
+  },
   "market": {
     "name": "US Market Analysis",
     "description": "Major US stocks for market analysis", 

@@ -8,10 +8,6 @@ class PageManager {
         // Initialize modular components
         this.initializeModules();
         
-        this.loadConfig();
-        this.setupCollapsibleMenus();
-        this.initializeSessionStorage();
-        console.log('PageManager: Constructor completed');
     }
 
     initializeModules() {
@@ -49,6 +45,17 @@ class PageManager {
         // Setup collapsible menu functionality
         const navParents = document.querySelectorAll('.nav-parent');
         
+        // Set initial collapsed state - Technology first (index 0) stays open, others collapsed
+        navParents.forEach((parent, index) => {
+            if (index > 0) {
+                parent.classList.add('collapsed');
+                const children = parent.nextElementSibling;
+                if (children) {
+                    children.classList.add('collapsed');
+                }
+            }
+        });
+
         navParents.forEach(parent => {
             parent.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -69,8 +76,13 @@ class PageManager {
                 
                 // Toggle current section
                 parent.classList.toggle('collapsed');
-                if (childrenContainer && childrenContainer.classList.contains('nav-children')) {
+                if (childrenContainer) {
                     childrenContainer.classList.toggle('collapsed');
+                }
+                
+                // Reinitialize Lucide icons for arrow rotation
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
                 }
                 
                 // Set active state for current parent
@@ -263,10 +275,76 @@ class PageManager {
         return this.config?.[pageType]?.defaultTopN || 5;
     }
 
+    updateTagline(pageType) {
+        const subtitleElement = document.querySelector('.header-text .subtitle');
+        if (!subtitleElement) return;
+        
+        // Define taglines for different sections
+        const taglines = {
+            // Technology pages
+            'tech-blog': 'Tech Hub For Insights',
+            'tech-tutorials': 'Tech Hub For Insights',
+            'tech-projects': 'Tech Hub For Insights',
+            
+            // Analytics pages
+            'portfolio': 'Market Analytics',
+            'watchlist': 'Market Analytics',
+            'screener': 'Market Analytics',
+            'etf': 'Market Analytics',
+            
+            // Markets pages
+            'us-stocks': 'Market Analytics',
+            'crypto': 'Market Analytics',
+            
+            // About page
+            'author': 'Tech Hub For Insights and Market Analytics Platform'
+        };
+        
+        // Update tagline based on page type
+        const newTagline = taglines[pageType] || 'Professional Analytics Platform';
+        subtitleElement.textContent = newTagline;
+        
+        // Control market data visibility based on section
+        if (typeof marketDataService !== 'undefined') {
+            const analyticsPages = ['portfolio', 'watchlist', 'screener', 'etf'];
+            const marketsPages = ['us-stocks', 'crypto'];
+            const techPages = ['tech-blog', 'tech-tutorials', 'tech-projects'];
+            
+            if (analyticsPages.includes(pageType) || marketsPages.includes(pageType)) {
+                marketDataService.show();
+                // Hide the tech attribution for market pages
+                this.updateSidebarFooter(false);
+            } else {
+                marketDataService.hide();
+                // Show the tech attribution for non-market pages
+                this.updateSidebarFooter(true);
+            }
+        }
+    }
+    
+    updateSidebarFooter(showAttribution) {
+        const sidebarStatus = document.querySelector('.sidebar-footer .status-indicator');
+        const statusText = document.querySelector('.sidebar-footer .status-text');
+        
+        if (sidebarStatus && statusText) {
+            if (showAttribution) {
+                // Show @rajen.sriram attribution for tech pages
+                statusText.textContent = '@rajen.sriram';
+                sidebarStatus.style.display = 'flex';
+            } else {
+                // Hide attribution for market pages
+                sidebarStatus.style.display = 'none';
+            }
+        }
+    }
+
     loadPage(pageType) {
         console.log(`PageManager: loadPage called for ${pageType}`);
         this.currentPage = pageType;
         const mainContent = document.getElementById('main-content');
+        
+        // Update tagline first
+        this.updateTagline(pageType);
         
         // Update active nav for child links only
         document.querySelectorAll('.nav-link').forEach(link => {
@@ -277,47 +355,45 @@ class PageManager {
             activeLink.classList.add('active');
         }
         
-        // Update parent section active states
-        const techParent = document.getElementById('nav-technology-parent');
-        const tradeParent = document.getElementById('nav-stocks-parent');
+        // Update parent highlighting using our new function
+        updateParentHighlightingForPage(pageType);
         
-        if (techParent && tradeParent) {
+        // Ensure the correct section is expanded
+        const techParent = document.getElementById('nav-technology-parent');
+        const analyticsParent = document.getElementById('nav-analytics-parent');
+        const marketsParent = document.getElementById('nav-markets-parent');
+        
+        if (techParent && analyticsParent && marketsParent) {
             const techPages = ['tech-blog', 'tech-tutorials', 'tech-projects'];
-            const tradePages = ['portfolio', 'watchlist', 'etf', 'us-stocks'];
+            const analyticsPages = ['portfolio', 'watchlist', 'screener', 'etf'];
+            const marketsPages = ['us-stocks', 'crypto'];
             
+            // Collapse all sections first
+            techParent.classList.add('collapsed');
+            analyticsParent.classList.add('collapsed');
+            marketsParent.classList.add('collapsed');
+            
+            const techChildren = document.getElementById('nav-technology-children');
+            const analyticsChildren = document.getElementById('nav-analytics-children');
+            const marketsChildren = document.getElementById('nav-markets-children');
+            
+            if (techChildren) techChildren.classList.add('collapsed');
+            if (analyticsChildren) analyticsChildren.classList.add('collapsed');
+            if (marketsChildren) marketsChildren.classList.add('collapsed');
+            
+            // Expand the correct section
             if (techPages.includes(pageType)) {
-                techParent.classList.add('active');
-                tradeParent.classList.remove('active');
-                // Ensure tech section is expanded
-                const techChildren = document.getElementById('nav-technology-children');
-                const tradeChildren = document.getElementById('nav-stocks-children');
-                if (techChildren) techChildren.classList.remove('collapsed');
-                if (tradeChildren) tradeChildren.classList.add('collapsed');
                 techParent.classList.remove('collapsed');
-                tradeParent.classList.add('collapsed');
-            } else if (tradePages.includes(pageType)) {
-                tradeParent.classList.add('active');
-                techParent.classList.remove('active');
-                // Ensure trade section is expanded
-                const techChildren = document.getElementById('nav-technology-children');
-                const tradeChildren = document.getElementById('nav-stocks-children');
-                if (tradeChildren) tradeChildren.classList.remove('collapsed');
-                if (techChildren) techChildren.classList.add('collapsed');
-                tradeParent.classList.remove('collapsed');
-                techParent.classList.add('collapsed');
-            } else if (pageType === 'author') {
-                // Author is standalone, collapse both sections
-                techParent.classList.remove('active');
-                tradeParent.classList.remove('active');
-                const techChildren = document.getElementById('nav-technology-children');
-                const tradeChildren = document.getElementById('nav-stocks-children');
-                if (techChildren) techChildren.classList.add('collapsed');
-                if (tradeChildren) tradeChildren.classList.add('collapsed');
-                techParent.classList.add('collapsed');
-                tradeParent.classList.add('collapsed');
+                if (techChildren) techChildren.classList.remove('collapsed');
+            } else if (analyticsPages.includes(pageType)) {
+                analyticsParent.classList.remove('collapsed');
+                if (analyticsChildren) analyticsChildren.classList.remove('collapsed');
+            } else if (marketsPages.includes(pageType)) {
+                marketsParent.classList.remove('collapsed');
+                if (marketsChildren) marketsChildren.classList.remove('collapsed');
             }
         }
-
+        
         let content = '';
         
         switch(pageType) {
@@ -336,6 +412,9 @@ class PageManager {
             case 'watchlist':
                 content = this.generateWatchlistContent();
                 break;
+            case 'screener':
+                content = this.generateScreenerContent();
+                break;
             case 'us-stocks':
                 content = this.generateUSStocksContent();
                 break;
@@ -344,6 +423,9 @@ class PageManager {
                 break;
             case 'author':
                 content = this.authorModule.generateAuthorContent();
+                break;
+            case 'crypto':
+                content = this.generateCryptoContent();
                 break;
             default:
                 content = '<div class="card"><h2>Page not found</h2></div>';
@@ -568,6 +650,93 @@ class PageManager {
         `;
     }
     
+    generateScreenerContent() {
+        const defaultStocks = this.getDefaultStocks('screener');
+        const defaultPeriod = this.getDefaultPeriod('screener');
+        const defaultTopN = this.getDefaultTopN('screener');
+        
+        return `
+            <div class="page-header">
+                <h2>Stock Screener</h2>
+                <p>Screen and analyze stocks based on technical indicators and fundamental criteria.</p>
+                
+                <form id="screener-form">
+                    <div class="controls-row">
+                        <div class="form-group">
+                            <label for="symbols">Stock Symbols:</label>
+                            <textarea id="symbols" rows="2" placeholder="Enter symbols to screen...">${defaultStocks.join(', ')}</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="period">Period:</label>
+                            <select id="period">
+                                <option value="1mo" ${defaultPeriod === '1mo' ? 'selected' : ''}>1 Month</option>
+                                <option value="3mo" ${defaultPeriod === '3mo' ? 'selected' : ''}>3 Months</option>
+                                <option value="6mo" ${defaultPeriod === '6mo' ? 'selected' : ''}>6 Months</option>
+                                <option value="1y" ${defaultPeriod === '1y' ? 'selected' : ''}>1 Year</option>
+                                <option value="2y" ${defaultPeriod === '2y' ? 'selected' : ''}>2 Years</option>
+                                <option value="5y" ${defaultPeriod === '5y' ? 'selected' : ''}>5 Years</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="top_n">Top N:</label>
+                            <select id="top_n">
+                                <option value="5" ${defaultTopN === 5 ? 'selected' : ''}>Top 5</option>
+                                <option value="10" ${defaultTopN === 10 ? 'selected' : ''}>Top 10</option>
+                                <option value="15" ${defaultTopN === 15 ? 'selected' : ''}>Top 15</option>
+                                <option value="20" ${defaultTopN === 20 ? 'selected' : ''}>Top 20</option>
+                                <option value="30" ${defaultTopN === 30 ? 'selected' : ''}>Top 30</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Screen Stocks</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="table-container" id="screener-table-container" style="display: none;">
+                <div class="table-controls">
+                    <input type="text" id="table-search" placeholder="Search stocks..." class="search-input">
+                    <select id="table-filter" class="filter-select">
+                        <option value="all">All Stocks</option>
+                        <option value="buy">Buy Recommendations</option>
+                        <option value="sell">Sell Recommendations</option>
+                        <option value="hold">Hold</option>
+                    </select>
+                </div>
+                
+                <div class="table-wrapper">
+                    <table id="stocks-table" class="stocks-table stocks-table--screener">
+                    <thead>
+                        <tr>
+                            <th data-sort="rank">Rank ↕</th>
+                            <th data-sort="symbol">Symbol ↕</th>
+                            <th data-sort="price">Price ↕</th>
+                            <th data-sort="change_1d">1D % ↕</th>
+                            <th data-sort="change_1w">1W % ↕</th>
+                            <th data-sort="change_1m">1M % ↕</th>
+                            <th data-sort="change_6m">6M % ↕</th>
+                            <th data-sort="change_1y">1Y % ↕</th>
+                            <th data-sort="rsi">RSI ↕</th>
+                            <th>VCP</th>
+                            <th>RSI Div</th>
+                            <th>MACD Div</th>
+                            <th>Cross</th>
+                            <th>Breakout</th>
+                            <th data-sort="recommendation">Recommendation ↕</th>
+                            <th data-sort="score">Score ↕</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stocks-tbody">
+                        <tr><td colspan="16" class="loading-cell">Click "Screen Stocks" to load data...</td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        `;
+    }
+    
     generateUSStocksContent() {
         const defaultStocks = this.getDefaultStocks('market');
         const defaultPeriod = this.getDefaultPeriod('market');
@@ -732,6 +901,103 @@ class PageManager {
         `;
     }
     
+    generateCryptoContent() {
+        const defaultCryptos = ['BTC', 'ETH', 'BNB', 'SOL', 'ADA', 'XRP', 'DOT', 'AVAX'];
+        const defaultPeriod = this.getDefaultPeriod('crypto') || '1y';
+        const defaultTopN = this.getDefaultTopN('crypto') || 5;
+        
+        return `
+            <div class="page-header">
+                <h2>Cryptocurrency Analysis</h2>
+                <p>Analyze major cryptocurrencies for investment recommendations using technical indicators.</p>
+                
+                <form id="crypto-form">
+                    <div class="controls-row">
+                        <div class="form-group">
+                            <label for="period">Period:</label>
+                            <select id="period">
+                                <option value="1mo" ${defaultPeriod === '1mo' ? 'selected' : ''}>1 Month</option>
+                                <option value="3mo" ${defaultPeriod === '3mo' ? 'selected' : ''}>3 Months</option>
+                                <option value="6mo" ${defaultPeriod === '6mo' ? 'selected' : ''}>6 Months</option>
+                                <option value="1y" ${defaultPeriod === '1y' ? 'selected' : ''}>1 Year</option>
+                                <option value="2y" ${defaultPeriod === '2y' ? 'selected' : ''}>2 Years</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="top_n">Top N:</label>
+                            <select id="top_n">
+                                <option value="3" ${defaultTopN === 3 ? 'selected' : ''}>Top 3</option>
+                                <option value="5" ${defaultTopN === 5 ? 'selected' : ''}>Top 5</option>
+                                <option value="8" ${defaultTopN === 8 ? 'selected' : ''}>Top 8</option>
+                                <option value="10" ${defaultTopN === 10 ? 'selected' : ''}>Top 10</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Analyze Cryptocurrencies</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="crypto-overview">
+                <div class="overview-cards">
+                    <div class="overview-card">
+                        <h3>🪙 Market Leaders</h3>
+                        <p>Bitcoin (BTC) and Ethereum (ETH) dominate the crypto market with over 60% combined market cap.</p>
+                    </div>
+                    <div class="overview-card">
+                        <h3>📊 Technical Analysis</h3>
+                        <p>Our analysis uses RSI, MACD, and moving averages to identify optimal entry/exit points.</p>
+                    </div>
+                    <div class="overview-card">
+                        <h3>⚡ High Volatility</h3>
+                        <p>Cryptocurrencies exhibit high volatility - use strict risk management and position sizing.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-container" id="crypto-table-container" style="display: none;">
+                <div class="table-controls">
+                    <input type="text" id="table-search" placeholder="Search cryptocurrencies..." class="search-input">
+                    <select id="table-filter" class="filter-select">
+                        <option value="all">All Cryptos</option>
+                        <option value="buy">Buy Recommendations</option>
+                        <option value="sell">Sell Recommendations</option>
+                        <option value="hold">Hold</option>
+                    </select>
+                </div>
+                
+                <div class="table-wrapper">
+                    <table id="stocks-table" class="stocks-table stocks-table--screener">
+                    <thead>
+                        <tr>
+                            <th data-sort="rank">Rank ↕</th>
+                            <th data-sort="symbol">Symbol ↕</th>
+                            <th data-sort="price">Price ↕</th>
+                            <th data-sort="change_1d">1D % ↕</th>
+                            <th data-sort="change_1w">1W % ↕</th>
+                            <th data-sort="change_1m">1M % ↕</th>
+                            <th data-sort="change_6m">6M % ↕</th>
+                            <th data-sort="change_1y">1Y % ↕</th>
+                            <th data-sort="rsi">RSI ↕</th>
+                            <th>VCP</th>
+                            <th>RSI Div</th>
+                            <th>MACD Div</th>
+                            <th>Cross</th>
+                            <th>Breakout</th>
+                            <th data-sort="recommendation">Recommendation ↕</th>
+                            <th data-sort="score">Score ↕</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stocks-tbody">
+                        <tr><td colspan="16" class="loading-cell">Click "Analyze Cryptocurrencies" to load data...</td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        `;
+    }
+    
     
     attachEventListeners(pageType) {
         // Add form submit listener
@@ -759,10 +1025,19 @@ class PageManager {
             tableContainer.style.display = 'block';
         }
         
-        // For US Stocks and ETF pages, symbols come from config
+        // For US Stocks, ETF, Crypto, and Screener pages, symbols come from config or defaults
         let symbols = '';
         if (pageType === 'us-stocks' || pageType === 'etf') {
             symbols = this.getDefaultStocks(pageType === 'us-stocks' ? 'market' : 'etf').join(', ');
+        } else if (pageType === 'crypto') {
+            symbols = ['BTC', 'ETH', 'BNB', 'SOL', 'ADA', 'XRP', 'DOT', 'AVAX'].join(', ');
+        } else if (pageType === 'screener') {
+            // For screener, use input symbols if provided, otherwise use defaults
+            if (symbolsInput && symbolsInput.value.trim()) {
+                symbols = symbolsInput.value.trim();
+            } else {
+                symbols = this.getDefaultStocks('screener').join(', ');
+            }
         } else if (symbolsInput) {
             symbols = symbolsInput.value.trim();
             // Save symbols to session storage for portfolio and watchlist

@@ -3,107 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beacon of Tech - Technology Blog & Stock Analysis</title>
+    <title>Beacon of Tech - Tech Hub For Insights</title>
+    <meta name="description" content="Advanced stock analysis platform with cutting-edge digital innovation updates and professional investment tools">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
-    <link rel="stylesheet" href="assets/css/style.css?v=20260125_1">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
+<body class="premium-theme">
     <div class="app-layout">
-        <!-- Side Menu -->
+        <!-- Premium Side Menu -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo-container">
-                    <img src="assets/logo.svg" alt="BeaconOfTech Stock Analyzer" class="logo">
-                    <span class="brand-text">Beacon</span>
+                    <div class="logo-wrapper">
+        <img src="assets/logo.svg" alt="BeaconOfTech" class="logo" style="width: 20px; height: 20px;">
+        <div class="logo-pulse" style="width: 35px; height: 35px;"></div>
+                    </div>
+                    <div class="brand-container">
+                        <span class="brand-text">Beacon</span>
+                        <span class="brand-subtitle">Of Tech</span>
+                    </div>
+                </div>
+                <div class="theme-toggle">
+                    <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+                        <i data-lucide="sun" class="icon"></i>
+                    </button>
                 </div>
             </div>
             <nav class="sidebar-nav">
-                <!-- Tech Section -->
+                <!-- Technology Section -->
                 <div class="nav-section">
                     <div class="nav-parent" id="nav-technology-parent">
-                        <span class="nav-icon">💻</span>
-                        <span class="nav-text">Tech</span>
-                        <span class="nav-arrow">▼</span>
+                        <div class="nav-icon-wrapper">
+                            <i data-lucide="cpu" class="nav-icon"></i>
+                        </div>
+                        <span class="nav-text">Technology</span>
+                        <div class="nav-arrow">
+                            <i data-lucide="chevron-down" class="icon"></i>
+                        </div>
                     </div>
                     <div class="nav-children" id="nav-technology-children">
                         <a href="#tech-blog" class="nav-link" id="nav-tech-blog" data-page="tech-blog">
-                            <span class="nav-icon">📝</span>
-                            <span class="nav-text">Tech Blog</span>
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="pen-tool" class="nav-icon"></i>
+                            </div>
+                            <span class="nav-text">Tech Insights</span>
                         </a>
                         <a href="#tech-tutorials" class="nav-link" id="nav-tech-tutorials" data-page="tech-tutorials">
-                            <span class="nav-icon">📚</span>
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="book-open" class="nav-icon"></i>
+                            </div>
                             <span class="nav-text">Tutorials</span>
                         </a>
                         <a href="#tech-projects" class="nav-link" id="nav-tech-projects" data-page="tech-projects">
-                            <span class="nav-icon">🚀</span>
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="rocket" class="nav-icon"></i>
+                            </div>
                             <span class="nav-text">Projects</span>
                         </a>
                     </div>
                 </div>
                 
-                <!-- Trade Section -->
+                <!-- Analytics Section -->
                 <div class="nav-section">
-                    <div class="nav-parent" id="nav-stocks-parent">
-                        <span class="nav-icon">📈</span>
-                        <span class="nav-text">Trade</span>
-                        <span class="nav-arrow">▼</span>
+                    <div class="nav-parent" id="nav-analytics-parent">
+                        <div class="nav-icon-wrapper">
+                            <i data-lucide="trending-up" class="nav-icon"></i>
+                        </div>
+                        <span class="nav-text">Analytics</span>
+                        <div class="nav-arrow">
+                            <i data-lucide="chevron-down" class="icon"></i>
+                        </div>
                     </div>
-                    <div class="nav-children" id="nav-stocks-children">
+                    <div class="nav-children" id="nav-analytics-children">
                         <a href="#portfolio" class="nav-link" id="nav-portfolio" data-page="portfolio">
-                            <span class="nav-icon">🏠</span>
-                            <span class="nav-text">Portfolio</span>
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="briefcase" class="nav-icon"></i>
+                            </div>
+                            <span class="nav-text">Portfolio Analysis</span>
+                            <span class="nav-badge pro">PRO</span>
                         </a>
                         <a href="#watchlist" class="nav-link" id="nav-watchlist" data-page="watchlist">
-                            <span class="nav-icon">⭐</span>
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="star" class="nav-icon"></i>
+                            </div>
                             <span class="nav-text">Watchlist</span>
                         </a>
-                        <a href="#etf" class="nav-link" id="nav-etf" data-page="etf">
-                            <span class="nav-icon">📊</span>
-                            <span class="nav-text">ETFs</span>
+                        <a href="#screener" class="nav-link" id="nav-screener" data-page="screener">
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="filter" class="nav-icon"></i>
+                            </div>
+                            <span class="nav-text">Stock Screener</span>
+                            <span class="nav-badge new">NEW</span>
                         </a>
-                        <a href="#us-stocks" class="nav-link" id="nav-us-stocks" data-page="us-stocks">
-                            <span class="nav-icon">💹</span>
-                            <span class="nav-text">US Stocks</span>
+                        <a href="#etf" class="nav-link" id="nav-etf" data-page="etf">
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="bar-chart-3" class="nav-icon"></i>
+                            </div>
+                            <span class="nav-text">ETF Analysis</span>
                         </a>
                     </div>
                 </div>
                 
-                <!-- Author Section -->
+                <!-- Markets Section -->
+                <div class="nav-section">
+                    <div class="nav-parent" id="nav-markets-parent">
+                        <div class="nav-icon-wrapper">
+                            <i data-lucide="globe" class="nav-icon"></i>
+                        </div>
+                        <span class="nav-text">Markets</span>
+                        <div class="nav-arrow">
+                            <i data-lucide="chevron-down" class="icon"></i>
+                        </div>
+                    </div>
+                    <div class="nav-children" id="nav-markets-children">
+                        <a href="#us-stocks" class="nav-link" id="nav-us-stocks" data-page="us-stocks">
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="trending-up" class="nav-icon"></i>
+                            </div>
+                            <span class="nav-text">US Stocks</span>
+                        </a>
+                        <a href="#crypto" class="nav-link" id="nav-crypto" data-page="crypto">
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="coins" class="nav-icon"></i>
+                            </div>
+                            <span class="nav-text">Cryptocurrency</span>
+                            <span class="nav-badge beta">BETA</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- About Section -->
                 <a href="#author" class="nav-link" id="nav-author" data-page="author">
-                    <span class="nav-icon">👤</span>
-                    <span class="nav-text">Author</span>
+                    <div class="nav-icon-wrapper">
+                        <i data-lucide="user" class="nav-icon"></i>
+                    </div>
+                    <span class="nav-text">About</span>
                 </a>
             </nav>
+            
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <div class="status-indicator" style="display: none;">
+                    <div class="status-dot online"></div>
+                    <span class="status-text">Markets Open</span>
+                </div>
+            </div>
         </aside>
 
-        <!-- Main Content -->
+        <!-- Premium Main Content -->
         <div class="main-content">
             <div class="container">
-                <header>
+                <header class="premium-header">
                     <div class="header-content">
-                        <img src="assets/logo.svg" alt="BeaconOfTech" class="header-logo">
-                        <div class="header-text">
-                            <h1>Beacon of Tech</h1>
-                            <p class="subtitle">Technology Insights</p>
+                        <div class="header-brand">
+                            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu">
+                                <i data-lucide="x" class="icon"></i>
+                            </button>
+                            <div class="logo-container">
+                                <img src="assets/logo.svg" alt="BeaconOfTech" class="header-logo">
+                                <div class="logo-glow"></div>
+                            </div>
+                            <div class="header-text">
+                                <h1>Beacon of Tech</h1>
+                                <p class="subtitle">Tech Hub For Insights</p>
+                            </div>
+                        </div>
+                        <div class="header-actions">
+                            <div class="market-status" style="display: none;">
+                                <div class="status-indicator">
+                                    <div class="status-dot online"></div>
+                                    <span class="status-text">S&P 500: 4,783.45 <span class="positive">+0.82%</span></span>
+                                </div>
+                            </div>
+                            <button class="header-btn" id="notificationsBtn" disabled style="opacity: 0.5; cursor: not-allowed; pointer-events: none;">
+                                <i data-lucide="bell" class="icon"></i>
+                                <span class="notification-dot"></span>
+                            </button>
+                            <button class="header-btn" id="settingsBtn" disabled style="opacity: 0.5; cursor: not-allowed; pointer-events: none;">
+                                <i data-lucide="settings" class="icon"></i>
+                            </button>
                         </div>
                     </div>
                 </header>
                 
                 <main id="main-content">
-                    <!-- Content will be dynamically loaded here -->
-                    <div class="card">
-                        <h2>Welcome to Beacon of Tech</h2>
-                        <p class="info-text">Your destination for technology insights and investment intelligence. Explore our tech blog, tutorials, and projects, or dive into stock analysis tools.</p>
+                    <!-- Premium Welcome Content -->
+                    <div class="premium-welcome">
+                        <div class="welcome-card">
+                            <div class="welcome-content">
+                                <div class="welcome-text">
+                                    <h2>Welcome to BeaconOfTech Analytics</h2>
+                                    <p class="welcome-description">Experience institutional-grade stock analysis powered by cutting-edge technology. Get real-time insights, advanced analytics, and professional investment tools.</p>
+                                    <div class="welcome-actions">
+                                        <button class="btn btn-primary btn-lg" onclick="pageManager.loadPage('portfolio')">
+                                            <i data-lucide="trending-up" class="icon"></i>
+                                            Start Analysis
+                                        </button>
+                                        <button class="btn btn-secondary btn-lg" onclick="pageManager.loadPage('tech-blog')">
+                                            <i data-lucide="book-open" class="icon"></i>
+                                            View Insights
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="welcome-visual">
+                                    <div class="chart-preview">
+                                        <div class="chart-bars">
+                                            <div class="bar" style="height: 60%;"></div>
+                                            <div class="bar" style="height: 80%;"></div>
+                                            <div class="bar" style="height: 45%;"></div>
+                                            <div class="bar" style="height: 90%;"></div>
+                                            <div class="bar" style="height: 70%;"></div>
+                                            <div class="bar" style="height: 85%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Feature Cards -->
+                        <div class="feature-grid">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i data-lucide="brain" class="icon"></i>
+                                </div>
+                                <h3>AI-Powered Analysis</h3>
+                                <p>Advanced machine learning algorithms for accurate stock predictions and risk assessment.</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i data-lucide="zap" class="icon"></i>
+                                </div>
+                                <h3>Real-Time Data</h3>
+                                <p>Live market data streaming with millisecond latency for precise trading decisions.</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i data-lucide="shield" class="icon"></i>
+                                </div>
+                                <h3>Risk Management</h3>
+                                <p>Comprehensive risk analysis tools to protect your investment portfolio.</p>
+                            </div>
+                        </div>
                     </div>
                 </main>
                 
-                <footer>
+                <footer class="premium-footer">
                     <div class="footer-content">
-                        <img src="assets/logo.svg" alt="BeaconOfTech" class="footer-logo">
-                        <div class="footer-text">
-                            <p style="margin-top: 10px; font-size: 1rem; opacity: 0.7;">© 2026 beaconoftech.com | Sriram Rajendran | @rajen.sriram</p>
-                            <p>⚠️ Disclaimer: This is for educational purposes only. Not financial advice.</p>
+                        <div class="footer-brand">
+                            <div class="footer-logo-container">
+                                <img src="assets/logo.svg" alt="BeaconOfTech" class="footer-logo">
+                            </div>
+                        </div>
+                        <div class="footer-legal">
+                            <p>© 2026 beaconoftech | sriram rajendran | @rajen.sriram</p>
+                            <p class="disclaimer">⚠️ <strong>Disclaimer:</strong> This platform is for educational and research purposes only. Not offering any financial advices.</p>
                         </div>
                     </div>
                 </footer>

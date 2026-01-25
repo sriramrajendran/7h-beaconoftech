@@ -1,8 +1,8 @@
-# 📈 BeaconOfTech Tech & Stock Platform
+# 📈 BeaconOfTech Tech & Analytics Platform
 
-![BeaconOfTech Stock Analyzer](doc/readme.png)
+![BeaconOfTech ](doc/readme.png)
 
-A **comprehensive static web application** by **BeaconOfTech** for technology insights and AI-powered stock analysis that runs entirely on GitHub Pages. Explore tech blogs, tutorials, projects, and analyze stocks with technical indicators to get BUY/SELL/HOLD recommendations - all in your browser with no backend required.
+A **comprehensive static web application** by **BeaconOfTech** for digital innovation updates and AI-powered stock analysis that runs entirely on GitHub Pages. Explore tech blogs, tutorials, projects, and analyze stocks with technical indicators to get BUY/SELL/HOLD recommendations - all in your browser with no backend required.
 
 ## 👨‍💻 **Author**
 
