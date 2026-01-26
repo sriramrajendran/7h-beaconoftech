@@ -1,0 +1,13 @@
+Mobile UI:
+- make this ui mobile responsive
+- especially the left menu should be collapsible and should be mobile friendly
+- nothing should feel truncated or cut off
+- Header and footer should be sticky, no data truncated
+- WHIle solving for mobile, ensure the left menu is collapsible and should be mobile friendly
+- while solving for mobile web, web should not get impacted
+- Example - like nytimes website for mobile
+- Ensure Top header section is sticky and should be mobile friendly with proper formatting
+- Ensure Footer section is sticky and should be mobile friendly with proper formatting
+- Also ensure the left menu is collapsible and should be mobile friendly
+- Left menu should be collapsible and should be mobile friendly
+- Let us not have these bugs: Lot of white space in left and top, empty space on corners, empty space on right
