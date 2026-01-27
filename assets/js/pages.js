@@ -793,6 +793,23 @@ class PageManager {
                 </form>
             </div>
             
+            <div class="stocks-overview">
+                <div class="overview-cards">
+                    <div class="overview-card">
+                        <h3>📈 Market Leaders</h3>
+                        <p>Top-performing stocks from S&P 500, NASDAQ, and Dow Jones with strong fundamentals.</p>
+                    </div>
+                    <div class="overview-card">
+                        <h3>🔍 Technical Analysis</h3>
+                        <p>Advanced indicators including RSI, MACD, VCP, and divergence patterns for optimal timing.</p>
+                    </div>
+                    <div class="overview-card">
+                        <h3>⚡ Real-Time Signals</h3>
+                        <p>Live breakout detection, crossover signals, and momentum-based recommendations.</p>
+                    </div>
+                </div>
+            </div>
+            
             <div class="table-container" id="us-stocks-table-container" style="display: none;">
                 <div class="table-controls">
                     <input type="text" id="table-search" placeholder="Search stocks..." class="search-input">
