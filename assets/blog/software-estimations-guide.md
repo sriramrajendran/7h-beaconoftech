@@ -75,6 +75,9 @@ This weighted average gives more importance to the most likely outcome while sti
 
 Let me show you a real example. I was estimating a feature that involved integrating with a new payment gateway:
 
+<details>
+<summary>🔍 View Three-Point Estimation Example</summary>
+
 ```javascript
 // Example: Payment gateway integration
 const optimistic = 3;    // Best case: API docs are perfect, everything works
@@ -86,6 +89,8 @@ console.log(estimate); // Output: 5.5 days
 ```
 
 **Result:** In reality, this took us 6 days—pretty close to our estimate! The pessimistic scenario accounted for the security review we hadn't initially considered.
+
+</details>
 
 ---
 
@@ -286,13 +291,14 @@ New team members, new technology, new domain—there's always a learning curve t
 
 For most projects, the techniques I've covered will serve you well. But sometimes you need to bring out the heavy artillery.
 
-### Monte Carlo Simulation
+#### **🔧 Monte Carlo Simulation**
 
 Monte Carlo simulation sounds fancy, but it's essentially running thousands of simulations to see the probability distribution of outcomes. For critical projects where you need to communicate risk to executives, this can be incredibly powerful.
 
 Instead of saying "this will take 8 weeks," you can say "there's an 80% probability we'll finish in 10 weeks or less."
 
-#### How It Works
+<details>
+<summary>🔍 View Monte Carlo Simulation Code</summary>
 
 ```javascript
 function monteCarloEstimate(tasks, iterations = 10000) {
@@ -319,6 +325,8 @@ function monteCarloEstimate(tasks, iterations = 10000) {
 ```
 
 **Use Case:** Critical projects with high stakes and executive visibility.
+
+</details>
 
 ### Function Point Analysis
 

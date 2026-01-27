@@ -16,7 +16,7 @@ class PlaybooksModule {
             },
             {
                 id: 2,
-                title: "Building Real-Time Chatbots with WebSockets",
+                title: "Building Real-Time LLM Based Chatbots with WebSockets",
                 difficulty: "Intermediate",
                 duration: "60 min",
                 category: "Full Stack",

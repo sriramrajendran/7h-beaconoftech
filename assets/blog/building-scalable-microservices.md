@@ -29,6 +29,9 @@ Deploy services independently without coordinating with other teams.
 
 Here's a basic example of a user service:
 
+<details>
+<summary>🔍 View User Service Implementation</summary>
+
 ```javascript
 // user-service.js
 const express = require('express');
@@ -83,10 +86,22 @@ connectDB().then(() => {
 });
 ```
 
+**Key Points:**
+- Express.js for HTTP server
+- MongoDB for data persistence
+- RESTful API endpoints
+- Error handling and status codes
+- Environment-based configuration
+
+</details>
+
 ## Service Communication
 
 ### Synchronous Communication
 Use HTTP/REST for immediate responses:
+
+<details>
+<summary>🔍 View Synchronous Communication Code</summary>
 
 ```javascript
 // order-service calling user-service
@@ -96,8 +111,19 @@ async function getUserInfo(userId) {
 }
 ```
 
+**Key Points:**
+- Direct HTTP calls between services
+- Immediate response required
+- Simple request-response pattern
+- Tight coupling between services
+
+</details>
+
 ### Asynchronous Communication
 Use message queues for decoupled communication:
+
+<details>
+<summary>🔍 View Asynchronous Communication Code</summary>
 
 ```javascript
 // Using Redis as message broker
@@ -112,6 +138,14 @@ await publisher.publish('user.created', JSON.stringify({
 }));
 ```
 
+**Key Points:**
+- Event-driven architecture
+- Loose coupling between services
+- Message brokers for reliability
+- Event sourcing and replay capabilities
+
+</details>
+
 ## Best Practices
 
 ### 1. **API Gateway**
@@ -125,6 +159,9 @@ Use an API gateway to handle cross-cutting concerns:
 ### 2. **Service Discovery**
 Implement service discovery for dynamic service location:
 
+<details>
+<summary>🔍 View Service Discovery Code</summary>
+
 ```javascript
 // Using Consul for service discovery
 const consul = require('consul')();
@@ -136,8 +173,19 @@ async function getServiceUrl(serviceName) {
 }
 ```
 
+**Key Points:**
+- Dynamic service registration and discovery
+- Load balancing across service instances
+- Health checking and automatic failover
+- Service metadata and configuration
+
+</details>
+
 ### 3. **Circuit Breaker Pattern**
 Prevent cascade failures with circuit breakers:
+
+<details>
+<summary>🔍 View Circuit Breaker Implementation</summary>
 
 ```javascript
 class CircuitBreaker {
@@ -183,10 +231,21 @@ class CircuitBreaker {
 }
 ```
 
+**Key Points:**
+- Prevent cascade failures across services
+- Automatic recovery with half-open state
+- Configurable failure thresholds
+- Timeout-based recovery mechanism
+
+</details>
+
 ## Deployment Strategies
 
 ### 1. **Containerization**
 Use Docker for consistent deployment:
+
+<details>
+<summary>🔍 View Docker Configuration</summary>
 
 ```dockerfile
 # Dockerfile
@@ -202,8 +261,20 @@ EXPOSE 3001
 CMD ["node", "user-service.js"]
 ```
 
+**Key Points:**
+- Multi-stage builds for optimization
+- Minimal base images for security
+- Dependency caching for faster builds
+- Explicit port exposure
+- Clean CMD instruction
+
+</details>
+
 ### 2. **Orchestration**
 Use Kubernetes for container orchestration:
+
+<details>
+<summary>🔍 View Kubernetes Deployment</summary>
 
 ```yaml
 # deployment.yaml
@@ -233,6 +304,15 @@ spec:
               name: db-secret
               key: uri
 ```
+
+**Key Points:**
+- Declarative configuration
+- Replica sets for high availability
+- Secret management for sensitive data
+- Resource limits and requests
+- Health checks and readiness probes
+
+</details>
 
 ## Monitoring and Observability
 
