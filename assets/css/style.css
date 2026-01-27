@@ -1649,6 +1649,65 @@ body.dark-theme {
     --gradient-card: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
 }
 
+/* Crypto Overview Cards */
+.crypto-overview {
+    margin: var(--space-8) 0;
+}
+
+.overview-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-6);
+    margin: var(--space-6) 0;
+}
+
+.overview-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    border: 1px solid var(--border);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.overview-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+    transform: scaleX(0);
+    transition: transform var(--transition-normal);
+}
+
+.overview-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+.overview-card:hover::before {
+    transform: scaleX(1);
+}
+
+.overview-card h3 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    margin-bottom: var(--space-3);
+    color: var(--text);
+    letter-spacing: -0.03em;
+}
+
+.overview-card p {
+    font-size: 0.95rem;
+    font-family: 'Sora', sans-serif;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
 /* Enhanced Cards */
 .card {
     background: var(--card-bg);
