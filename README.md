@@ -6,11 +6,11 @@ A **comprehensive static web application** by **BeaconOfTech** for digital innov
 
 ## 👨‍💻 **Author**
 
-**Sriramprabhu Rajendran**
+**Sriram Rajendran**
 
 ## 🌐 **Live Demo**
 
-**Live Demo:** `https://[your-username].github.io/7h-stock-analysis`
+**Live Demo:** `https://sriramrajendran.github.io/7h-beaconoftech/`
 
 ## ✨ **Features**
 
@@ -40,17 +40,11 @@ A **comprehensive static web application** by **BeaconOfTech** for digital innov
 
 ## 🚀 **Quick Start**
 
-### **Using the Live Version**
-1. Visit the GitHub Pages URL
-2. Select an analysis type from the sidebar
-3. View auto-loaded default stocks or enter your own symbols
-4. Click "Analyze" to get recommendations
-
 ### **Local Development**
 ```bash
 # Clone the repository
-git clone https://github.com/[your-username]/7h-stock-analysis.git
-cd 7h-stock-analysis
+git clone https://github.com/sriramrajendran/7h-beaconoftech.git
+cd 7h-beaconoftech
 
 # Kill any existing processes on ports 8000 and 8001
 lsof -ti:8000 | xargs kill -9 2>/dev/null || true
@@ -130,7 +124,7 @@ The site automatically deploys to GitHub Pages when you push to the `main` branc
    - Branch: `main` and `/ (root)`
    - Save
 
-3. **Live site:** `https://[username].github.io/7h-stock-analysis`
+3. **Live site:** `https://sriramrajendran.github.io/7h-beaconoftech/`
 
 ### **Local Development**
 ```bash

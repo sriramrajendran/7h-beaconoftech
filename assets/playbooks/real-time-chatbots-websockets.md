@@ -8,21 +8,30 @@
 **Published:** January 2026  
 **Reading Time:** 60 minutes  
 **Category:** Full Stack Development  
-**Tags:** #WebSockets #React #NodeJS #LLM #RealTime #Chatbots
+**Tags:** #WebSockets #React #FastAPI #Python #LLM #LangGraph #OpenTelemetry #RealTime #Chatbots
 
 ---
 
 ## Overview
 
-WebSockets provide full-duplex communication channels perfect for real-time chat applications. Unlike HTTP's request-response cycle, WebSockets maintain persistent connections enabling instant bidirectional messaging. After building several production chat systems, I've learned the patterns that work and the pitfalls to avoid. This playbook covers building production-ready chatbots with React UI, Node.js backend, and LLM integration.
+WebSockets provide full-duplex communication channels perfect for real-time chat applications. Unlike HTTP's request-response cycle, WebSockets maintain persistent connections enabling instant bidirectional messaging. After building several production chat systems, I've learned the patterns that work and the pitfalls to avoid. This playbook covers building production-ready chatbots with React UI, Python FastAPI backend, and advanced LLM orchestration using LangGraph.
 
-### What You'll Learn
+### 🎯 Advanced Chatbot Architecture Overview
 
-Throughout this guide, you'll discover WebSocket architecture fundamentals and understand how persistent connections work under the hood. I'll walk you through server implementation using Node.js with Socket.IO, showing you the exact patterns I use in production applications.
+![Advanced Chatbot Architecture](/assets/images/advanced-chatbot-architecture.svg)
 
-We'll dive deep into React integration, building responsive chat interfaces that users love. You'll learn how to add LLM capabilities with proper context management and RAG implementation. I'll share production patterns for scalability and error handling that I've learned the hard way.
-
-Finally, we'll cover security and performance best practices that are crucial for deployment. These are the techniques that separate hobby projects from production-ready systems.
+**Architecture Components:**
+- **React Frontend**: Real-time chat interface with WebSocket client
+- **FastAPI Backend**: Python-based WebSocket server with async support
+- **LangGraph Orchestrator**: Main agent with state management and workflow control
+- **Specialized Agents**: Multiple agents for customer data, orders, support, and analytics
+- **Guard Rails**: Content filtering, PII detection, and rate limiting
+- **Runtime Evals**: Response quality, hallucination checks, and safety scoring
+- **Build Time Evals**: Model testing, prompt validation, and benchmark tests
+- **OpenTelemetry**: Tracing, metrics, and observability
+- **Customer Data APIs**: CRM, order management, and support ticket integrations
+- **LLM Models**: GPT-4 Turbo, Claude 3.5, and custom models
+- **Monitoring Stack**: Prometheus, Grafana, and Jaeger for observability
 
 ---
 
@@ -54,87 +63,213 @@ The server side requires a WebSocket server using Socket.IO or native WebSocket 
 
 ---
 
-## Setting up WebSocket Server with Node.js
+## FastAPI WebSocket Server Implementation
 
 ### Dependencies and Setup
 
-Before we start building, let's get the necessary packages installed. You'll need Express for the HTTP server, Socket.IO for WebSocket functionality, and CORS for cross-origin requests.
+For our Python-based WebSocket server, we'll use FastAPI with WebSockets support. This gives us async performance, type safety, and excellent documentation generation.
 
 ```bash
 # Install required packages
-npm install express socket.io cors
-npm install --save-dev nodemon
+pip install fastapi uvicorn websockets python-multipart
+pip install langchain langgraph openai anthropic
+pip install opentelemetry-api opentelemetry-sdk
+pip install opentelemetry-instrumentation-fastapi
+pip install prometheus-client
 ```
 
-### Server Implementation
+### FastAPI WebSocket Server
 
-Here's the core WebSocket server implementation I use in production. This setup handles connections, rooms, messaging, and proper cleanup:
+Here's the core FastAPI WebSocket server implementation with async support and proper error handling:
 
-```javascript
-// WebSocket Server Implementation
-const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
+<details>
+<summary>🔍 View FastAPI WebSocket Server</summary>
 
-const app = express();
-const server = http.createServer(app);
-const io = socketIo(server, {
-    cors: {
-        origin: process.env.CLIENT_URL || "http://localhost:3000",
-        methods: ["GET", "POST"]
-    }
-});
+```python
+# FastAPI WebSocket Server
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
+from typing import Dict, Set
+import json
+import asyncio
+from contextlib import asynccontextmanager
 
-// Connection manager
-const connections = new Map();
-const rooms = new Map();
+# LangGraph imports
+from langgraph.graph import StateGraph, END
+from langchain_core.messages import HumanMessage, AIMessage
+from typing_extensions import TypedDict
 
-io.on('connection', (socket) => {
-    console.log(`User connected: ${socket.id}`);
-    connections.set(socket.id, socket);
+# OpenTelemetry imports
+from opentelemetry import trace
+from opentelemetry.exporter.jaeger.thrift import JaegerExporter
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+
+# State definition for LangGraph
+class ConversationState(TypedDict):
+    messages: list
+    user_id: str
+    room_id: str
+    context: dict
+    metadata: dict
+
+# Initialize FastAPI with lifespan
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    app.state.active_connections: Dict[str, WebSocket] = {}
+    app.state.rooms: Dict[str, Set[str]] = {}
+    app.state.langgraph_app = create_langgraph_app()
+    yield
+    # Shutdown
+    pass
+
+app = FastAPI(
+    title="Advanced Chatbot API",
+    description="Real-time chatbot with LangGraph orchestration",
+    version="1.0.0",
+    lifespan=lifespan
+)
+
+# CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# OpenTelemetry setup
+trace.set_tracer_provider(TracerProvider())
+tracer = trace.get_tracer(__name__)
+
+jaeger_exporter = JaegerExporter(
+    agent_host_name="localhost",
+    agent_port=6831,
+)
+
+span_processor = BatchSpanProcessor(jaeger_exporter)
+trace.get_tracer_provider().add_span_processor(span_processor)
+
+# WebSocket endpoint
+@app.websocket("/ws/{room_id}")
+async def websocket_endpoint(websocket: WebSocket, room_id: str):
+    await websocket.accept()
     
-    // Handle room joining
-    socket.on('join_room', (roomId) => {
-        socket.join(roomId);
-        
-        if (!rooms.has(roomId)) {
-            rooms.set(roomId, new Set());
-        }
-        rooms.get(roomId).add(socket.id);
-        
-        socket.emit('joined_room', { roomId });
-        socket.to(roomId).emit('user_joined', { userId: socket.id });
-    });
+    # Add connection
+    connection_id = f"{room_id}_{id(websocket)}"
+    app.state.active_connections[connection_id] = websocket
     
-    // Handle chat messages
-    socket.on('send_message', async (data) => {
-        try {
-            const { content, roomId, useAi = false } = data;
-            
-            // Process with LLM if needed
-            let response = content;
-            if (useAi) {
-                response = await processWithLLM(content, roomId);
+    if room_id not in app.state.rooms:
+        app.state.rooms[room_id] = set()
+    app.state.rooms[room_id].add(connection_id)
+    
+    with tracer.start_as_current_span("websocket_connection") as span:
+        span.set_attribute("room_id", room_id)
+        span.set_attribute("connection_id", connection_id)
+        
+        try:
+            while True:
+                # Receive message
+                data = await websocket.receive_text()
+                message_data = json.loads(data)
+                
+                # Process message through LangGraph
+                response = await process_message(
+                    message_data, 
+                    room_id, 
+                    connection_id,
+                    app.state.langgraph_app
+                )
+                
+                # Broadcast to room
+                await broadcast_to_room(room_id, response, connection_id)
+                
+        except WebSocketDisconnect:
+            # Cleanup
+            if connection_id in app.state.active_connections:
+                del app.state.active_connections[connection_id]
+            if room_id in app.state.rooms:
+                app.state.rooms[room_id].discard(connection_id)
+                if not app.state.rooms[room_id]:
+                    del app.state.rooms[room_id]
+
+async def process_message(message_data: dict, room_id: str, connection_id: str, langgraph_app):
+    """Process message through LangGraph with guard rails and evaluation"""
+    with tracer.start_as_current_span("process_message") as span:
+        span.set_attribute("room_id", room_id)
+        span.set_attribute("message_type", message_data.get("type"))
+        
+        # Guard rails check
+        guard_result = await apply_guard_rails(message_data.get("content", ""))
+        if not guard_result["allowed"]:
+            return {
+                "type": "error",
+                "content": "Message blocked by safety filters",
+                "reason": guard_result["reason"]
             }
-            
-            // Broadcast to room
-            const messageData = {
-                userId: socket.id,
-                content: response,
-                timestamp: new Date().toISOString(),
-                isAi: useAi
-            };
-            
-            socket.to(roomId).emit('new_message', messageData);
-            socket.emit('message_sent', messageData);
-            
-        } catch (error) {
-            console.error('Message processing error:', error);
-            socket.emit('error', { message: 'Failed to send message' });
+        
+        # Process through LangGraph
+        state = ConversationState(
+            messages=[HumanMessage(content=message_data.get("content"))],
+            user_id=connection_id,
+            room_id=room_id,
+            context={},
+            metadata=message_data.get("metadata", {})
+        )
+        
+        result = await langgraph_app.ainvoke(state)
+        
+        # Runtime evaluation
+        eval_result = await evaluate_response(result["messages"][-1])
+        
+        return {
+            "type": "ai_response",
+            "content": result["messages"][-1].content,
+            "evaluation": eval_result,
+            "metadata": result.get("metadata", {})
         }
-    });
+
+async def broadcast_to_room(room_id: str, message: dict, exclude_connection: str = None):
+    """Broadcast message to all connections in room"""
+    if room_id not in app.state.rooms:
+        return
     
-    // Handle typing indicators
+    message_str = json.dumps(message)
+    tasks = []
+    
+    for connection_id in app.state.rooms[room_id]:
+        if connection_id != exclude_connection:
+            websocket = app.state.active_connections.get(connection_id)
+            if websocket:
+                tasks.append(websocket.send_text(message_str))
+    
+    if tasks:
+        await asyncio.gather(*tasks, return_exceptions=True)
+
+# Health check endpoint
+@app.get("/health")
+async def health_check():
+    return {
+        "status": "healthy",
+        "active_connections": len(app.state.active_connections),
+        "active_rooms": len(app.state.rooms)
+    }
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+```
+
+**Key Points:**
+- Async FastAPI with WebSocket support for high performance
+- Connection and room management with proper cleanup
+- OpenTelemetry tracing for observability
+- Health check endpoint for monitoring
+- Type-safe message processing with error handling
+
+</details>
     socket.on('typing_start', (roomId) => {
         socket.to(roomId).emit('user_typing', { userId: socket.id });
     });
@@ -169,9 +304,22 @@ server.listen(PORT, () => {
 });
 ```
 
+**Key Points:**
+- Real-time bidirectional communication
+- Room-based messaging system
+- Connection and session management
+- AI integration for intelligent responses
+- Proper cleanup on disconnect
+- CORS configuration for cross-origin requests
+
+</details>
+
 ### LLM Integration Setup
 
 Adding AI capabilities to your chatbot is what makes it truly intelligent. Here's how I integrate OpenAI's API with proper context management:
+
+<details>
+<summary>🔍 View LLM Integration Code</summary>
 
 ```javascript
 // LLM Service Integration
@@ -221,11 +369,23 @@ async function getConversationHistory(roomId) {
 }
 ```
 
+**Key Points:**
+- Context-aware conversation management
+- Limited history window for relevance
+- Error handling for API failures
+- Configurable model parameters
+- Fallback responses for failures
+
+</details>
+
 ---
 
 ## Building React Chat Interface
 
 ### Chat Component Structure
+
+<details>
+<summary>🔍 View React Chat Interface</summary>
 
 ```jsx
 // ChatInterface.jsx
@@ -353,7 +513,19 @@ const ChatInterface = ({ roomId, userId }) => {
 export default ChatInterface;
 ```
 
+**Key Points:**
+- Real-time WebSocket connection management
+- State management for messages and typing indicators
+- Event-driven architecture for real-time updates
+- Connection status display
+- Automatic cleanup on unmount
+
+</details>
+
 ### 💬 Message Components
+
+<details>
+<summary>🔍 View Message Components</summary>
 
 ```jsx
 // MessageList.jsx
@@ -428,11 +600,23 @@ const TypingIndicator = ({ users }) => {
 };
 ```
 
+**Key Points:**
+- Auto-scrolling to latest messages
+- Different styling for own vs other messages
+- AI message identification
+- Real-time typing indicators
+- Component composition for reusability
+
+</details>
+
 ---
 
 ## Production Patterns & Scalability
 
 ### Horizontal Scaling
+
+<details>
+<summary>🔍 View Redis Adapter for Scaling</summary>
 
 ```javascript
 // Redis Adapter for Multi-Instance Scaling
@@ -467,7 +651,19 @@ async function getMessages(roomId) {
 }
 ```
 
+**Key Points:**
+- Multi-instance WebSocket scaling
+- Redis for shared state management
+- Message persistence across restarts
+- Load balancing across instances
+- Horizontal scaling capabilities
+
+</details>
+
 ### 🛡️ Security Implementation
+
+<details>
+<summary>🔍 View Authentication Middleware</summary>
 
 ```javascript
 // Authentication Middleware
@@ -498,7 +694,19 @@ const messageRateLimit = rateLimit({
 app.use('/api/messages', messageRateLimit);
 ```
 
+**Key Points:**
+- JWT-based authentication for WebSocket connections
+- Rate limiting to prevent abuse
+- Middleware pattern for security checks
+- User session management
+- API protection layers
+
+</details>
+
 ### 🔍 Monitoring & Analytics
+
+<details>
+<summary>🔍 View Connection Monitoring Code</summary>
 
 ```javascript
 // Connection Monitoring
@@ -531,11 +739,23 @@ setInterval(() => {
 }, 60000); // Every minute
 ```
 
+**Key Points:**
+- Real-time connection tracking
+- Performance metrics collection
+- Room activity monitoring
+- Automated reporting system
+- Historical data analysis
+
+</details>
+
 ---
 
 ## UI/UX Best Practices
 
 ### Responsive Design
+
+<details>
+<summary>🔍 View Chat Interface CSS Styles</summary>
 
 ```css
 /* Chat Interface Styles */
@@ -647,11 +867,24 @@ setInterval(() => {
 }
 ```
 
+**Key Points:**
+- Flexible layout for responsive design
+- Smooth animations for message appearance
+- Gradient styling for AI messages
+- Mobile-first responsive approach
+- Accessible color contrast and sizing
+- Smooth scrolling behavior
+
+</details>
+
 ---
 
 ## Testing & Debugging
 
 ### Unit Tests
+
+<details>
+<summary>🔍 View WebSocket Server Tests</summary>
 
 ```javascript
 // WebSocket Server Tests
@@ -708,7 +941,19 @@ describe('WebSocket Server', () => {
 });
 ```
 
+**Key Points:**
+- WebSocket connection testing
+- Real-time event testing
+- Room functionality verification
+- Error handling validation
+- Cleanup and resource management
+
+</details>
+
 ### 🔍 Debugging Tools
+
+<details>
+<summary>🔍 View Debug Mode Configuration</summary>
 
 ```javascript
 // Debug Mode Configuration
@@ -734,6 +979,15 @@ if (process.env.NODE_ENV === 'development') {
     });
 }
 ```
+
+**Key Points:**
+- Development-only debugging mode
+- Event logging for troubleshooting
+- Socket event tracking
+- Real-time connection monitoring
+- Performance analysis capabilities
+
+</details>
 
 ---
 
