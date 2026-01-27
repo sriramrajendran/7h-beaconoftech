@@ -407,15 +407,15 @@ class BlogModule {
         const categories = this.getCategories();
 
         return `
+            <div class="page-header">
+                <h2>Tech Blog</h2>
+                <p>Insights on modern software development</p>
+            </div>
+            
             <div class="blog-container">
-                <header class="blog-header">
-                    <h1>Tech Blog</h1>
-                    <p>Insights on modern software development</p>
-                </header>
-                
                 ${this.generateFeaturedPost(posts[0])}
-                ${this.generateRecentPostsSection(posts.slice(1, 4))}
-                ${this.generateCategoriesSection(categories)}
+                ${this.generateRecentPostsSection(posts.slice(1))}
+                ${this.generateCategoriesSection()}
             </div>
         `;
     }

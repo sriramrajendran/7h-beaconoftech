@@ -38,8 +38,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize premium interactions
     initializePremiumFeatures();
     
+    // Wait a bit more for pageManager to be available
+    setTimeout(() => {
+        initializePageManager();
+    }, 50);
+});
+
+function initializePageManager() {
     // Load page manager
-    if (typeof pageManager !== 'undefined') {
+    console.log('Main GitHub: Checking pageManager availability...');
+    console.log('Main GitHub: typeof pageManager:', typeof pageManager);
+    console.log('Main GitHub: typeof window.pageManager:', typeof window.pageManager);
+    
+    // Try both pageManager and window.pageManager
+    const pm = typeof pageManager !== 'undefined' ? pageManager : window.pageManager;
+    
+    if (pm) {
         console.log('Main GitHub: pageManager found, loading tech-blog');
         
         // Set up navigation
@@ -47,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const pageType = link.getAttribute('data-page');
-                pageManager.loadPage(pageType);
+                pm.loadPage(pageType);
                 
                 // Update parent highlighting
                 updateParentHighlighting(link);
@@ -69,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         // Load default page (tech blog)
-        pageManager.loadPage('tech-blog');
+        pm.loadPage('tech-blog');
         
         // Set initial active state for tech-blog
         const techBlogLink = document.getElementById('nav-tech-blog');
@@ -83,9 +97,50 @@ document.addEventListener('DOMContentLoaded', () => {
             window.stockAnalyzer = new StockAnalyzer('AAPL');
         }
     } else {
-        console.error('Main GitHub: pageManager not found!');
+        console.error('Main GitHub: pageManager not found, checking if pages.js loaded...');
+        
+        // Check if pages.js was loaded
+        if (typeof PageManager === 'undefined') {
+            console.error('Main GitHub: PageManager class not found - pages.js may not have loaded');
+        } else {
+            console.error('Main GitHub: PageManager class found but instance not created');
+        }
+        
+        // Stop retrying after 3 attempts to prevent infinite loop
+        if (!this.retryCount) this.retryCount = 0;
+        this.retryCount++;
+        
+        if (this.retryCount < 3) {
+            console.error(`Main GitHub: Retry ${this.retryCount}/3 - retrying in 100ms`);
+            setTimeout(() => {
+                initializePageManager();
+            }, 100);
+        } else {
+            console.error('Main GitHub: Max retries reached - pageManager initialization failed');
+            // Try to create a minimal pageManager as fallback
+            createFallbackPageManager();
+        }
     }
-});
+}
+
+function createFallbackPageManager() {
+    console.log('Main GitHub: Creating fallback pageManager');
+    window.pageManager = {
+        loadPage: function(pageType) {
+            console.log('Fallback pageManager: Loading page:', pageType);
+            const mainContent = document.getElementById('main-content');
+            if (mainContent) {
+                mainContent.innerHTML = `
+                    <div class="page-header">
+                        <h2>${pageType.replace('-', ' ').toUpperCase()}</h2>
+                        <p>Page loading failed. Please refresh the page.</p>
+                    </div>
+                `;
+            }
+        }
+    };
+    console.log('Main GitHub: Fallback pageManager created');
+}
 
 // Initialize premium features
 function initializePremiumFeatures() {
@@ -442,13 +497,17 @@ function initializeCollapsibleNav() {
             
             // Get the page type and navigate
             const pageType = this.getAttribute('data-page');
-            if (pageType && window.pageManager) {
+            const pm = typeof pageManager !== 'undefined' ? pageManager : window.pageManager;
+            
+            if (pageType && pm) {
                 // Use setTimeout to allow the event to complete before navigation
                 setTimeout(() => {
-                    window.pageManager.loadPage(pageType);
+                    pm.loadPage(pageType);
                 }, 0);
             } else {
                 console.warn('PageManager not found or missing page-type:', pageType);
+                console.warn('typeof pageManager:', typeof pageManager);
+                console.warn('typeof window.pageManager:', typeof window.pageManager);
             }
         });
     });
@@ -478,7 +537,11 @@ function initializeSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
+            const href = this.getAttribute('href');
+            // Skip if it's just "#"
+            if (href === '#') return;
+            
+            const target = document.querySelector(href);
             if (target) {
                 target.scrollIntoView({
                     behavior: 'smooth',

@@ -102,7 +102,7 @@
         <!-- Premium Side Menu -->
         <aside class="sidebar hidden">
             <div class="sidebar-header">
-                <a href="#" class="logo-container" onclick="pageManager.loadPage('tech-blog'); return false;" style="text-decoration: none; color: inherit;">
+                <a href="#" class="logo-container" onclick="if(typeof pageManager !== 'undefined') pageManager.loadPage('tech-blog'); return false;" style="text-decoration: none; color: inherit;">
                     <div class="logo-wrapper">
         <img src="assets/logo.svg" alt="BeaconOfTech" class="logo" style="width: 20px; height: 20px;">
         <div class="logo-pulse" style="width: 35px; height: 35px;"></div>
@@ -388,5 +388,24 @@
     <script src="assets/js/modules/candlestick-patterns.js"></script>
     <script src="assets/js/pages.js"></script>
     <script src="assets/js/main-github.js"></script>
+    
+    <!-- Fallback module initialization -->
+    <script>
+        // Ensure modules are available as fallback
+        setTimeout(() => {
+            if (typeof window.playbookModule === 'undefined' && typeof PlaybooksModule !== 'undefined') {
+                console.log('Creating fallback playbookModule');
+                window.playbookModule = new PlaybooksModule();
+            }
+            if (typeof window.blogModule === 'undefined' && typeof BlogModule !== 'undefined') {
+                console.log('Creating fallback blogModule');
+                window.blogModule = new BlogModule();
+            }
+            if (typeof window.projectsModule === 'undefined' && typeof ProjectsModule !== 'undefined') {
+                console.log('Creating fallback projectsModule');
+                window.projectsModule = new ProjectsModule();
+            }
+        }, 500);
+    </script>
 </body>
 </html>

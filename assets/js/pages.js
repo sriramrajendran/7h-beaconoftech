@@ -1,4 +1,6 @@
 // Page Manager - Handles dynamic content loading and default stocks
+console.log('Pages.js: Script loaded');
+
 class PageManager {
     constructor() {
         console.log('PageManager: Constructor called');
@@ -25,6 +27,7 @@ class PageManager {
         window.blogModule = this.blogModule;
         window.playbooksModule = this.playbooksModule;
         window.projectsModule = this.projectsModule;
+        window.pageManager = this;
         
         console.log('PageManager: Modules initialized');
     }
@@ -1733,5 +1736,39 @@ class PageManager {
 
 // Global page manager instance
 console.log('Pages.js: Creating pageManager instance');
-const pageManager = new PageManager();
-console.log('Pages.js: pageManager instance created');
+let pageManager;
+
+try {
+    pageManager = new PageManager();
+    console.log('Pages.js: pageManager instance created');
+    
+    // Make pageManager globally available
+    window.pageManager = pageManager;
+    console.log('Pages.js: pageManager made globally available');
+    
+    // Also make individual modules globally available as fallback
+    if (pageManager.playbooksModule) {
+        window.playbooksModule = pageManager.playbooksModule;
+        console.log('Pages.js: playbooksModule made globally available');
+    }
+    if (pageManager.blogModule) {
+        window.blogModule = pageManager.blogModule;
+        console.log('Pages.js: blogModule made globally available');
+    }
+    if (pageManager.projectsModule) {
+        window.projectsModule = pageManager.projectsModule;
+        console.log('Pages.js: projectsModule made globally available');
+    }
+} catch (error) {
+    console.error('Pages.js: Error creating pageManager:', error);
+    console.error('Pages.js: Error stack:', error.stack);
+    
+    // Create fallback modules if pageManager fails
+    console.log('Pages.js: Creating fallback modules');
+    try {
+        window.playbooksModule = new PlaybooksModule();
+        console.log('Pages.js: Fallback playbooksModule created');
+    } catch (e) {
+        console.error('Pages.js: Failed to create fallback playbooksModule:', e);
+    }
+}
