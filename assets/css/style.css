@@ -4119,6 +4119,15 @@ footer {
     color: var(--text-light);
 }
 
+.post-format {
+    background: var(--accent);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
 .read-more-btn {
     background: var(--primary);
     color: white;
