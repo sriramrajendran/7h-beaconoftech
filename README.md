@@ -1,42 +1,42 @@
-# 📈 BeaconOfTech Tech hub & Analytics Platform
+# 📈 BeaconOfTech - Personal Tech Insights Platform by Sriram Rajendran
 
 ![BeaconOfTech ](doc/readme.png)
 
-A **comprehensive static web application** by **BeaconOfTech** for digital innovation updates and AI-powered stock analysis that runs entirely on GitHub Pages. Explore tech blogs, playbooks, projects, and analyze stocks with technical indicators to get BUY/SELL/HOLD recommendations - all in your browser with no backend required.
+A **personal, non-commercial platform** by **Sriram Rajendran** for sharing tech insights, innovation analysis, and educational content. This project serves as a personal branding platform and knowledge-sharing hub, featuring educational tech blogs, playbooks, projects, and learning resources - all running entirely on GitHub Pages.
 
-## 👨‍💻 **Author**
+## 👨‍💻 **About the Author**
 
-**Sriram Rajendran**
+**Sriram Rajendran** - Technology enthusiast and knowledge sharer. This platform represents my personal journey in exploring and documenting technology innovations, insights, and learning experiences.
 
-## 🌐 **Live Demo**
+## 🌐 **Live Platform**
 
-**Live Demo:** `https://sriramrajendran.github.io/7h-beaconoftech/`
+**Personal Platform:** `https://sriramrajendran.github.io/7h-beaconoftech/`
 
-## ✨ **Features**
+## ✨ **Platform Features**
 
-### **Technical Analysis**
-- **RSI (Relative Strength Index)** - Momentum indicator
-- **MACD (Moving Average Convergence Divergence)** - Trend following
-- **Simple Moving Averages (SMA 20, 50, 200)** - Support/resistance levels
-- **Bollinger Bands** - Volatility channels
-- **Stochastic Oscillator** - Overbought/oversold signals
+### **Educational Content**
+- **Tech Insights Blog** - Personal articles on technology trends and innovations
+- **Technical Playbooks** - Step-by-step guides and best practices
+- **Project Showcases** - Personal projects and learning experiments
+- **Knowledge Sharing** - Educational resources and research materials
 
-### **Analysis Modes**
-- **Portfolio Analysis** - Analyze custom stock lists
-- **Watchlist Analysis** - Track your favorite stocks  
-- **Market Analysis** - Top US stock recommendations
-- **ETF Analysis** - Major ETF and index analysis
+### **Learning Resources**
+- **Personal Blog** - Insights and reflections on technology
+- **Educational Articles** - Research and analysis on tech trends
+- **Project Documentation** - Learning journey and experiments
+- **Knowledge Base** - Curated resources and references
 
-### **Smart Recommendations**
-- **Scoring System:** STRONG BUY → BUY → HOLD → SELL → STRONG SELL
-- **Detailed Reasoning:** Understand why each recommendation was made
-- **Real-time Data:** Using Yahoo Finance API
+### **Platform Purpose**
+- **Personal Branding** - Establishing professional presence
+- **Knowledge Sharing** - Educational content and insights
+- **Learning Journey** - Documenting technology exploration
+- **Community Engagement** - Connecting with fellow learners
 
 ### **User Experience**
-- **Beautiful Modern UI:** Responsive design with smooth animations
-- **Real-time Results:** Instant analysis via client-side processing
-- **Detailed Stock Views:** Click any stock for comprehensive analysis
-- **Mobile Friendly:** Works on desktop, tablet, and mobile
+- **Modern Responsive Design:** Clean interface with smooth animations
+- **Educational Focus:** Content organized for learning and discovery
+- **Personal Touch:** Reflects author's perspective and insights
+- **Mobile Friendly:** Accessible on all devices
 
 ## 🚀 **Quick Start**
 
@@ -70,41 +70,33 @@ python3 -m http.server 8001 --directory tests
 # Click "Run All Tests" to verify functionality
 ```
 
-## 📊 **How to Use**
+## 📊 **How to Use the Platform**
 
-### **Portfolio Analysis**
-1. Click **Portfolio** in the sidebar
-2. Edit stock symbols (default: AAPL, MSFT, GOOGL, etc.)
-3. Select time period and number of recommendations
-4. Click **Analyze Portfolio**
-5. View BUY/SELL/HOLD recommendations with scores
+### **Exploring Tech Insights**
+1. Click **Tech Insights** in the sidebar
+2. Browse personal articles on technology trends
+3. Read detailed analysis and perspectives
+4. Engage with educational content
 
-### **Market Analysis**
-1. Click **Market** in the sidebar
-2. Select time period and top N recommendations
-3. Click **Analyze US Market**
-4. View top BUY recommendations from major US stocks
+### **Learning Resources**
+1. Click **Playbooks** for step-by-step guides
+2. Explore **Projects** for practical examples
+3. Use **About** section to learn more about the author
+4. Navigate through different educational sections
 
-### **ETF Analysis**
-1. Click **ETFs/Indexes** in the sidebar
-2. Select time period and recommendations count
-3. Click **Analyze ETFs/Indexes**
-4. View top ETF recommendations
+## 🎯 **Platform Purpose & Values**
 
-## 🎯 **Understanding Recommendations**
+### **Educational Mission**
+- **Knowledge Sharing:** Providing insights and learning resources
+- **Personal Growth:** Documenting technology journey and experiences
+- **Community Building:** Connecting with fellow technology enthusiasts
+- **Innovation Tracking:** Exploring emerging trends and developments
 
-### **Scoring System**
-- **Score ≥ 5:** STRONG BUY 🟢
-- **Score 2-4:** BUY 🟢  
-- **Score -1 to 1:** HOLD 🟡
-- **Score -4 to -2:** SELL 🔴
-- **Score ≤ -5:** STRONG SELL 🔴
-
-### **Key Indicators**
-- **RSI:** Momentum (oversold < 30, overbought > 70)
-- **MACD:** Trend following indicator
-- **Moving Averages:** Support/resistance levels
-- **Bollinger Bands:** Volatility channels
+### **Non-Commercial Commitment**
+- **Free Access:** All content available without charge
+- **No Monetization:** No advertising, subscriptions, or paid services
+- **Educational Focus:** Primary goal is learning and knowledge sharing
+- **Personal Initiative:** Individual project, not a business venture
 
 ## 🌐 **GitHub Pages Deployment**
 
@@ -225,26 +217,28 @@ beaconoftech-stock-analysis/
 └── README.md                 # This file
 ```
 
-## ⚠️ **Important Notes**
+## ⚠️ **Important Legal Notice**
 
-**Disclaimer:** This tool is for educational purposes only. Stock recommendations are based solely on technical analysis and should not be considered as financial advice. Always do your own research and consult with a financial advisor before making investment decisions.
+**Personal Platform Disclaimer:** This is a personal, non-commercial platform created and maintained by Sriram Rajendran for educational purposes and knowledge sharing only.
 
-**Data Sources:**
-- Uses Yahoo Finance API (free tier)
-- Real-time data may have 15-20 minute delays
-- Rate limiting may apply with excessive requests
+**Not Professional Advice:** All content provided on this platform is for educational and informational purposes only. No professional, financial, investment, or technical advice is provided. The content represents personal opinions and experiences.
 
-**Browser Security:**
-- All analysis runs client-side in your browser
-- No data sent to external servers (except Yahoo Finance API)
-- Your stock symbols and analysis remain private
+**Non-Commercial Nature:** This platform is not a money-making organization. There are no paid services, advertisements, subscription fees, or commercial activities. All content is provided free of charge for educational purposes.
 
-## 🚨 **Limitations**
+**Educational Purpose:** This platform serves as a personal branding and knowledge-sharing initiative. It is not affiliated with any commercial entity or professional service provider.
 
-The following features are not available in the GitHub Pages version:
-- ❌ **Persistent Storage** - No database for saving data
-- ❌ **Automated Alerts** - Requires backend services
-- ❌ **Advanced Pattern Detection** - Complex algorithms need more processing power
+**No Liability:** The author is not responsible for any decisions made based on the content provided. Users should exercise their own judgment and consult appropriate professionals for specific needs.
+
+**Data Sources:** Any data or information referenced is for educational purposes only and may not be real-time or accurate. Always verify information from official sources.
+
+## 🚨 **Platform Limitations**
+
+The following features are intentionally not available as this is a personal, non-commercial educational platform:
+- ❌ **Commercial Services** - No paid features or premium content
+- ❌ **Professional Advice** - No consulting or professional services
+- ❌ **Automated Systems** - No alerts, notifications, or automated services
+- ❌ **Data Storage** - No persistent user data or accounts
+- ❌ **Support Services** - No formal customer support or SLA
 
 ## 🤝 **Contributing**
 
@@ -254,17 +248,18 @@ The following features are not available in the GitHub Pages version:
 4. Test locally with `python3 -m http.server 8000`
 5. Submit a pull request`
 
-## 📞 **Support**
+## 📞 **Connect & Learn**
 
-- **GitHub Issues:** Report bugs or request features
-- **Documentation:** This README covers all usage information
-- **Live Demo:** Try the GitHub Pages version instantly
+- **GitHub Issues:** Report bugs or suggest educational content improvements
+- **Documentation:** This README covers all platform information
+- **Live Platform:** Visit the GitHub Pages site to explore educational content
+- **Personal Connection:** Follow @rajen.sriram for updates and insights
 
 
 ---
 
-## 📜 **License**
+## 📜 **Usage Terms**
 
-This project is provided as-is for educational purposes.
+This platform is provided as-is for educational and personal branding purposes. All content reflects personal opinions and experiences of Sriram Rajendran.
 
-**🚀 Ready to explore tech and analyze stocks with BeaconOfTech?** Visit the GitHub Pages site or run locally to start your journey today!
+**🚀 Ready to explore technology insights and learn with BeaconOfTech?** Visit the personal platform or run locally to start your educational journey today!

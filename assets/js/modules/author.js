@@ -2,7 +2,7 @@
 class AuthorModule {
     constructor() {
         this.authorData = {
-            name: "Sriramprabhu Rajendran",
+            name: "Sriram Rajendran",
             title: "Software Engineering Leader & Technology Innovator",
             experience: "2 decades",
             photo: "assets/images/author-photo.jpg",
