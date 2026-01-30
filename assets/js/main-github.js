@@ -1,8 +1,6 @@
-// Main JavaScript for GitHub Pages version - Premium Edition
-// Initialize page
+// Main JavaScript for GitHub Pages version - Premium Edition - Optimized
+// Initialize page with performance optimizations
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Main GitHub: DOMContentLoaded fired');
-    
     // Initialize Lucide icons
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
@@ -15,21 +13,18 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (sidebar) {
         if (window.innerWidth > 767) {
-            // Desktop: show sidebar
             sidebar.classList.remove('hidden');
             if (icon) {
                 icon.setAttribute('data-lucide', 'x');
             }
         } else {
-            // Mobile: keep sidebar hidden
             sidebar.classList.add('hidden');
-            // Set menu icon for mobile
             if (icon) {
                 icon.setAttribute('data-lucide', 'menu');
             }
         }
         
-        // Reinitialize Lucide icons to apply the correct icon
+        // Reinitialize Lucide icons
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
@@ -38,54 +33,47 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize premium interactions
     initializePremiumFeatures();
     
-    // Wait a bit more for pageManager to be available
-    setTimeout(() => {
+    // Optimized page manager initialization
+    requestAnimationFrame(() => {
         initializePageManager();
-    }, 50);
+    });
 });
 
 function initializePageManager() {
-    // Load page manager
-    console.log('Main GitHub: Checking pageManager availability...');
-    console.log('Main GitHub: typeof pageManager:', typeof pageManager);
-    console.log('Main GitHub: typeof window.pageManager:', typeof window.pageManager);
-    
-    // Try both pageManager and window.pageManager
     const pm = typeof pageManager !== 'undefined' ? pageManager : window.pageManager;
     
     if (pm) {
-        console.log('Main GitHub: pageManager found, loading tech-blog');
-        
-        // Set up navigation
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const pageType = link.getAttribute('data-page');
-                pm.loadPage(pageType);
-                
-                // Update parent highlighting
-                updateParentHighlighting(link);
-                
-                // Remove active class from all nav links
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                
-                // Add active class to clicked link
-                link.classList.add('active');
-                
-                // Close mobile menu after navigation on mobile devices
-                if (window.innerWidth <= 767) {
-                    const sidebar = document.querySelector('.sidebar');
-                    if (sidebar && !sidebar.classList.contains('hidden')) {
-                        toggleMobileMenu();
+        // Set up navigation with event delegation for better performance
+        const navContainer = document.querySelector('.sidebar-nav');
+        if (navContainer) {
+            navContainer.addEventListener('click', (e) => {
+                const link = e.target.closest('.nav-link');
+                if (link) {
+                    e.preventDefault();
+                    const pageType = link.getAttribute('data-page');
+                    pm.loadPage(pageType);
+                    
+                    updateParentHighlighting(link);
+                    
+                    // Update active states
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    // Close mobile menu
+                    if (window.innerWidth <= 767) {
+                        const sidebar = document.querySelector('.sidebar');
+                        if (sidebar && !sidebar.classList.contains('hidden')) {
+                            toggleMobileMenu();
+                        }
                     }
                 }
             });
-        });
+        }
         
-        // Load default page (tech blog)
+        // Load default page
         pm.loadPage('tech-blog');
         
-        // Set initial active state for tech-blog
+        // Set initial active state
         const techBlogLink = document.getElementById('nav-tech-blog');
         if (techBlogLink) {
             techBlogLink.classList.add('active');
@@ -97,37 +85,22 @@ function initializePageManager() {
             window.stockAnalyzer = new StockAnalyzer('AAPL');
         }
     } else {
-        console.error('Main GitHub: pageManager not found, checking if pages.js loaded...');
-        
-        // Check if pages.js was loaded
-        if (typeof PageManager === 'undefined') {
-            console.error('Main GitHub: PageManager class not found - pages.js may not have loaded');
-        } else {
-            console.error('Main GitHub: PageManager class found but instance not created');
-        }
-        
-        // Stop retrying after 3 attempts to prevent infinite loop
+        // Optimized retry mechanism
         if (!this.retryCount) this.retryCount = 0;
-        this.retryCount++;
-        
         if (this.retryCount < 3) {
-            console.error(`Main GitHub: Retry ${this.retryCount}/3 - retrying in 100ms`);
-            setTimeout(() => {
+            this.retryCount++;
+            requestAnimationFrame(() => {
                 initializePageManager();
-            }, 100);
+            });
         } else {
-            console.error('Main GitHub: Max retries reached - pageManager initialization failed');
-            // Try to create a minimal pageManager as fallback
             createFallbackPageManager();
         }
     }
 }
 
 function createFallbackPageManager() {
-    console.log('Main GitHub: Creating fallback pageManager');
     window.pageManager = {
         loadPage: function(pageType) {
-            console.log('Fallback pageManager: Loading page:', pageType);
             const mainContent = document.getElementById('main-content');
             if (mainContent) {
                 mainContent.innerHTML = `
@@ -139,7 +112,6 @@ function createFallbackPageManager() {
             }
         }
     };
-    console.log('Main GitHub: Fallback pageManager created');
 }
 
 // Initialize premium features
@@ -319,155 +291,88 @@ function updateParentHighlightingForPage(pageType) {
     }
 }
 
-// Initialize collapsible navigation
+// Initialize collapsible navigation with performance optimizations
 function initializeCollapsibleNav() {
-    console.log('Initializing collapsible navigation...');
+    // Set initial state
+    const isMobile = window.innerWidth <= 767;
+    const navParents = document.querySelectorAll('.nav-parent');
     
-    // Set initial state - expand first section on desktop, collapse all on mobile
-    if (window.innerWidth <= 767) {
-        // Mobile: collapse all sections
-        document.querySelectorAll('.nav-parent').forEach(parent => {
+    navParents.forEach((parent, index) => {
+        const children = parent.nextElementSibling;
+        if (isMobile || index > 0) {
             parent.classList.add('collapsed');
-            const children = parent.nextElementSibling;
             if (children && children.classList.contains('nav-children')) {
                 children.classList.add('collapsed');
             }
-        });
-    } else {
-        // Desktop: expand first section
-        const navParents = document.querySelectorAll('.nav-parent');
-        navParents.forEach((parent, index) => {
-            if (index === 0) {
-                parent.classList.remove('collapsed');
-                const children = parent.nextElementSibling;
-                if (children && children.classList.contains('nav-children')) {
-                    children.classList.remove('collapsed');
+        }
+    });
+    
+    // Use event delegation for better performance
+    const navContainer = document.querySelector('.sidebar-nav');
+    if (navContainer) {
+        navContainer.addEventListener('click', function(e) {
+            const navParent = e.target.closest('.nav-parent');
+            if (navParent && !e.target.closest('.nav-children')) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const children = navParent.nextElementSibling;
+                navParent.classList.toggle('collapsed');
+                if (children) {
+                    children.classList.toggle('collapsed');
                 }
-            } else {
-                parent.classList.add('collapsed');
-                const children = parent.nextElementSibling;
-                if (children && children.classList.contains('nav-children')) {
-                    children.classList.add('collapsed');
+                
+                // Close other sections on desktop only
+                if (window.innerWidth > 768) {
+                    navParents.forEach(otherParent => {
+                        if (otherParent !== navParent) {
+                            otherParent.classList.add('collapsed');
+                            const otherChildren = otherParent.nextElementSibling;
+                            if (otherChildren) {
+                                otherChildren.classList.add('collapsed');
+                            }
+                        }
+                    });
+                }
+                
+                // Reinitialize icons
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
                 }
             }
         });
     }
     
-    // Remove any existing event listeners to prevent duplicates
-    document.querySelectorAll('.nav-parent').forEach(parent => {
-        // Clone the node to remove event listeners
-        const newParent = parent.cloneNode(true);
-        parent.parentNode.replaceChild(newParent, parent);
-    });
-    
-    // Add fresh event listeners
-    document.querySelectorAll('.nav-parent').forEach(parent => {
-        console.log('Adding click listener to:', parent);
-        
-        parent.addEventListener('click', function(e) {
-            // Only toggle if clicking directly on the parent (not children)
-            if (e.target.closest('.nav-children')) {
-                return; // Don't handle clicks on child elements
-            }
-            
-            e.preventDefault();
-            e.stopPropagation();
-            
-            console.log('Nav parent clicked:', this);
-            
-            const children = this.nextElementSibling;
-            const isCollapsed = this.classList.contains('collapsed');
-            
-            console.log('Children found:', children, 'Is collapsed:', isCollapsed);
-            
-            // Toggle current section
-            this.classList.toggle('collapsed');
-            if (children) {
-                children.classList.toggle('collapsed');
-            }
-            
-            // On mobile, don't close other sections to allow multiple to be open
-            if (window.innerWidth > 768) {
-                // Close other sections on desktop
-                document.querySelectorAll('.nav-parent').forEach(otherParent => {
-                    if (otherParent !== this) {
-                        otherParent.classList.add('collapsed');
-                        const otherChildren = otherParent.nextElementSibling;
-                        if (otherChildren) {
-                            otherChildren.classList.add('collapsed');
-                        }
-                    }
-                });
-            }
-            
-            // On mobile, add click-outside listener to close menus, but not for child link clicks
-            if (window.innerWidth <= 768) {
-                setTimeout(() => {
-                    const closeMenus = (e) => {
-                        // Don't close if clicking on the parent itself or any of its children
-                        if (!this.contains(e.target)) {
-                            this.classList.add('collapsed');
-                            const children = this.nextElementSibling;
-                            if (children) {
-                                children.classList.add('collapsed');
-                            }
-                            document.removeEventListener('click', closeMenus);
-                        }
-                    };
-                    document.addEventListener('click', closeMenus);
-                }, 100);
-            }
-            
-            // Reinitialize Lucide icons for arrow rotation
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-        });
-    });
-    
-    // Handle window resize for navigation behavior
+    // Optimized resize handler with debouncing
     let resizeTimer;
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
-            if (window.innerWidth <= 767) {
-                // Mobile: collapse all sections and ensure sidebar is hidden
-                document.querySelectorAll('.nav-parent').forEach(parent => {
+        resizeTimer = setTimeout(() => {
+            const isMobile = window.innerWidth <= 767;
+            navParents.forEach((parent, index) => {
+                const children = parent.nextElementSibling;
+                if (isMobile) {
                     parent.classList.add('collapsed');
-                    const children = parent.nextElementSibling;
-                    if (children && children.classList.contains('nav-children')) {
-                        children.classList.add('collapsed');
+                    if (children) children.classList.add('collapsed');
+                } else {
+                    if (index === 0) {
+                        parent.classList.remove('collapsed');
+                        if (children) children.classList.remove('collapsed');
+                    } else {
+                        parent.classList.add('collapsed');
+                        if (children) children.classList.add('collapsed');
                     }
-                });
-                
-                // Hide sidebar on mobile by default
-                const sidebar = document.querySelector('.sidebar');
-                if (sidebar && !sidebar.classList.contains('hidden')) {
+                }
+            });
+            
+            // Handle sidebar visibility
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) {
+                if (isMobile) {
                     sidebar.classList.add('hidden');
                     removeMobileMenuOverlay();
                     document.body.style.overflow = '';
-                }
-            } else {
-                // Desktop: expand first section, collapse others, show sidebar
-                const navParents = document.querySelectorAll('.nav-parent');
-                navParents.forEach((parent, index) => {
-                    const children = parent.nextElementSibling;
-                    if (index === 0) {
-                        parent.classList.remove('collapsed');
-                        if (children && children.classList.contains('nav-children')) {
-                            children.classList.remove('collapsed');
-                        }
-                    } else {
-                        parent.classList.add('collapsed');
-                        if (children && children.classList.contains('nav-children')) {
-                            children.classList.add('collapsed');
-                        }
-                    }
-                });
-                
-                // Show sidebar on desktop
-                const sidebar = document.querySelector('.sidebar');
-                if (sidebar) {
+                } else {
                     sidebar.classList.remove('hidden');
                     removeMobileMenuOverlay();
                     document.body.style.overflow = '';
@@ -475,44 +380,6 @@ function initializeCollapsibleNav() {
             }
         }, 250);
     });
-    
-    // Set initial collapsed state for all sections except first (desktop behavior)
-    const navParents = document.querySelectorAll('.nav-parent');
-    navParents.forEach((parent, index) => {
-        if (index > 0) {
-            parent.classList.add('collapsed');
-            const children = parent.nextElementSibling;
-            if (children) {
-                children.classList.add('collapsed');
-            }
-        }
-    });
-    
-    // Add specific event listeners to child links to prevent parent collapse (works on all screen sizes)
-    document.querySelectorAll('.nav-children .nav-link').forEach(childLink => {
-        childLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            console.log('Child link clicked:', this.getAttribute('data-page'));
-            
-            // Get the page type and navigate
-            const pageType = this.getAttribute('data-page');
-            const pm = typeof pageManager !== 'undefined' ? pageManager : window.pageManager;
-            
-            if (pageType && pm) {
-                // Use setTimeout to allow the event to complete before navigation
-                setTimeout(() => {
-                    pm.loadPage(pageType);
-                }, 0);
-            } else {
-                console.warn('PageManager not found or missing page-type:', pageType);
-                console.warn('typeof pageManager:', typeof pageManager);
-                console.warn('typeof window.pageManager:', typeof window.pageManager);
-            }
-        });
-    });
-    
-    console.log('Collapsible navigation initialized successfully');
 }
 
 // Initialize header buttons

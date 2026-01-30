@@ -2156,7 +2156,177 @@ textarea {
     min-height: 100px;
 }
 
-/* Enhanced Tables */
+/* Professional Analytics & Markets Tables */
+.analytics-table,
+.markets-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--card-bg);
+    border-radius: var(--radius-2xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    font-size: 0.875rem;
+}
+
+.analytics-table thead,
+.markets-table thead {
+    background: #2D3748;
+}
+
+.analytics-table th,
+.markets-table th {
+    padding: var(--space-4) var(--space-3);
+    text-align: left;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.analytics-table th:last-child,
+.markets-table th:last-child {
+    border-right: none;
+}
+
+.analytics-table th:first-child,
+.markets-table th:first-child {
+    border-top-left-radius: var(--radius-2xl);
+}
+
+.analytics-table th:last-child,
+.markets-table th:last-child {
+    border-top-right-radius: var(--radius-2xl);
+}
+
+.analytics-table td,
+.markets-table td {
+    padding: var(--space-3) var(--space-3);
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.analytics-table tbody tr,
+.markets-table tbody tr {
+    transition: all var(--transition-fast);
+    border-bottom: none;
+}
+
+.analytics-table tbody tr:nth-child(even),
+.markets-table tbody tr:nth-child(even) {
+    background: var(--bg-secondary);
+}
+
+.analytics-table tbody tr:hover,
+.markets-table tbody tr:hover {
+    background: rgba(59, 130, 246, 0.05);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.analytics-table tbody tr:last-child td,
+.markets-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Recommendation badges */
+.recommendation-badge-buy,
+.recommendation-badge-hold,
+.recommendation-badge-sell {
+    display: inline-block;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+    min-width: 60px;
+}
+
+.recommendation-badge-buy {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: var(--text-inverse);
+}
+
+.recommendation-badge-hold {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: var(--text-inverse);
+}
+
+.recommendation-badge-sell {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: var(--text-inverse);
+}
+
+/* Price change indicators */
+.price-positive {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.price-negative {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+.price-neutral {
+    color: var(--text-tertiary);
+    font-weight: 500;
+}
+
+/* Status indicators */
+.status-indicator-circle {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: var(--radius-full);
+    background: var(--warning);
+    color: var(--text-inverse);
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 16px;
+}
+
+/* Empty state */
+.table-empty-state {
+    text-align: center;
+    padding: var(--space-12);
+    color: var(--text-tertiary);
+    font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .analytics-table,
+    .markets-table {
+        font-size: 0.75rem;
+    }
+    
+    .analytics-table th,
+    .analytics-table td,
+    .markets-table th,
+    .markets-table td {
+        padding: var(--space-2) var(--space-2);
+    }
+    
+    .recommendation-badge-buy,
+    .recommendation-badge-hold,
+    .recommendation-badge-sell {
+        padding: var(--space-1) var(--space-2);
+        font-size: 0.65rem;
+        min-width: 50px;
+    }
+}
 .table-wrapper {
     width: 100%;
     overflow-x: auto;
