@@ -809,41 +809,54 @@ class MarketDataService {
 
     fetchSP500Data() {
         return new Promise((resolve) => {
-            // Using a free API endpoint for S&P 500 data
-            // Note: In production, you might want to use a more reliable API
-            fetch('https://api.polygon.io/v2/aggs/ticker/SPY/prev?adjusted=true&apiKey=YOUR_API_KEY')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch market data');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.results && data.results.length > 0) {
-                        const result = data.results[0];
-                        const price = result.c; // Close price
-                        const change = ((result.c - result.o) / result.o * 100).toFixed(2);
-                        const changeValue = (result.c - result.o).toFixed(2);
-                        
-                        resolve({
-                            price: price.toFixed(2),
-                            change: change,
-                            changeValue: changeValue,
-                            isPositive: change >= 0
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.log('Using mock data for S&P 500');
-                    // Return mock data if API fails
-                    resolve({
-                        price: '4,783.45',
-                        change: '+0.82',
-                        changeValue: '+38.94',
-                        isPositive: true
+            // Check if API key is available in environment variables
+            const apiKey = process?.env?.POLYGON_API_KEY || window.POLYGON_API_KEY;
+            
+            if (apiKey && apiKey !== 'YOUR_API_KEY') {
+                // Use real API if key is available
+                fetch(`https://api.polygon.io/v2/aggs/ticker/SPY/prev?adjusted=true&apiKey=${apiKey}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch market data');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.results && data.results.length > 0) {
+                            const result = data.results[0];
+                            const price = result.c; // Close price
+                            const change = ((result.c - result.o) / result.o * 100).toFixed(2);
+                            const changeValue = (result.c - result.o).toFixed(2);
+                            
+                            resolve({
+                                price: price.toFixed(2),
+                                change: change,
+                                changeValue: changeValue,
+                                isPositive: change >= 0
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.log('API call failed, using mock data for S&P 500');
+                        this.useMockData(resolve);
                     });
-                });
+            } else {
+                // Use mock data if no API key is configured
+                console.log('No API key configured, using mock data for S&P 500');
+                this.useMockData(resolve);
+            }
         });
+    }
+
+    useMockData(resolve) {
+        // Return realistic mock data
+        const mockData = {
+            price: '4,783.45',
+            change: '+0.82',
+            changeValue: '+38.94',
+            isPositive: true
+        };
+        resolve(mockData);
     }
 
     updateMarketDisplay(data) {

@@ -47,6 +47,11 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     
+    <!-- Cache control for development -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <!-- Structured Data JSON-LD -->
     <script type="application/ld+json">
     {
@@ -434,10 +439,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Preload critical fonts -->
-    <link rel="preload" href="https://fonts.gstatic.com/s/sora/v17/xMQ9Rl2WvHKySG0vS.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="https://fonts.gstatic.com/s/spacegrotesk/v16/V8mDoQDjQ4w3aS8J2-w.woff2" as="font" type="font/woff2" crossorigin>
-    
     <!-- Icon library deferred -->
     <script defer src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -445,9 +446,9 @@
     <a href="#main-content" class="skip-to-content">Skip to main content</a>
     <div class="app-layout">
         <!-- Premium Side Menu -->
-        <aside class="sidebar hidden">
+        <aside class="sidebar hidden" role="navigation" aria-label="Main navigation">
             <div class="sidebar-header">
-                <a href="#" class="logo-container" onclick="if(typeof pageManager !== 'undefined') pageManager.loadPage('tech-blog'); return false;" style="text-decoration: none; color: inherit;">
+                <a href="#" class="logo-container" onclick="if(typeof pageManager !== 'undefined') pageManager.loadPage('tech-blog'); return false;" style="text-decoration: none; color: inherit;" aria-label="BeaconOfTech Home">
                     <div class="logo-wrapper">
                         <img src="assets/logo.svg" alt="BeaconOfTech" class="logo" style="width: 20px; height: 20px;" loading="lazy">
                         <div class="logo-pulse" style="width: 35px; height: 35px;"></div>
@@ -456,34 +457,34 @@
                         <span class="brand-text">BeaconOfTech</span>
                 </div>
                 </a>
-            <nav class="sidebar-nav">
+            <nav class="sidebar-nav" role="menubar" aria-orientation="vertical">
                 <!-- Tech Insights Section -->
-                <div class="nav-section">
-                    <div class="nav-parent" id="nav-tech-parent">
+                <div class="nav-section" role="none">
+                    <div class="nav-parent" id="nav-tech-parent" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">
                         <div class="nav-icon-wrapper">
-                            <i data-lucide="cpu" class="nav-icon"></i>
+                            <i data-lucide="cpu" class="nav-icon" aria-hidden="true"></i>
                         </div>
                         <span class="nav-text">Tech Insights</span>
                         <div class="nav-arrow">
-                            <i data-lucide="chevron-down" class="icon"></i>
+                            <i data-lucide="chevron-down" class="icon" aria-hidden="true"></i>
                         </div>
                     </div>
-                    <div class="nav-children" id="nav-tech-children">
-                        <a href="#tech-blog" class="nav-link" id="nav-tech-blog" data-page="tech-blog">
+                    <div class="nav-children" id="nav-tech-children" role="menu" aria-hidden="true">
+                        <a href="#tech-blog" class="nav-link" id="nav-tech-blog" data-page="tech-blog" role="menuitem" tabindex="-1">
                             <div class="nav-icon-wrapper">
-                                <i data-lucide="pen-tool" class="nav-icon"></i>
+                                <i data-lucide="pen-tool" class="nav-icon" aria-hidden="true"></i>
                             </div>
                             <span class="nav-text">Articles</span>
                         </a>
-                        <a href="#tech-projects" class="nav-link" id="nav-tech-projects" data-page="tech-projects">
+                        <a href="#tech-projects" class="nav-link" id="nav-tech-projects" data-page="tech-projects" role="menuitem" tabindex="-1">
                             <div class="nav-icon-wrapper">
-                                <i data-lucide="rocket" class="nav-icon"></i>
+                                <i data-lucide="rocket" class="nav-icon" aria-hidden="true"></i>
                             </div>
                             <span class="nav-text">Projects</span>
                         </a>
-                        <a href="#tech-playbooks" class="nav-link" id="nav-tech-playbooks" data-page="tech-playbooks">
+                        <a href="#tech-playbooks" class="nav-link" id="nav-tech-playbooks" data-page="tech-playbooks" role="menuitem" tabindex="-1">
                             <div class="nav-icon-wrapper">
-                                <i data-lucide="book-open" class="nav-icon"></i>
+                                <i data-lucide="book-open" class="nav-icon" aria-hidden="true"></i>
                             </div>
                             <span class="nav-text">Playbooks</span>
                         </a>
@@ -491,54 +492,54 @@
                 </div>
                 
                 <!-- Analytics Section -->
-                <div class="nav-section">
-                    <div class="nav-parent" id="nav-analytics-parent">
+                <div class="nav-section" role="none">
+                    <div class="nav-parent" id="nav-analytics-parent" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">
                         <div class="nav-icon-wrapper">
-                            <i data-lucide="trending-up" class="nav-icon"></i>
+                            <i data-lucide="trending-up" class="nav-icon" aria-hidden="true"></i>
                         </div>
                         <span class="nav-text">Analytics</span>
                         <div class="nav-arrow">
-                            <i data-lucide="chevron-down" class="icon"></i>
+                            <i data-lucide="chevron-down" class="icon" aria-hidden="true"></i>
                         </div>
                     </div>
-                    <div class="nav-children" id="nav-analytics-children">
-                        <a href="#portfolio" class="nav-link" id="nav-portfolio" data-page="portfolio">
+                    <div class="nav-children" id="nav-analytics-children" role="menu" aria-hidden="true">
+                        <a href="#portfolio" class="nav-link" id="nav-portfolio" data-page="portfolio" role="menuitem" tabindex="-1">
                             <div class="nav-icon-wrapper">
-                                <i data-lucide="briefcase" class="nav-icon"></i>
+                                <i data-lucide="briefcase" class="nav-icon" aria-hidden="true"></i>
                             </div>
                             <span class="nav-text">Portfolio Analysis</span>
-                            <span class="nav-badge pro">PRO</span>
+                            <span class="nav-badge pro" aria-label="Pro feature">PRO</span>
                         </a>
-                        <a href="#watchlist" class="nav-link" id="nav-watchlist" data-page="watchlist">
+                        <a href="#watchlist" class="nav-link" id="nav-watchlist" data-page="watchlist" role="menuitem" tabindex="-1">
                             <div class="nav-icon-wrapper">
-                                <i data-lucide="star" class="nav-icon"></i>
+                                <i data-lucide="star" class="nav-icon" aria-hidden="true"></i>
                             </div>
                             <span class="nav-text">Watchlist</span>
                         </a>
-                        <a href="#screener" class="nav-link" id="nav-screener" data-page="screener">
+                        <a href="#screener" class="nav-link" id="nav-screener" data-page="screener" role="menuitem" tabindex="-1">
                             <div class="nav-icon-wrapper">
-                                <i data-lucide="filter" class="nav-icon"></i>
+                                <i data-lucide="filter" class="nav-icon" aria-hidden="true"></i>
                             </div>
                             <span class="nav-text">Stock Screener</span>
-                            <span class="nav-badge new">NEW</span>
+                            <span class="nav-badge new" aria-label="New feature">NEW</span>
                         </a>
-                        <a href="#patterns" class="nav-link" id="nav-patterns" data-page="patterns">
+                        <a href="#patterns" class="nav-link" id="nav-patterns" data-page="patterns" role="menuitem" tabindex="-1">
                             <div class="nav-icon-wrapper">
-                                <i data-lucide="activity" class="nav-icon"></i>
+                                <i data-lucide="activity" class="nav-icon" aria-hidden="true"></i>
                             </div>
                             <span class="nav-text">Chart Patterns</span>
-                            <span class="nav-badge new">NEW</span>
+                            <span class="nav-badge new" aria-label="New feature">NEW</span>
                         </a>
-                        <a href="#candlestick-patterns" class="nav-link" id="nav-candlestick-patterns" data-page="candlestick-patterns">
+                        <a href="#candlestick-patterns" class="nav-link" id="nav-candlestick-patterns" data-page="candlestick-patterns" role="menuitem" tabindex="-1">
                             <div class="nav-icon-wrapper">
-                                <i data-lucide="candlestick-chart" class="nav-icon"></i>
+                                <i data-lucide="candlestick-chart" class="nav-icon" aria-hidden="true"></i>
                             </div>
                             <span class="nav-text">Candlestick Patterns</span>
-                            <span class="nav-badge new">NEW</span>
+                            <span class="nav-badge new" aria-label="New feature">NEW</span>
                         </a>
-                        <a href="#etf" class="nav-link" id="nav-etf" data-page="etf">
+                        <a href="#etf" class="nav-link" id="nav-etf" data-page="etf" role="menuitem" tabindex="-1">
                             <div class="nav-icon-wrapper">
-                                <i data-lucide="bar-chart-3" class="nav-icon"></i>
+                                <i data-lucide="bar-chart-3" class="nav-icon" aria-hidden="true"></i>
                             </div>
                             <span class="nav-text">ETF Analysis</span>
                         </a>
@@ -546,37 +547,37 @@
                 </div>
                 
                 <!-- Markets Section -->
-                <div class="nav-section">
-                    <div class="nav-parent" id="nav-markets-parent">
+                <div class="nav-section" role="none">
+                    <div class="nav-parent" id="nav-markets-parent" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">
                         <div class="nav-icon-wrapper">
-                            <i data-lucide="globe" class="nav-icon"></i>
+                            <i data-lucide="globe" class="nav-icon" aria-hidden="true"></i>
                         </div>
                         <span class="nav-text">Markets</span>
                         <div class="nav-arrow">
-                            <i data-lucide="chevron-down" class="icon"></i>
+                            <i data-lucide="chevron-down" class="icon" aria-hidden="true"></i>
                         </div>
                     </div>
-                    <div class="nav-children" id="nav-markets-children">
-                        <a href="#us-stocks" class="nav-link" id="nav-us-stocks" data-page="us-stocks">
+                    <div class="nav-children" id="nav-markets-children" role="menu" aria-hidden="true">
+                        <a href="#us-stocks" class="nav-link" id="nav-us-stocks" data-page="us-stocks" role="menuitem" tabindex="-1">
                             <div class="nav-icon-wrapper">
-                                <i data-lucide="trending-up" class="nav-icon"></i>
+                                <i data-lucide="trending-up" class="nav-icon" aria-hidden="true"></i>
                             </div>
                             <span class="nav-text">US Stocks</span>
                         </a>
-                        <a href="#crypto" class="nav-link" id="nav-crypto" data-page="crypto">
+                        <a href="#crypto" class="nav-link" id="nav-crypto" data-page="crypto" role="menuitem" tabindex="-1">
                             <div class="nav-icon-wrapper">
-                                <i data-lucide="coins" class="nav-icon"></i>
+                                <i data-lucide="coins" class="nav-icon" aria-hidden="true"></i>
                             </div>
                             <span class="nav-text">Cryptocurrency</span>
-                            <span class="nav-badge beta">BETA</span>
+                            <span class="nav-badge beta" aria-label="Beta feature">BETA</span>
                         </a>
                     </div>
                 </div>
                 
                 <!-- About Section -->
-                <a href="#author" class="nav-link" id="nav-author" data-page="author">
+                <a href="#author" class="nav-link" id="nav-author" data-page="author" role="menuitem" tabindex="0">
                     <div class="nav-icon-wrapper">
-                        <i data-lucide="user" class="nav-icon"></i>
+                        <i data-lucide="user" class="nav-icon" aria-hidden="true"></i>
                     </div>
                     <span class="nav-text">About</span>
                 </a>
@@ -592,9 +593,9 @@
         </aside>
 
         <!-- Premium Main Content -->
-        <div class="main-content">
+        <div class="main-content" role="main">
             <div class="container">
-                <header class="premium-header">
+                <header class="premium-header" role="banner">
                     <div class="header-content">
                         <a href="#" class="header-brand" onclick="pageManager.loadPage('tech-blog'); return false;">
                             <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu">
@@ -625,9 +626,10 @@
                     </div>
                 </header>
                 
-                <main id="main-content">
+                <main id="main-content" role="main" aria-label="Main content">
                     <!-- Premium Welcome Content -->
-                    <section class="premium-welcome">
+                    <section class="premium-welcome" aria-labelledby="welcome-heading">
+                        <h1 id="welcome-heading" class="sr-only">Welcome to BeaconOfTech</h1>
                         <div class="welcome-card">
                             <div class="welcome-content">
                                 <div class="welcome-text">
@@ -635,12 +637,12 @@
                                     <p class="welcome-description">Where curiosity meets innovation. I'm <strong>Sriram Rajendran</strong>, and this is my digital garden for exploring the cutting edge of technology.</p>
                                     <p class="welcome-sub-description">From AI breakthroughs to architectural patterns, I document the journey of modern software development and share insights from building scalable systems.</p>
                                     <div class="welcome-actions">
-                                        <button class="btn btn-primary btn-lg" onclick="pageManager.loadPage('tech-blog')">
-                                            <i data-lucide="book-open" class="icon"></i>
+                                        <button class="btn btn-primary btn-lg" onclick="pageManager.loadPage('tech-blog')" aria-label="Read tech articles">
+                                            <i data-lucide="book-open" class="icon" aria-hidden="true"></i>
                                             Read Articles
                                         </button>
-                                        <button class="btn btn-secondary btn-lg" onclick="pageManager.loadPage('tech-projects')">
-                                            <i data-lucide="rocket" class="icon"></i>
+                                        <button class="btn btn-secondary btn-lg" onclick="pageManager.loadPage('tech-projects')" aria-label="Explore tech projects">
+                                            <i data-lucide="rocket" class="icon" aria-hidden="true"></i>
                                             Explore Projects
                                         </button>
                                     </div>
@@ -708,7 +710,7 @@
                     </section>
                 </main>
                 
-                <footer class="premium-footer">
+                <footer class="premium-footer" role="contentinfo">
                     <div class="footer-content">
                         <div class="footer-brand">
                             <div class="footer-logo-container">
@@ -736,7 +738,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="modal-title">Stock Details</h2>
-                <button class="modal-close" onclick="closeStockDetail()">&times;</button>
+                <button class="modal-close" onclick="closeStockDetail()" aria-label="Close modal">&times;</button>
             </div>
             <div class="modal-body" id="modal-body">
                 <!-- Content will be dynamically loaded -->
@@ -746,7 +748,7 @@
 
     <!-- Optimized JavaScript loading -->
     <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script defer src="assets/js/stock-analyzer.js"></script>
+    <script defer src="assets/js/stock-analyzer.js?v=3&t=202501292253"></script>
     <script defer src="assets/js/modules/author.js"></script>
     <script defer src="assets/js/modules/blog.js"></script>
     <script defer src="assets/js/modules/playbooks.js"></script>
@@ -773,5 +775,8 @@
             }, 100);
         });
     </script>
+    
+    <!-- Micro-interactions Script -->
+    <script src="assets/js/micro-interactions.js" defer></script>
 </body>
 </html>
