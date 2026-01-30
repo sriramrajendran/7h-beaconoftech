@@ -60,7 +60,9 @@ class StockAnalyzer {
         const proxies = [
             'https://api.allorigins.win/raw?url=',
             'https://corsproxy.io/?',
-            'https://cors-anywhere.herokuapp.com/'
+            'https://cors-anywhere.herokuapp.com/',
+            'https://cors.bridged.cc/',
+            'https://thingproxy.freeboard.io/fetch/'
         ];
         
         for (const proxy of proxies) {
@@ -70,6 +72,8 @@ class StockAnalyzer {
                 
                 let proxyUrl;
                 if (proxy.includes('allorigins')) {
+                    proxyUrl = proxy + encodeURIComponent(yahooUrl);
+                } else if (proxy.includes('thingproxy')) {
                     proxyUrl = proxy + encodeURIComponent(yahooUrl);
                 } else {
                     proxyUrl = proxy + yahooUrl;
