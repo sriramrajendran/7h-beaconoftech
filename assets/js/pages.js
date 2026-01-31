@@ -361,6 +361,10 @@ class PageManager {
     loadPage(pageType) {
         console.log(`PageManager: loadPage called for ${pageType}`);
         this.currentPage = pageType;
+        
+        // Update URL hash to maintain state
+        window.location.hash = `#${pageType}`;
+        
         const mainContent = document.getElementById('main-content');
         
         // Update tagline first

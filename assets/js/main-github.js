@@ -33,6 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize premium interactions
     initializePremiumFeatures();
     
+    // Handle browser hash changes
+    window.addEventListener('hashchange', () => {
+        const hash = window.location.hash.replace('#', '');
+        if (hash && document.getElementById(`nav-${hash}`) && pageManager) {
+            pageManager.loadPage(hash);
+        }
+    });
+    
     // Optimized page manager initialization
     requestAnimationFrame(() => {
         initializePageManager();
@@ -70,14 +78,21 @@ function initializePageManager() {
             });
         }
         
-        // Load default page
-        pm.loadPage('tech-blog');
+        // Detect current page from URL hash or default to tech-blog
+        let initialPage = 'tech-blog';
+        const hash = window.location.hash.replace('#', '');
+        if (hash && document.getElementById(`nav-${hash}`)) {
+            initialPage = hash;
+        }
         
-        // Set initial active state
-        const techBlogLink = document.getElementById('nav-tech-blog');
-        if (techBlogLink) {
-            techBlogLink.classList.add('active');
-            updateParentHighlighting(techBlogLink);
+        // Load detected page
+        pm.loadPage(initialPage);
+        
+        // Set initial active state based on detected page
+        const initialLink = document.getElementById(`nav-${initialPage}`);
+        if (initialLink) {
+            initialLink.classList.add('active');
+            updateParentHighlighting(initialLink);
         }
         
         // Ensure global stock analyzer is available
