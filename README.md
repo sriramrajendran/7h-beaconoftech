@@ -98,10 +98,30 @@ python3 -m http.server 8001 --directory tests
 - **Educational Focus:** Primary goal is learning and knowledge sharing
 - **Personal Initiative:** Individual project, not a business venture
 
-## 🌐 **GitHub Pages Deployment**
+## 🌐 **Deployment Options**
 
-### **Automatic Deployment (Recommended)**
-The site automatically deploys to GitHub Pages when you push to the `main` branch:
+### **Cloudflare Pages (Recommended)**
+**Modern deployment with global CDN and free SSL:**
+
+1. **Create Cloudflare Pages Project:**
+   - Go to [Cloudflare Dashboard](https://dash.cloudflare.com/pages)
+   - Connect your GitHub repository
+   - Select `7h-beaconoftech` repo
+   - Build settings: Framework preset `None`, Build command empty, Output directory `/`
+
+2. **Automatic Deployment:**
+   ```bash
+   git add .
+   git commit -m "Deploy to Cloudflare Pages"
+   git push origin main
+   ```
+
+3. **Live site:** Available at `https://7h-beaconoftech.pages.dev` or your custom domain
+
+**Benefits:** Free SSL, global CDN, zero maintenance, automatic deployments
+
+### **GitHub Pages (Legacy)**
+**Original deployment method:**
 
 1. **Push changes to main:**
    ```bash
@@ -117,6 +137,8 @@ The site automatically deploys to GitHub Pages when you push to the `main` branc
    - Save
 
 3. **Live site:** `https://sriramrajendran.github.io/7h-beaconoftech/`
+
+**Note:** Consider migrating to Cloudflare Pages for better performance and features.
 
 ### **Local Development**
 ```bash

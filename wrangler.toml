@@ -1,3 +1,13 @@
+[build]
+command = ""
+publish = "."
+
+[env.production]
 name = "beaconoftech"
-compatibility_date = "2024-01-01"
-pages_build_output_dir = "."
+routes = [
+  { pattern = "beaconoftech.com/*", zone_name = "beaconoftech.com" },
+  { pattern = "www.beaconoftech.com/*", zone_name = "beaconoftech.com" }
+]
+
+[env.preview]
+name = "beaconoftech-preview"
