@@ -4,7 +4,7 @@ console.log('Pages.js: Script loaded');
 class PageManager {
     constructor() {
         console.log('PageManager: Constructor called');
-        this.currentPage = 'tech-blog'; // Start with tech blog as landing page
+        this.currentPage = 'tech-blog'; // Default, will be updated after DOM is ready
         this.config = null;
         
         // Initialize modular components
@@ -17,6 +17,23 @@ class PageManager {
     async initializeConfig() {
         await this.loadConfig();
         console.log('PageManager: Configuration loaded and initialized');
+    }
+    
+    // Detect current page from URL hash after DOM is ready
+    detectCurrentPage() {
+        // Detect current page from URL hash or default to tech-blog
+        let initialPage = 'tech-blog';
+        const hash = window.location.hash.replace('#', '');
+        
+        if (hash) {
+            const navElement = document.getElementById(`nav-${hash}`);
+            if (navElement) {
+                initialPage = hash;
+            }
+        }
+        
+        this.currentPage = initialPage;
+        return this.currentPage;
     }
 
     initializeModules() {
@@ -359,11 +376,16 @@ class PageManager {
     }
 
     loadPage(pageType) {
-        console.log(`PageManager: loadPage called for ${pageType}`);
         this.currentPage = pageType;
         
-        // Update URL hash to maintain state
-        window.location.hash = `#${pageType}`;
+        // Update URL hash to maintain state (but prevent hashchange event)
+        if (window.location.hash !== `#${pageType}`) {
+            window.isUpdatingHash = true;
+            window.location.hash = `#${pageType}`;
+            setTimeout(() => {
+                window.isUpdatingHash = false;
+            }, 10);
+        }
         
         const mainContent = document.getElementById('main-content');
         
@@ -383,7 +405,7 @@ class PageManager {
         updateParentHighlightingForPage(pageType);
         
         // Ensure the correct section is expanded
-        const techParent = document.getElementById('nav-technology-parent');
+        const techParent = document.getElementById('nav-tech-parent');
         const analyticsParent = document.getElementById('nav-analytics-parent');
         const marketsParent = document.getElementById('nav-markets-parent');
         

@@ -34,7 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initializePremiumFeatures();
     
     // Handle browser hash changes
+    window.isUpdatingHash = false;
     window.addEventListener('hashchange', () => {
+        if (window.isUpdatingHash) return; // Skip if we're updating the hash programmatically
+        
         const hash = window.location.hash.replace('#', '');
         if (hash && document.getElementById(`nav-${hash}`) && pageManager) {
             pageManager.loadPage(hash);
@@ -78,18 +81,26 @@ function initializePageManager() {
             });
         }
         
-        // Detect current page from URL hash or default to tech-blog
-        let initialPage = 'tech-blog';
-        const hash = window.location.hash.replace('#', '');
-        if (hash && document.getElementById(`nav-${hash}`)) {
-            initialPage = hash;
-        }
+        // Set up global event delegation for elements with data-page attributes
+        document.addEventListener('click', (e) => {
+            const element = e.target.closest('[data-page]');
+            if (element && !element.classList.contains('nav-link')) {
+                e.preventDefault();
+                const pageType = element.getAttribute('data-page');
+                if (pageType) {
+                    pm.loadPage(pageType);
+                }
+            }
+        });
         
-        // Load detected page
-        pm.loadPage(initialPage);
+        // Detect current page from URL hash after DOM is ready
+        pm.detectCurrentPage();
         
-        // Set initial active state based on detected page
-        const initialLink = document.getElementById(`nav-${initialPage}`);
+        // Load the current page from PageManager
+        pm.loadPage(pm.currentPage);
+        
+        // Set initial active state based on current page
+        const initialLink = document.getElementById(`nav-${pm.currentPage}`);
         if (initialLink) {
             initialLink.classList.add('active');
             updateParentHighlighting(initialLink);
@@ -293,6 +304,16 @@ function updateParentHighlightingForPage(pageType) {
         
         // On mobile, keep the parent menu open if child is active
         if (window.innerWidth <= 768) {
+            // First, collapse all parent sections
+            document.querySelectorAll('.nav-parent').forEach(parent => {
+                parent.classList.add('collapsed');
+            });
+            document.querySelectorAll('.nav-children').forEach(children => {
+                children.classList.add('collapsed');
+                children.setAttribute('aria-hidden', 'true');
+            });
+            
+            // Then expand only the active parent
             const parentSection = activeLink.closest('.nav-children');
             if (parentSection) {
                 const parent = parentSection.previousElementSibling;
@@ -300,6 +321,7 @@ function updateParentHighlightingForPage(pageType) {
                     // Expand the parent menu
                     parent.classList.remove('collapsed');
                     parentSection.classList.remove('collapsed');
+                    parentSection.setAttribute('aria-hidden', 'false');
                 }
             }
         }
@@ -318,6 +340,12 @@ function initializeCollapsibleNav() {
             parent.classList.add('collapsed');
             if (children && children.classList.contains('nav-children')) {
                 children.classList.add('collapsed');
+                children.setAttribute('aria-hidden', 'true');
+            }
+        } else {
+            // First section on desktop is expanded by default
+            if (children && children.classList.contains('nav-children')) {
+                children.setAttribute('aria-hidden', 'false');
             }
         }
     });
@@ -332,23 +360,31 @@ function initializeCollapsibleNav() {
                 e.stopPropagation();
                 
                 const children = navParent.nextElementSibling;
+                const isCollapsing = navParent.classList.contains('collapsed');
                 navParent.classList.toggle('collapsed');
                 if (children) {
                     children.classList.toggle('collapsed');
+                    // Update aria-hidden based on collapsed state
+                    if (isCollapsing) {
+                        // Expanding - set aria-hidden to false
+                        children.setAttribute('aria-hidden', 'false');
+                    } else {
+                        // Collapsing - set aria-hidden to true
+                        children.setAttribute('aria-hidden', 'true');
+                    }
                 }
                 
-                // Close other sections on desktop only
-                if (window.innerWidth > 768) {
-                    navParents.forEach(otherParent => {
-                        if (otherParent !== navParent) {
-                            otherParent.classList.add('collapsed');
-                            const otherChildren = otherParent.nextElementSibling;
-                            if (otherChildren) {
-                                otherChildren.classList.add('collapsed');
-                            }
+                // Close other sections on both desktop and mobile
+                navParents.forEach(otherParent => {
+                    if (otherParent !== navParent) {
+                        otherParent.classList.add('collapsed');
+                        const otherChildren = otherParent.nextElementSibling;
+                        if (otherChildren) {
+                            otherChildren.classList.add('collapsed');
+                            otherChildren.setAttribute('aria-hidden', 'true');
                         }
-                    });
-                }
+                    }
+                });
                 
                 // Reinitialize icons
                 if (typeof lucide !== 'undefined') {
