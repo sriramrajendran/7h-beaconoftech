@@ -1,0 +1,146 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="Sriram Rajendran, Sriramprabhu Rajendran, Sri Rajendran, tech insights, educational analytics, innovation analysis, knowledge sharing, technology trends, BeaconOfTech, personal tech blog, non-commercial" />
+    <meta name="author" content="Sriram Rajendran" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://beaconoftech.com/" />
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content="https://beaconoftech.com/" />
+    <meta property="og:site_name" content="BeaconOfTech" />
+    <meta property="og:image" content="https://beaconoftech.com/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="BeaconOfTech - Illuminating Tech Insights | Analytics | Gen AI" />
+    <meta property="og:locale" content="en_US" />
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://beaconoftech.com/assets/og-image.png" />
+    <meta name="twitter:creator" content="@rajen.sriram" />
+    <meta name="twitter:site" content="@beaconoftech" />
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="msapplication-TileColor" content="#2563eb" />
+    <meta name="application-name" content="BeaconOfTech Analytics" />
+    <meta name="apple-mobile-web-app-title" content="BeaconOfTech" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    
+    <!-- Cache control for development -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    
+    <!-- Structured Data JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "BeaconOfTech by Sriram Rajendran | Illuminating Tech Insights | Analytics | Gen AI",
+        "alternateName": "BeaconOfTech by Sriram Rajendran",
+        "description": "Educational platform exploring cutting edge tech insights, AI developments, software architecture patterns, and digital transformation strategies.",
+        "url": "https://beaconoftech.com/",
+        "author": {
+            "@type": "Person",
+            "name": "Sriram Rajendran",
+            "url": "https://beaconoftech.com/",
+            "sameAs": "https://twitter.com/rajen.sriram"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Sriram Rajendran",
+            "url": "https://beaconoftech.com/"
+        },
+        "about": [
+            {
+                "@type": "Thing",
+                "name": "Artificial Intelligence"
+            },
+            {
+                "@type": "Thing", 
+                "name": "Software Architecture"
+            },
+            {
+                "@type": "Thing",
+                "name": "Cloud Computing"
+            },
+            {
+                "@type": "Thing",
+                "name": "Digital Transformation"
+            },
+            {
+                "@type": "Thing",
+                "name": "Gen AI"
+            }
+        ],
+        "mainEntity": {
+            "@type": "EducationalOrganization",
+            "name": "BeaconOfTech",
+            "description": "Personal educational platform for technology insights and knowledge sharing"
+        },
+        "inLanguage": "en",
+        "isAccessibleForFree": true,
+        "educationalUse": "knowledge sharing, technology education, professional development",
+        "audience": {
+            "@type": "EducationalAudience",
+            "educationalRole": "student"
+        },
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://beaconoftech.com/#tech-blog?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    
+    <!-- Google tag (gtag.js) - Deferred for performance -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FZZ8N29R9Q"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FZZ8N29R9Q');
+    </script>
+    
+    <!-- Font optimization with font-display: swap -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icon library deferred -->
+    <script defer src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class="premium-theme bg-gradient-hero text-text font-sans antialiased">
+    <a href="#main-content" class="skip-to-content fixed top-[-40px] left-1.5 bg-accent text-white p-2 rounded no-underline z-[1000] transition-all duration-300 focus:top-1.5 focus:outline-2 focus:outline-white">Skip to main content</a>
+    <div id="app-root" client:load>
+      <slot />
+    </div>
+  </body>
+</html>
