@@ -36,6 +36,14 @@
         <priority>0.8</priority>
     </url>
     
+    <!-- Tech Blog HTML page for better SEO -->
+    <url>
+        <loc>https://beaconoftech.com/tech-blog.html</loc>
+        <lastmod>2026-03-27</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
     <url>
         <loc>https://beaconoftech.com/#tech-playbooks</loc>
         <lastmod>2026-03-27</lastmod>
