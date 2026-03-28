@@ -1,0 +1,2 @@
+# Redirect www to non-www (consolidate SEO signals)
+https://www.beaconoftech.com/* https://beaconoftech.com/:splat 301

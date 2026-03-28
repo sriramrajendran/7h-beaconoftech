@@ -3,12 +3,14 @@ class AuthorModule {
     constructor() {
         this.authorData = {
             name: "Sriram Rajendran",
-            title: "Software Engineering Leader & Technology Innovator",
-            experience: "2 decades",
+            title: "Senior Engineering Leader",
+            experience: "20 years",
             photo: "assets/images/author-photo.jpg",
             social: {
                 linkedin: "https://www.linkedin.com/in/rsri",
-                github: "https://github.com/sriramrajendran"
+                github: "https://github.com/sriramrajendran",
+                scholar: "https://scholar.google.com/citations?user=OGYePQEAAAAJ",
+                beaconoftech: "https://beaconoftech.com/#author"
             }
         };
     }
@@ -36,7 +38,7 @@ class AuthorModule {
                     <h3>${this.authorData.name}</h3>
                     <p class="author-title">${this.authorData.title}</p>
                     <div class="author-memberships">
-                        <span class="membership-badge">🏛️ IEEE Senior Member</span>
+                        <span class="membership-badge">🏛️ Senior IEEE Member</span>
                         <span class="membership-badge">👑 ioasd.org Royal Fellow</span>
                     </div>
                     <div class="author-links">
@@ -45,6 +47,9 @@ class AuthorModule {
                         </a>
                         <a href="${this.authorData.social.github}" target="_blank" class="social-link">
                             <span class="social-icon">💻</span> GitHub
+                        </a>
+                        <a href="${this.authorData.social.scholar}" target="_blank" class="social-link">
+                            <span class="social-icon">🎓</span> Google Scholar
                         </a>
                     </div>
                 </div>
@@ -58,6 +63,8 @@ class AuthorModule {
                 ${this.generateProfessionalBackground()}
                 ${this.generateTechnologyExpertise()}
                 ${this.generateLeadershipSection()}
+                ${this.generateBeyondIndustrySection()}
+                ${this.generateCertificationsSection()}
                 ${this.generatePhilosophySection()}
                 ${this.generatePhotographySection()}
                 ${this.generateContactSection()}
@@ -69,7 +76,13 @@ class AuthorModule {
         return `
             <div class="author-section">
                 <h4>👨‍💻 Professional Background</h4>
-                <p>Seasoned Software Engineering Leader with <strong>${this.authorData.experience} of experience</strong> in financial services and technology innovation. Specializes in delivering transformative solutions that drive business growth and operational excellence through cutting-edge technologies and strategic leadership.</p>
+                <p>Innovative, results-focused Software Engineering Leader with <strong>${this.authorData.experience} of experience</strong> in financial services, specializing in cloud-native architectures, Generative AI, and enterprise-scale systems.</p>
+                <p>Proven track record delivering multi-million dollar projects, leading cross-functional teams, and delivering transformative solutions from concept to production across all organizational levels.</p>
+                <ul class="achievement-list">
+                    <li><strong>Deep Technical Expertise:</strong> Deep hands-on experience designing and implementing scalable, resilient, high-performing systems using modern technologies including Gen AI, Java, Spring Boot, Microservices, AWS, Docker, Kubernetes, Kafka, Node.js, REST/SOAP, GraphQL, SQL, NoSQL (MongoDB, Cassandra, DynamoDB), and full-stack development.</li>
+                    <li><strong>Cloud Proficiency:</strong> Skilled in leveraging cloud platforms for building state-of-the-art, event-driven and serverless architectures.</li>
+                    <li><strong>Architecture & Design:</strong> Proven expertise in data modeling, distributed systems design, performance optimization, chaos engineering, design patterns, and building resilient cloud-native platforms. Extensive experience delivering products using microservices, serverless computing, event-driven architecture (EDA), and modern CI/CD pipelines.</li>
+                </ul>
             </div>
         `;
     }
@@ -80,57 +93,180 @@ class AuthorModule {
                 <h4>🚀 Technology Expertise</h4>
                 <div class="skills-grid">
                     <div class="skill-category">
-                        <h5>Gen AI & Cloud</h5>
+                        <h5>Gen AI</h5>
                         <ul>
-                            <li>Generative AI & Machine Learning</li>
-                            <li>AWS Cloud Services</li>
+                            <li>Generative AI</li>
+                            <li>Large Language Models (LLMs)</li>
+                            <li>Agentic Coding</li>
+                            <li>RAG</li>
+                            <li>AI Integration Patterns</li>
+                            <li>ML Pipelines</li>
+                            <li>Model Fine-tuning</li>
+                            <li>Vector Databases</li>
+                            <li>Embeddings</li>
+                            <li>AI-Powered Automation</li>
+                            <li>Responsible AI</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h5>Technologies</h5>
+                        <ul>
+                            <li>Java</li>
+                            <li>Microservices</li>
+                            <li>Docker</li>
+                            <li>Kubernetes</li>
+                            <li>Maven</li>
+                            <li>REST/SOAP</li>
+                            <li>GraphQL</li>
+                            <li>NodeJS</li>
+                            <li>Python</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h5>Cloud</h5>
+                        <ul>
+                            <li>AWS</li>
+                            <li>Serverless</li>
+                            <li>Azure</li>
+                            <li>Red Hat OpenShift</li>
+                            <li>Cloudflare</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h5>Frameworks</h5>
+                        <ul>
+                            <li>Spring Boot</li>
+                            <li>Spring Cloud</li>
+                            <li>Spring Batch</li>
+                            <li>Hibernate</li>
+                            <li>Express.js</li>
+                            <li>JSF (earlier)</li>
+                            <li>Struts (earlier)</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h5>Middleware</h5>
+                        <ul>
+                            <li>Kafka</li>
+                            <li>AWS SQS/SNS</li>
+                            <li>Spring Cloud</li>
+                            <li>REST APIs</li>
+                            <li>gRPC</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h5>Containers & Orchestration</h5>
+                        <ul>
+                            <li>Docker</li>
+                            <li>Kubernetes</li>
+                            <li>ECS</li>
+                            <li>EKS</li>
+                            <li>Fargate</li>
+                            <li>JBoss (earlier)</li>
+                            <li>JBoss EAP (earlier)</li>
+                            <li>WebSphere (earlier)</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h5>Databases (SQL)</h5>
+                        <ul>
+                            <li>PostgreSQL</li>
+                            <li>SQL Server</li>
+                            <li>Aurora</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h5>Databases (NoSQL)</h5>
+                        <ul>
+                            <li>Cassandra</li>
+                            <li>AWS DynamoDB</li>
+                            <li>DocumentDB/MongoDB</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h5>Testing</h5>
+                        <ul>
+                            <li>Cucumber</li>
+                            <li>Gherkin</li>
+                            <li>JUnit</li>
+                            <li>Mockito</li>
+                            <li>ATDD</li>
+                            <li>TDD</li>
+                            <li>Chaos Engineering</li>
+                            <li>Mutation Testing</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h5>CI/CD</h5>
+                        <ul>
+                            <li>Jenkins</li>
+                            <li>GitHub Actions</li>
+                            <li>AWS CodePipeline</li>
+                            <li>Maven</li>
+                            <li>Gradle</li>
+                            <li>Artifactory</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h5>Security</h5>
+                        <ul>
+                            <li>OAuth 2.0</li>
+                            <li>JWT</li>
+                            <li>SAML</li>
+                            <li>Zero-Trust Architecture</li>
+                            <li>AWS IAM</li>
+                            <li>Secrets Management</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h5>Observability</h5>
+                        <ul>
+                            <li>Observe</li>
+                            <li>Splunk</li>
+                            <li>Kibana</li>
+                            <li>Grafana</li>
+                            <li>CloudWatch</li>
+                            <li>X-Ray</li>
+                            <li>Distributed Tracing</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h5>Architecture Patterns</h5>
+                        <ul>
+                            <li>Agentic Architecture</li>
                             <li>Event-Driven Architecture</li>
-                            <li>Microservices Design</li>
+                            <li>Domain-Driven Design</li>
+                            <li>CQRS</li>
+                            <li>Saga Pattern</li>
+                            <li>Circuit Breaker</li>
+                            <li>Microservices</li>
+                            <li>Serverless</li>
                         </ul>
                     </div>
                     <div class="skill-category">
-                        <h5>Core Technologies</h5>
+                        <h5>Earlier Experience</h5>
                         <ul>
-                            <li>Java & Spring Framework</li>
-                            <li>Apache Kafka</li>
-                            <li>JavaScript (Node.js)</li>
-                            <li>APIs (REST/SOAP/gRPC)</li>
+                            <li>SOA</li>
+                            <li>WODM</li>
+                            <li>Selenium</li>
+                            <li>Drools</li>
+                            <li>JBPM</li>
+                            <li>CA Wily Introscope</li>
+                            <li>IBM BPM</li>
                         </ul>
                     </div>
                     <div class="skill-category">
-                        <h5>Data & Databases</h5>
+                        <h5>OS & Enterprise</h5>
                         <ul>
-                            <li>Data Modeling & Design</li>
-                            <li>NoSQL (DynamoDB/Cassandra/MongoDB)</li>
-                            <li>SQL (Oracle/PostgreSQL/MSSQL/DB2)</li>
-                            <li>Cache (Memcached/Redis)</li>
-                        </ul>
-                    </div>
-                    <div class="skill-category">
-                        <h5>DevOps & Infrastructure</h5>
-                        <ul>
-                            <li>Container Services (Docker/Kubernetes/ECS/Mesos)</li>
-                            <li>Automation & CI/CD</li>
-                            <li>DevOps & Agile (incl XP)</li>
-                            <li>Performance Tuning</li>
-                        </ul>
-                    </div>
-                    <div class="skill-category">
-                        <h5>Enterprise Systems</h5>
-                        <ul>
-                            <li>JavaEE & IBM SOA (Websphere/Process Server/BPEL)</li>
-                            <li>IBM MQ/WSRR/Datapower/WODM</li>
-                            <li>Redhat (JBPM/EAP/Drools)</li>
-                            <li>Design Patterns & Architecture</li>
-                        </ul>
-                    </div>
-                    <div class="skill-category">
-                        <h5>Leadership & Design</h5>
-                        <ul>
-                            <li>Strong Design Thinking</li>
-                            <li>Low Latency Systems</li>
-                            <li>High Availability & Resilience</li>
-                            <li>Systems at Scale</li>
+                            <li>macOS</li>
+                            <li>Linux</li>
+                            <li>Windows</li>
+                            <li>IBM WPS</li>
+                            <li>WESB</li>
+                            <li>IBM MQ</li>
+                            <li>DataPower</li>
+                            <li>WSRR</li>
+                            <li>JBPM</li>
                         </ul>
                     </div>
                 </div>
@@ -143,10 +279,76 @@ class AuthorModule {
             <div class="author-section">
                 <h4>🎯 Leadership & Innovation</h4>
                 <ul class="achievement-list">
-                    <li><strong>Cross-functional Team Leadership:</strong> Managing distributed teams and multi-million-dollar technology initiatives</li>
-                    <li><strong>Digital Transformation:</strong> Leading enterprise-wide modernization efforts and cloud migration strategies</li>
-                    <li><strong>Innovation Management:</strong> Establishing R&D practices and fostering culture of continuous improvement</li>
-                    <li><strong>Technical Excellence:</strong> Implementing best practices in code quality, security, and performance optimization</li>
+                    <li><strong>Leadership & Mentorship:</strong> Adept at recruiting, mentoring, and leading high-performing cross-functional teams. Strong advocate for innovation, inclusion, psychological safety, and fostering a culture of continuous learning and collaboration.</li>
+                    <li><strong>Passion & Vision:</strong> Staying at the frontier of tech trends including Gen AI, LLMs, and emerging AI and cloud technologies. Passionate about experimenting with new tools and sharing knowledge through blogs and community engagement.</li>
+                    <li><strong>Leadership Philosophy:</strong> Strong sense of engineering craftsmanship and accountability for team success. Encourages out-of-the-box thinking, cutting-edge technology adoption, and a collaborative, empowering work environment.</li>
+                    <li><strong>Strategic Collaboration:</strong> Strategic collaboration across product executive leadership, design, and engineering disciplines, adept at balancing competing priorities while fostering inclusive, high-performing teams.</li>
+                    <li><strong>Diversity & Inclusion:</strong> Champion of innovation and leader of Equality Allies and Women In Tech BRGs. Dedicated to fostering innovation, diversity, and inclusion while driving impactful business outcomes and building enduring value for customers.</li>
+                </ul>
+            </div>
+        `;
+    }
+
+    generateBeyondIndustrySection() {
+        return `
+            <div class="author-section">
+                <h4>🌐 Beyond Industrial Experience</h4>
+                
+                <h5>📄 Peer-Reviewed IEEE Conference Papers</h5>
+                <p>Reviewed 50+ research papers for IEEE and various international conferences. Provided technical evaluations on cloud computing, microservices architecture, event-driven systems, AI integration, responsible AI and financial technology systems.</p>
+                <ul class="achievement-list" style="margin-left: 20px;">
+                    <li>AMLDS 2026 <small>Osaka, Japan</small></li>
+                    <li>CEECT 2026 <small>Bangkok, Thailand</small></li>
+                    <li>CITIC 2026 <small>Malaysia</small></li>
+                    <li>ICBDA 2026 <small>Tokyo, Japan</small></li>
+                    <li>ICCITX 2026 <small>France/Morocco/Vietnam</small></li>
+                    <li>ICCPCT 2026 <small>Kerala, India</small></li>
+                    <li>ISGAIE 2026 <small>Morocco</small></li>
+                    <li>STESI 2026 <small>Jaipur, India</small></li>
+                    <li>IC2PCT 2026 <small>Noida, India</small></li>
+                    <li>2AI 2026 <small>Kashmir, India</small></li>
+                </ul>
+                
+                <h5>📝 Technical Blogs and Talks</h5>
+                <ul class="achievement-list">
+                    <li><a href="https://hackernoon.com/the-builders-dilemma-balancing-creativity-and-consistency-in-agentic-workflows" target="_blank" rel="noopener">The Builder's Dilemma: Balancing Creativity and Consistency in Agentic Workflows</a><br><small>HackerNoon</small></li>
+                    <li><a href="https://medium.com/@rajen.sriram/evolution-of-story-points-the-construction-to-curation-shift-97b06b9114fc" target="_blank" rel="noopener">Evolution of Story Points: The Construction to Curation Shift</a><br><small>Medium</small></li>
+                    <li><a href="https://dev.to/rsri/beyond-the-single-prompt-orchestrating-parallel-context-isolation-pci-with-claude-code-f58" target="_blank" rel="noopener">Beyond the Single Prompt: Orchestrating Parallel Context Isolation (PCI) with Claude Code</a><br><small>Dev.to</small></li>
+                    <li><a href="https://www.apidays.global/events/new-york" target="_blank" rel="noopener">Agent-Ready Payments — Engineering APIs for the Execution Layer</a><br><small>API days NY 2026</small></li>
+                    <li>Actively involved in local tech forums and cohorts for exchanging emerging technologies around Gen AI, Cloud, and Payments — building working models, POCs, and innovations in the engineering and payment space.</li>
+                </ul>
+                
+                <h5>💡 Patents</h5>
+                <ul class="achievement-list">
+                    <li><a href="https://patents.google.com/patent/US11704637B2/en" target="_blank" rel="noopener">Patent US11704637B2: System and method to accept third-party payments</a></li>
+                    <li>[In transit] Multi story recon and controls for accuracy transaction processing</li>
+                    <li>[In transit] Personified lending financial educator and simplified payments</li>
+                </ul>
+                
+                <h5>⚖️ Judging</h5>
+                <ul class="achievement-list">
+                    <li><small>Globee</small> Judge for Globee Awards for Artificial Intelligence</li>
+                    <li><small>Globee</small> Judge for Globee Awards for Excellence</li>
+                    <li><small>Academic</small> Hackathon judge at multiple universities (UCLA, UTD, etc.)</li>
+                </ul>
+                
+                <h5>🤝 Committee Memberships</h5>
+                <ul class="achievement-list">
+                    <li><a href="https://bdaa-conference.com/#vbid-42783c3b-8n7crxx1" target="_blank" rel="noopener">BDAA International Committee</a> <small>Active</small></li>
+                </ul>
+            </div>
+        `;
+    }
+
+    generateCertificationsSection() {
+        return `
+            <div class="author-section">
+                <h4>🏅 Architecture Certifications</h4>
+                <ul class="achievement-list">
+                    <li>AWS Certified Solutions Architect – Associate <small>2025</small></li>
+                    <li>AWS Certified Solutions Architect – Professional <small>2022</small></li>
+                    <li>AWS Certified Solutions Architect – Associate <small>2017</small></li>
+                    <li>IBM Certified SOA Solutions Architect <small>2014</small></li>
                 </ul>
             </div>
         `;
@@ -186,6 +388,9 @@ class AuthorModule {
                     </a>
                     <a href="${this.authorData.social.github}" target="_blank" class="contact-button">
                         <span class="button-icon">💻</span> View on GitHub
+                    </a>
+                    <a href="${this.authorData.social.scholar}" target="_blank" class="contact-button">
+                        <span class="button-icon">🎓</span> Google Scholar
                     </a>
                 </div>
             </div>
