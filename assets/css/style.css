@@ -6176,6 +6176,8 @@ footer {
 /* Author Styles */
 .author-container {
     margin: 0 auto;
+    max-width: none;
+    width: 100%;
 }
 
 .author-profile {
