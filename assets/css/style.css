@@ -6175,7 +6175,6 @@ footer {
 
 /* Author Styles */
 .author-container {
-    max-width: 800px;
     margin: 0 auto;
 }
 
@@ -6291,7 +6290,7 @@ footer {
 .author-content {
     background: var(--card-bg);
     border-radius: 12px;
-    padding: 30px;
+    padding: 24px 28px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     border: 1px solid var(--border);
 }
@@ -6324,6 +6323,27 @@ footer {
     margin-top: 16px;
     margin-bottom: 8px;
     color: var(--primary);
+}
+
+.achievement-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px 0;
+}
+
+.achievement-list li {
+    margin-bottom: 6px;
+    line-height: 1.4;
+}
+
+.achievement-list li:last-child {
+    margin-bottom: 0;
+}
+
+.achievement-list li small {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    margin-left: 8px;
 }
 
 .conference-tags {
