@@ -334,7 +334,7 @@ class PageManager {
             'crypto': 'Market Analytics',
             
             // About page
-            'author': 'Tech Hub For Insights and Market Analytics Platform'
+            'author': 'Tech Hub For Insights'
         };
         
         // Update tagline based on page type
