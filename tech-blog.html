@@ -86,134 +86,340 @@
     }
     </script>
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FZZ8N29R9Q"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FZZ8N29R9Q');
+    </script>
+    <!-- Pre-set hash so SPA loads the tech-blog page (NOT a redirect) -->
+    <script>if(!window.location.hash)history.replaceState(null,'','#tech-blog');</script>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <meta name="theme-color" content="#2563eb">
     <style>
         :root {
-            --primary: #3b82f6;
-            --accent: #10b981;
-            --bg: #ffffff;
-            --text: #1e293b;
-            --text-light: #475569;
-            --border: #e2e8f0;
+            --primary: #3b82f6; --secondary: #06b6d4; --accent: #10b981;
+            --bg: #ffffff; --text: #1e293b; --text-light: #475569; --border: #e2e8f0;
+            --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+            --gradient-hero: linear-gradient(135deg, #f0f9ff 0%, #ffffff 50%, #f0fdf4 100%);
+            --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem;
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            font-size: 16px; line-height: 1.7;
-            background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 50%, #f0fdf4 100%);
-            color: var(--text); -webkit-font-smoothing: antialiased;
+        body { font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; line-height: 1.7; background: var(--gradient-hero); color: var(--text); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+        .app-layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background: var(--bg); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.04); border-right: 1px solid var(--border); position: fixed; left: 0; top: 0; height: 100vh; z-index: 1000; transition: transform var(--transition-fast); }
+        .sidebar.hidden { transform: translateX(-100%); }
+        .sidebar-header { padding: var(--space-6) var(--space-5); border-bottom: 1px solid var(--border); }
+        .logo-container { display: flex; align-items: center; gap: var(--space-4); }
+        .logo { width: 40px; height: 40px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); }
+        .brand-text { font-size: 1rem; font-weight: 700; font-family: 'Space Grotesk', sans-serif; color: var(--text); }
+        .main-content { flex: 1; margin-left: 280px; padding: var(--space-8); background: var(--gradient-hero); min-height: 100vh; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .premium-header { background: var(--bg); border-radius: 1rem; padding: var(--space-8); margin-bottom: var(--space-8); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.04); border: 1px solid var(--border); }
+        .header-content { display: flex; align-items: center; justify-content: space-between; gap: var(--space-6); }
+        .header-brand { display: flex; align-items: center; gap: var(--space-4); text-decoration: none; color: inherit; }
+        .header-logo { width: 48px; height: 48px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
+        .header-text h1 { font-size: 2rem; font-weight: 800; font-family: 'Space Grotesk', sans-serif; color: var(--text); margin-bottom: 0.25rem; }
+        .subtitle { font-size: 0.95rem; color: var(--text-light); font-weight: 500; }
+        .mobile-menu-btn { display: none; width: 32px; height: 32px; border: 1px solid var(--border); background: var(--bg); border-radius: 0.375rem; align-items: center; justify-content: center; cursor: pointer; }
+        @media (max-width: 767px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar:not(.hidden) { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: var(--space-4); }
+            .mobile-menu-btn { display: flex; }
+            .header-content { flex-wrap: wrap; }
         }
-        .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
-        header { text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
-        header nav { margin-bottom: 1.5rem; }
-        header nav a { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
-        header nav a:hover { text-decoration: underline; }
-        h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--text); margin-bottom: 0.5rem; }
-        h1 small { display: block; font-size: 1rem; font-weight: 500; color: var(--text-light); margin-top: 0.25rem; }
-        article { background: var(--bg); border-radius: 1rem; padding: 1.5rem 2rem; margin-bottom: 1.25rem; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04); }
-        article h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; }
-        article h2 a { color: var(--text); text-decoration: none; }
-        article h2 a:hover { color: var(--primary); }
-        .meta { font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.5rem; }
-        .meta span { margin-right: 1rem; }
-        .tag { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 1rem; font-size: 0.75rem; font-weight: 600; background: #f0f9ff; color: var(--primary); border: 1px solid #dbeafe; margin-right: 0.4rem; margin-top: 0.4rem; }
-        p { margin-bottom: 0.75rem; color: var(--text-light); }
-        h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; color: var(--text); }
-        section { background: var(--bg); border-radius: 1rem; padding: 2rem; margin-bottom: 1.5rem; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04); }
-        ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; color: var(--text-light); }
-        li { margin-bottom: 0.3rem; }
-        li a { color: var(--primary); text-decoration: none; }
-        li a:hover { text-decoration: underline; }
-        footer { text-align: center; padding: 2rem 1.5rem; color: var(--text-light); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 1rem; }
-        footer a { color: var(--primary); text-decoration: none; }
-        @media (max-width: 600px) { h1 { font-size: 1.6rem; } article, section { padding: 1.25rem; } }
     </style>
+    <link rel="preload" href="assets/css/style.css?v=1&t=202503272246" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="assets/css/style.css?v=1&t=202503272246"></noscript>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script defer src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <nav>
-                <a href="https://beaconoftech.com/">BeaconOfTech Home</a> &middot;
-                <a href="https://beaconoftech.com/author.html">About Sriramprabhu Rajendran</a>
+<body class="premium-theme">
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+    <div class="app-layout">
+        <!-- Premium Side Menu -->
+        <aside class="sidebar hidden" role="navigation" aria-label="Main navigation">
+            <div class="sidebar-header">
+                <a href="#tech-blog" class="logo-container" data-page="tech-blog" style="text-decoration: none; color: inherit;" aria-label="BeaconOfTech Home - Tech insights and innovation platform">
+                    <div class="logo-wrapper">
+                        <img src="assets/logo.svg" alt="BeaconOfTech logo - beacon icon with radiating light" class="logo" style="width: 20px; height: 20px;" loading="lazy">
+                        <div class="logo-pulse" style="width: 35px; height: 35px;"></div>
+                    </div>
+                    <div class="brand-container">
+                        <span class="brand-text">BeaconOfTech</span>
+                </div>
+                </a>
+            <nav class="sidebar-nav" role="menubar" aria-orientation="vertical">
+                <!-- Tech Insights Section -->
+                <div class="nav-section" role="none">
+                    <div class="nav-parent" id="nav-tech-parent" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">
+                        <div class="nav-icon-wrapper">
+                            <i data-lucide="cpu" class="nav-icon" aria-hidden="true"></i>
+                        </div>
+                        <span class="nav-text">Tech Insights</span>
+                        <div class="nav-arrow">
+                            <i data-lucide="chevron-down" class="icon" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div class="nav-children" id="nav-tech-children" role="menu" aria-hidden="true">
+                        <a href="#tech-blog" class="nav-link" id="nav-tech-blog" data-page="tech-blog" role="menuitem" tabindex="-1" aria-describedby="tech-blog-desc">
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="pen-tool" class="nav-icon" aria-hidden="true"></i>
+                            </div>
+                            <span class="nav-text">Articles</span>
+                            <span id="tech-blog-desc" class="sr-only">Read tech insights and articles on AI, software architecture, and innovation</span>
+                        </a>
+                        <a href="#tech-projects" class="nav-link" id="nav-tech-projects" data-page="tech-projects" role="menuitem" tabindex="-1" aria-describedby="tech-projects-desc">
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="rocket" class="nav-icon" aria-hidden="true"></i>
+                            </div>
+                            <span class="nav-text">Projects</span>
+                            <span id="tech-projects-desc" class="sr-only">Explore tech projects and practical implementations</span>
+                        </a>
+                        <a href="#tech-playbooks" class="nav-link" id="nav-tech-playbooks" data-page="tech-playbooks" role="menuitem" tabindex="-1" aria-describedby="tech-playbooks-desc">
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="book-open" class="nav-icon" aria-hidden="true"></i>
+                            </div>
+                            <span class="nav-text">Playbooks</span>
+                            <span id="tech-playbooks-desc" class="sr-only">Technical playbooks and step-by-step guides</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Analytics Section -->
+                <div class="nav-section" role="none">
+                    <div class="nav-parent" id="nav-analytics-parent" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">
+                        <div class="nav-icon-wrapper">
+                            <i data-lucide="trending-up" class="nav-icon" aria-hidden="true"></i>
+                        </div>
+                        <span class="nav-text">Analytics</span>
+                        <div class="nav-arrow">
+                            <i data-lucide="chevron-down" class="icon" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div class="nav-children" id="nav-analytics-children" role="menu" aria-hidden="true">
+                        <a href="#portfolio" class="nav-link" id="nav-portfolio" data-page="portfolio" role="menuitem" tabindex="-1" aria-describedby="portfolio-desc">
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="briefcase" class="nav-icon" aria-hidden="true"></i>
+                            </div>
+                            <span class="nav-text">Portfolio Analysis</span>
+                            <span class="nav-badge pro" aria-label="Pro feature">PRO</span>
+                            <span id="portfolio-desc" class="sr-only">Analyze investment portfolio performance and metrics</span>
+                        </a>
+                        <a href="#watchlist" class="nav-link" id="nav-watchlist" data-page="watchlist" role="menuitem" tabindex="-1" aria-describedby="watchlist-desc">
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="star" class="nav-icon" aria-hidden="true"></i>
+                            </div>
+                            <span class="nav-text">Watchlist</span>
+                            <span id="watchlist-desc" class="sr-only">Track and monitor favorite stocks and investments</span>
+                        </a>
+                        <a href="#screener" class="nav-link" id="nav-screener" data-page="screener" role="menuitem" tabindex="-1">
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="filter" class="nav-icon" aria-hidden="true"></i>
+                            </div>
+                            <span class="nav-text">Stock Screener</span>
+                            <span class="nav-badge new" aria-label="New feature">NEW</span>
+                        </a>
+                        <a href="#patterns" class="nav-link" id="nav-patterns" data-page="patterns" role="menuitem" tabindex="-1">
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="activity" class="nav-icon" aria-hidden="true"></i>
+                            </div>
+                            <span class="nav-text">Chart Patterns</span>
+                        </a>
+                        <a href="#candlestick-patterns" class="nav-link" id="nav-candlestick-patterns" data-page="candlestick-patterns" role="menuitem" tabindex="-1">
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="candlestick-chart" class="nav-icon" aria-hidden="true"></i>
+                            </div>
+                            <span class="nav-text">Candlestick Patterns</span>
+                        </a>
+                        <a href="#etf" class="nav-link" id="nav-etf" data-page="etf" role="menuitem" tabindex="-1">
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="bar-chart-3" class="nav-icon" aria-hidden="true"></i>
+                            </div>
+                            <span class="nav-text">ETF Analysis</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Markets Section -->
+                <div class="nav-section" role="none">
+                    <div class="nav-parent" id="nav-markets-parent" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">
+                        <div class="nav-icon-wrapper">
+                            <i data-lucide="globe" class="nav-icon" aria-hidden="true"></i>
+                        </div>
+                        <span class="nav-text">Markets</span>
+                        <div class="nav-arrow">
+                            <i data-lucide="chevron-down" class="icon" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div class="nav-children" id="nav-markets-children" role="menu" aria-hidden="true">
+                        <a href="#us-stocks" class="nav-link" id="nav-us-stocks" data-page="us-stocks" role="menuitem" tabindex="-1">
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="trending-up" class="nav-icon" aria-hidden="true"></i>
+                            </div>
+                            <span class="nav-text">US Stocks</span>
+                        </a>
+                        <a href="#crypto" class="nav-link" id="nav-crypto" data-page="crypto" role="menuitem" tabindex="-1">
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="coins" class="nav-icon" aria-hidden="true"></i>
+                            </div>
+                            <span class="nav-text">Cryptocurrency</span>
+                            <span class="nav-badge beta" aria-label="Beta feature">BETA</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- About Section -->
+                        <a href="#author" class="nav-link" id="nav-author" data-page="author" role="menuitem" tabindex="0" aria-describedby="author-desc">
+                            <div class="nav-icon-wrapper">
+                                <i data-lucide="user" class="nav-icon" aria-hidden="true"></i>
+                            </div>
+                            <span class="nav-text">About</span>
+                            <span id="author-desc" class="sr-only">Learn about Sriram Rajendran and the BeaconOfTech platform</span>
+                        </a>
             </nav>
-            <h1>Tech Blog
-                <small>by Sriramprabhu Rajendran (Sriram Rajendran)</small>
-            </h1>
-            <p>Insights on Generative AI, software architecture, cloud computing, and digital transformation</p>
-        </header>
-
-        <article>
-            <h2><a href="https://beaconoftech.com/#tech-blog">Building Scalable Microservices with Node.js</a></h2>
-            <div class="meta">
-                <span>Jan 27, 2026</span>
-                <span>8 min read</span>
-                <span>Architecture</span>
+            
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <div class="status-indicator" style="display: none;">
+                    <div class="status-dot online"></div>
+                    <span class="status-text">Markets Open</span>
+                </div>
             </div>
-            <p>Learn how to design and implement microservices architecture using Node.js, Express, and modern deployment practices.</p>
-            <div><span class="tag">microservices</span><span class="tag">nodejs</span><span class="tag">architecture</span><span class="tag">scalability</span></div>
-        </article>
+        </aside>
 
-        <article>
-            <h2><a href="https://beaconoftech.com/#tech-blog">GenAI Risks and Guardrails: A Practical Guide to Safe AI Implementation</a></h2>
-            <div class="meta">
-                <span>Jan 4, 2026</span>
-                <span>15 min read</span>
-                <span>Gen AI</span>
+        <!-- Premium Main Content -->
+        <div class="main-content" role="main">
+            <div class="container">
+                <header class="premium-header" role="banner">
+                    <div class="header-content">
+                        <a href="#tech-blog" class="header-brand" data-page="tech-blog" aria-label="BeaconOfTech home - Return to main content">
+                            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu">
+                                <i data-lucide="x" class="icon"></i>
+                            </button>
+                            <div class="logo-container">
+                                <img src="assets/logo.svg" alt="BeaconOfTech logo - beacon icon with radiating light" class="header-logo" loading="lazy">
+                                <div class="logo-glow"></div>
+                            </div>
+                            <div class="header-text">
+                                <div class="site-title">BeaconOfTech</div>
+                                <p class="subtitle">Illuminating Tech Innovation</p>
+                            </div>
+                        </a>
+                        <div class="header-actions">
+                            <div class="market-status" style="display: none;">
+                                <div class="status-indicator">
+                                    <div class="status-dot online"></div>
+                                    <span class="status-text">S&P 500: 4,783.45 <span class="positive">+0.82%</span></span>
+                                </div>
+                            </div>
+                            <div class="theme-toggle">
+                                <button class="theme-btn header-btn" id="themeToggle" aria-label="Toggle theme">
+                                    <i data-lucide="sun" class="icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                
+                <main id="main-content" role="main" aria-label="Main content">
+                    <!-- SPA will populate this with tech-blog content -->
+                </main>
+                
+                <footer class="premium-footer" role="contentinfo">
+                    <div class="footer-content">
+                        <div class="footer-brand">
+                            <div class="footer-logo-container">
+                                <img src="assets/logo.svg" alt="BeaconOfTech" class="footer-logo" loading="lazy">
+                            </div>
+                        </div>
+                        <nav class="footer-nav" aria-label="Footer navigation" style="margin-bottom: 1rem; text-align: center;">
+                            <a href="https://beaconoftech.com/author.html" style="color: var(--primary, #3b82f6); text-decoration: none; margin: 0 0.75rem; font-size: 0.9rem;">About Sriramprabhu Rajendran</a>
+                            <a href="https://beaconoftech.com/tech-blog.html" style="color: var(--primary, #3b82f6); text-decoration: none; margin: 0 0.75rem; font-size: 0.9rem;">Tech Blog</a>
+                        </nav>
+                        <div class="footer-legal">
+                            <p>© 2026 BeaconOfTech | <a href="https://beaconoftech.com/author.html" style="color: inherit; text-decoration: none;">Sriramprabhu Rajendran (Sriram Rajendran)</a> | @rajen.sriram</p>
+                        </div>
+                    </div>
+                </footer>
             </div>
-            <p>Understanding critical GenAI risks like memory poisoning and hallucinations, and implementing effective guardrails including temperature control, multi-LLM evaluation, and safety filters.</p>
-            <div><span class="tag">genai</span><span class="tag">safety</span><span class="tag">guardrails</span><span class="tag">hallucinations</span><span class="tag">ai-security</span></div>
-        </article>
-
-        <article>
-            <h2><a href="https://beaconoftech.com/#tech-blog">Integrating Generative AI into Modern Web Applications</a></h2>
-            <div class="meta">
-                <span>Aug 18, 2025</span>
-                <span>10 min read</span>
-                <span>Gen AI</span>
-            </div>
-            <p>Practical strategies for implementing Gen AI capabilities in web applications, from chat interfaces to automated content generation.</p>
-            <div><span class="tag">genai</span><span class="tag">openai</span><span class="tag">javascript</span><span class="tag">web-development</span></div>
-        </article>
-
-        <article>
-            <h2><a href="https://beaconoftech.com/#tech-blog">AWS Lambda Cold Start Explained (With Fixes)</a></h2>
-            <div class="meta">
-                <span>Apr 25, 2025</span>
-                <span>11 min read</span>
-                <span>Serverless</span>
-            </div>
-            <p>Deep dive into AWS Lambda cold start issues, their causes, performance impact, and proven strategies to minimize or eliminate cold starts in production.</p>
-            <div><span class="tag">aws</span><span class="tag">lambda</span><span class="tag">cold-start</span><span class="tag">performance</span><span class="tag">serverless</span></div>
-        </article>
-
-        <article>
-            <h2><a href="https://beaconoftech.com/#tech-blog">The Art and Science of Software Estimations: A Practical Guide</a></h2>
-            <div class="meta">
-                <span>Jan 22, 2025</span>
-                <span>14 min read</span>
-                <span>Project Management</span>
-            </div>
-            <p>Master software estimation techniques with proven strategies, real-world examples, and data-driven approaches to deliver accurate project timelines.</p>
-            <div><span class="tag">estimations</span><span class="tag">project-management</span><span class="tag">agile</span><span class="tag">planning</span></div>
-        </article>
-
-        <section>
-            <h2>External Publications by Sriramprabhu Rajendran</h2>
-            <ul>
-                <li><a href="https://hackernoon.com/the-builders-dilemma-balancing-creativity-and-consistency-in-agentic-workflows" target="_blank" rel="noopener">The Builder's Dilemma: Balancing Creativity and Consistency in Agentic Workflows</a> (HackerNoon)</li>
-                <li><a href="https://medium.com/@rajen.sriram/evolution-of-story-points-the-construction-to-curation-shift-97b06b9114fc" target="_blank" rel="noopener">Evolution of Story Points: The Construction to Curation Shift</a> (Medium)</li>
-                <li><a href="https://dev.to/rsri/beyond-the-single-prompt-orchestrating-parallel-context-isolation-pci-with-claude-code-f58" target="_blank" rel="noopener">Beyond the Single Prompt: Orchestrating Parallel Context Isolation (PCI) with Claude Code</a> (Dev.to)</li>
-            </ul>
-        </section>
-
-        <footer>
-            <p>&copy; 2026 <a href="https://beaconoftech.com/">BeaconOfTech</a> &middot; Sriramprabhu Rajendran (Sriram Rajendran)</p>
-            <p style="margin-top: 0.5rem;"><a href="https://beaconoftech.com/">Home</a> &middot; <a href="https://beaconoftech.com/tech-blog.html">Tech Blog</a> &middot; <a href="https://beaconoftech.com/author.html">About</a></p>
-        </footer>
+        </div>
     </div>
+    
+    <!-- Loading Overlay -->
+    <div id="loading" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Analyzing market data...</p>
+    </div>
+
+    <!-- Stock Detail Modal -->
+    <div id="stock-detail-modal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Stock Analysis Details</h2>
+                <button class="modal-close" onclick="closeStockDetail()" aria-label="Close stock details modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body" role="document"></div>
+        </div>
+    </div>
+
+    <!-- SEO: Static content for crawlers (hidden when JS renders the SPA) -->
+    <noscript>
+        <div style="max-width:900px;margin:0 auto;padding:2rem;font-family:sans-serif;">
+            <h1>Tech Blog by Sriramprabhu Rajendran (Sriram Rajendran)</h1>
+            <p>Articles on Generative AI, software architecture, cloud computing, microservices, and digital transformation by Sriramprabhu Rajendran.</p>
+            <h2>Articles</h2>
+            <ul>
+                <li>Building Scalable Microservices with Node.js</li>
+                <li>GenAI Risks and Guardrails: A Practical Guide</li>
+                <li>Integrating Generative AI into Modern Web Applications</li>
+                <li>AWS Lambda Cold Start Explained (With Fixes)</li>
+                <li>The Art and Science of Software Estimations</li>
+            </ul>
+            <h2>External Publications</h2>
+            <ul>
+                <li><a href="https://hackernoon.com/the-builders-dilemma-balancing-creativity-and-consistency-in-agentic-workflows">The Builder's Dilemma (HackerNoon)</a></li>
+                <li><a href="https://medium.com/@rajen.sriram/evolution-of-story-points-the-construction-to-curation-shift-97b06b9114fc">Evolution of Story Points (Medium)</a></li>
+            </ul>
+        </div>
+    </noscript>
+
+    <!-- Optimized JavaScript loading -->
+    <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script defer src="assets/js/stock-analyzer.js?v=3&t=202501292253"></script>
+    <script defer src="assets/js/modules/author.js?v=1&t=202503272242"></script>
+    <script defer src="assets/js/modules/blog.js"></script>
+    <script defer src="assets/js/modules/playbooks.js"></script>
+    <script defer src="assets/js/modules/projects.js"></script>
+    <script defer src="assets/js/modules/patterns.js"></script>
+    <script defer src="assets/js/modules/candlestick-patterns.js"></script>
+    <script defer src="assets/js/pages.js"></script>
+    <script defer src="assets/js/main-github.js"></script>
+    
+    <!-- Optimized module initialization -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                if (typeof window.playbookModule === 'undefined' && typeof PlaybooksModule !== 'undefined') {
+                    window.playbookModule = new PlaybooksModule();
+                }
+                if (typeof window.blogModule === 'undefined' && typeof BlogModule !== 'undefined') {
+                    window.blogModule = new BlogModule();
+                }
+                if (typeof window.projectsModule === 'undefined' && typeof ProjectsModule !== 'undefined') {
+                    window.projectsModule = new ProjectsModule();
+                }
+            }, 100);
+        });
+    </script>
+    
+    <!-- Micro-interactions Script -->
+    <script src="assets/js/micro-interactions.js" defer></script>
 </body>
 </html>
