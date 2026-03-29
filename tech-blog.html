@@ -3,47 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech Blog by Sriram Rajendran | Sriramprabhu Rajendran | BeaconOfTech</title>
-    <meta name="description" content="Tech insights and articles by Sriram Rajendran (Sriramprabhu Rajendran) on Generative AI, software architecture, cloud computing, and digital transformation.">
-    <meta name="keywords" content="Sriram Rajendran, Sriramprabhu Rajendran, tech blog, AI articles, software architecture, cloud computing, Generative AI, technology insights">
+    <title>Tech Blog by Sriramprabhu Rajendran (Sriram Rajendran) | BeaconOfTech</title>
+    <meta name="description" content="Tech blog by Sriramprabhu Rajendran (Sriram Rajendran) — articles on Generative AI, software architecture, cloud computing, microservices, and digital transformation. Insights from a Senior Engineering Leader with 20+ years of experience.">
+    <meta name="keywords" content="Sriramprabhu Rajendran, Sriram Rajendran, tech blog, Generative AI, software architecture, cloud computing, microservices, AWS, digital transformation, BeaconOfTech">
+    <meta name="author" content="Sriramprabhu Rajendran">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="https://beaconoftech.com/tech-blog.html">
-    
-    <!-- Redirect to main site after 0 seconds -->
-    <script>
-        window.location.href = "https://beaconoftech.com/#tech-blog";
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Tech Blog by Sriramprabhu Rajendran | BeaconOfTech">
+    <meta property="og:description" content="Articles on Generative AI, software architecture, cloud computing, and digital transformation by Sriramprabhu Rajendran.">
+    <meta property="og:url" content="https://beaconoftech.com/tech-blog.html">
+    <meta property="og:site_name" content="BeaconOfTech">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Tech Blog by Sriramprabhu Rajendran | BeaconOfTech">
+    <meta name="twitter:description" content="Articles on Generative AI, software architecture, and cloud computing by Sriramprabhu Rajendran.">
+
+    <!-- Blog Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "BeaconOfTech Tech Blog",
+        "description": "Technology insights and articles by Sriramprabhu Rajendran on Generative AI, software architecture, cloud computing, and digital transformation.",
+        "url": "https://beaconoftech.com/tech-blog.html",
+        "author": {
+            "@type": "Person",
+            "name": "Sriramprabhu Rajendran",
+            "alternateName": "Sriram Rajendran",
+            "url": "https://beaconoftech.com/author.html"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Sriramprabhu Rajendran"
+        },
+        "inLanguage": "en",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "BeaconOfTech",
+            "url": "https://beaconoftech.com/"
+        },
+        "blogPost": [
+            {
+                "@type": "BlogPosting",
+                "headline": "Building Scalable Microservices with Node.js",
+                "description": "Learn how to design and implement microservices architecture using Node.js, Express, and modern deployment practices.",
+                "datePublished": "2026-01-27",
+                "author": {"@type": "Person", "name": "Sriramprabhu Rajendran"}
+            },
+            {
+                "@type": "BlogPosting",
+                "headline": "GenAI Risks and Guardrails: A Practical Guide to Safe AI Implementation",
+                "description": "Understanding critical GenAI risks like memory poisoning and hallucinations, and implementing effective guardrails.",
+                "datePublished": "2026-01-04",
+                "author": {"@type": "Person", "name": "Sriramprabhu Rajendran"}
+            },
+            {
+                "@type": "BlogPosting",
+                "headline": "Integrating Generative AI into Modern Web Applications",
+                "description": "Practical strategies for implementing Gen AI capabilities in web applications.",
+                "datePublished": "2025-08-18",
+                "author": {"@type": "Person", "name": "Sriramprabhu Rajendran"}
+            },
+            {
+                "@type": "BlogPosting",
+                "headline": "AWS Lambda Cold Start Explained (With Fixes)",
+                "description": "Deep dive into AWS Lambda cold start issues, their causes, performance impact, and proven strategies.",
+                "datePublished": "2025-04-25",
+                "author": {"@type": "Person", "name": "Sriramprabhu Rajendran"}
+            },
+            {
+                "@type": "BlogPosting",
+                "headline": "The Art and Science of Software Estimations: A Practical Guide",
+                "description": "Master software estimation techniques with proven strategies and data-driven approaches.",
+                "datePublished": "2025-01-22",
+                "author": {"@type": "Person", "name": "Sriramprabhu Rajendran"}
+            }
+        ]
+    }
     </script>
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --accent: #10b981;
+            --bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #475569;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 16px; line-height: 1.7;
+            background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 50%, #f0fdf4 100%);
+            color: var(--text); -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+        header { text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+        header nav { margin-bottom: 1.5rem; }
+        header nav a { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        header nav a:hover { text-decoration: underline; }
+        h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--text); margin-bottom: 0.5rem; }
+        h1 small { display: block; font-size: 1rem; font-weight: 500; color: var(--text-light); margin-top: 0.25rem; }
+        article { background: var(--bg); border-radius: 1rem; padding: 1.5rem 2rem; margin-bottom: 1.25rem; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04); }
+        article h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; }
+        article h2 a { color: var(--text); text-decoration: none; }
+        article h2 a:hover { color: var(--primary); }
+        .meta { font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.5rem; }
+        .meta span { margin-right: 1rem; }
+        .tag { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 1rem; font-size: 0.75rem; font-weight: 600; background: #f0f9ff; color: var(--primary); border: 1px solid #dbeafe; margin-right: 0.4rem; margin-top: 0.4rem; }
+        p { margin-bottom: 0.75rem; color: var(--text-light); }
+        h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; color: var(--text); }
+        section { background: var(--bg); border-radius: 1rem; padding: 2rem; margin-bottom: 1.5rem; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04); }
+        ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; color: var(--text-light); }
+        li { margin-bottom: 0.3rem; }
+        li a { color: var(--primary); text-decoration: none; }
+        li a:hover { text-decoration: underline; }
+        footer { text-align: center; padding: 2rem 1.5rem; color: var(--text-light); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 1rem; }
+        footer a { color: var(--primary); text-decoration: none; }
+        @media (max-width: 600px) { h1 { font-size: 1.6rem; } article, section { padding: 1.25rem; } }
+    </style>
 </head>
 <body>
-    <div style="padding: 2rem; font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto;">
-        <h1>Tech Blog by Sriram Rajendran</h1>
-        <p>If you are not redirected automatically, please <a href="https://beaconoftech.com/#tech-blog">click here</a> to visit the tech blog.</p>
-        
-        <!-- SEO content for crawlers -->
-        <div style="margin-top: 2rem;">
-            <h2>Technology Insights & Articles</h2>
-            <p>Welcome to the tech blog by Sriram Rajendran (Sriramprabhu Rajendran). Explore cutting-edge insights on:</p>
-            
-            <h3>Featured Topics</h3>
+    <div class="container">
+        <header>
+            <nav>
+                <a href="https://beaconoftech.com/">BeaconOfTech Home</a> &middot;
+                <a href="https://beaconoftech.com/author.html">About Sriramprabhu Rajendran</a>
+            </nav>
+            <h1>Tech Blog
+                <small>by Sriramprabhu Rajendran (Sriram Rajendran)</small>
+            </h1>
+            <p>Insights on Generative AI, software architecture, cloud computing, and digital transformation</p>
+        </header>
+
+        <article>
+            <h2><a href="https://beaconoftech.com/#tech-blog">Building Scalable Microservices with Node.js</a></h2>
+            <div class="meta">
+                <span>Jan 27, 2026</span>
+                <span>8 min read</span>
+                <span>Architecture</span>
+            </div>
+            <p>Learn how to design and implement microservices architecture using Node.js, Express, and modern deployment practices.</p>
+            <div><span class="tag">microservices</span><span class="tag">nodejs</span><span class="tag">architecture</span><span class="tag">scalability</span></div>
+        </article>
+
+        <article>
+            <h2><a href="https://beaconoftech.com/#tech-blog">GenAI Risks and Guardrails: A Practical Guide to Safe AI Implementation</a></h2>
+            <div class="meta">
+                <span>Jan 4, 2026</span>
+                <span>15 min read</span>
+                <span>Gen AI</span>
+            </div>
+            <p>Understanding critical GenAI risks like memory poisoning and hallucinations, and implementing effective guardrails including temperature control, multi-LLM evaluation, and safety filters.</p>
+            <div><span class="tag">genai</span><span class="tag">safety</span><span class="tag">guardrails</span><span class="tag">hallucinations</span><span class="tag">ai-security</span></div>
+        </article>
+
+        <article>
+            <h2><a href="https://beaconoftech.com/#tech-blog">Integrating Generative AI into Modern Web Applications</a></h2>
+            <div class="meta">
+                <span>Aug 18, 2025</span>
+                <span>10 min read</span>
+                <span>Gen AI</span>
+            </div>
+            <p>Practical strategies for implementing Gen AI capabilities in web applications, from chat interfaces to automated content generation.</p>
+            <div><span class="tag">genai</span><span class="tag">openai</span><span class="tag">javascript</span><span class="tag">web-development</span></div>
+        </article>
+
+        <article>
+            <h2><a href="https://beaconoftech.com/#tech-blog">AWS Lambda Cold Start Explained (With Fixes)</a></h2>
+            <div class="meta">
+                <span>Apr 25, 2025</span>
+                <span>11 min read</span>
+                <span>Serverless</span>
+            </div>
+            <p>Deep dive into AWS Lambda cold start issues, their causes, performance impact, and proven strategies to minimize or eliminate cold starts in production.</p>
+            <div><span class="tag">aws</span><span class="tag">lambda</span><span class="tag">cold-start</span><span class="tag">performance</span><span class="tag">serverless</span></div>
+        </article>
+
+        <article>
+            <h2><a href="https://beaconoftech.com/#tech-blog">The Art and Science of Software Estimations: A Practical Guide</a></h2>
+            <div class="meta">
+                <span>Jan 22, 2025</span>
+                <span>14 min read</span>
+                <span>Project Management</span>
+            </div>
+            <p>Master software estimation techniques with proven strategies, real-world examples, and data-driven approaches to deliver accurate project timelines.</p>
+            <div><span class="tag">estimations</span><span class="tag">project-management</span><span class="tag">agile</span><span class="tag">planning</span></div>
+        </article>
+
+        <section>
+            <h2>External Publications by Sriramprabhu Rajendran</h2>
             <ul>
-                <li>Generative AI and Machine Learning</li>
-                <li>Software Architecture Patterns</li>
-                <li>Cloud Computing (AWS, Azure)</li>
-                <li>Microservices and Distributed Systems</li>
-                <li>Digital Transformation Strategies</li>
-                <li>DevOps and Infrastructure as Code</li>
+                <li><a href="https://hackernoon.com/the-builders-dilemma-balancing-creativity-and-consistency-in-agentic-workflows" target="_blank" rel="noopener">The Builder's Dilemma: Balancing Creativity and Consistency in Agentic Workflows</a> (HackerNoon)</li>
+                <li><a href="https://medium.com/@rajen.sriram/evolution-of-story-points-the-construction-to-curation-shift-97b06b9114fc" target="_blank" rel="noopener">Evolution of Story Points: The Construction to Curation Shift</a> (Medium)</li>
+                <li><a href="https://dev.to/rsri/beyond-the-single-prompt-orchestrating-parallel-context-isolation-pci-with-claude-code-f58" target="_blank" rel="noopener">Beyond the Single Prompt: Orchestrating Parallel Context Isolation (PCI) with Claude Code</a> (Dev.to)</li>
             </ul>
-            
-            <h3>Recent Articles</h3>
-            <ul>
-                <li>Building Scalable AI Systems</li>
-                <li>Cloud-Native Architecture Best Practices</li>
-                <li>The Future of Generative AI in Enterprise</li>
-                <li>Microservices vs Monolith: Decision Framework</li>
-            </ul>
-            
-            <h3>About the Author</h3>
-            <p>Sriram Rajendran is a Senior Engineering Leader with 20+ years of experience in financial services technology, specializing in cloud architectures and Generative AI.</p>
-        </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 <a href="https://beaconoftech.com/">BeaconOfTech</a> &middot; Sriramprabhu Rajendran (Sriram Rajendran)</p>
+            <p style="margin-top: 0.5rem;"><a href="https://beaconoftech.com/">Home</a> &middot; <a href="https://beaconoftech.com/tech-blog.html">Tech Blog</a> &middot; <a href="https://beaconoftech.com/author.html">About</a></p>
+        </footer>
     </div>
 </body>
 </html>
