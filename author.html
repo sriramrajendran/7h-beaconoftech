@@ -108,8 +108,7 @@
       gtag('js', new Date());
       gtag('config', 'G-FZZ8N29R9Q');
     </script>
-    <!-- Pre-set hash so SPA loads the author page (NOT a redirect) -->
-    <script>if(!window.location.hash)history.replaceState(null,'','#author');</script>
+    <!-- SPA detects author.html via pages.js detectCurrentPage() — no URL manipulation needed -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
     <meta name="theme-color" content="#2563eb">
     <style>

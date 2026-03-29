@@ -30,6 +30,14 @@ class PageManager {
             if (navElement) {
                 initialPage = hash;
             }
+        } else {
+            // Detect page from standalone HTML filename (author.html, tech-blog.html)
+            const path = window.location.pathname;
+            if (path.includes('author.html')) {
+                initialPage = 'author';
+            } else if (path.includes('tech-blog.html')) {
+                initialPage = 'tech-blog';
+            }
         }
         
         this.currentPage = initialPage;
@@ -379,7 +387,9 @@ class PageManager {
         this.currentPage = pageType;
         
         // Update URL hash to maintain state (but prevent hashchange event)
-        if (window.location.hash !== `#${pageType}`) {
+        // Skip hash update on standalone pages (author.html, tech-blog.html) to avoid Google redirect errors
+        const isStandalonePage = window.location.pathname.includes('author.html') || window.location.pathname.includes('tech-blog.html');
+        if (!isStandalonePage && window.location.hash !== `#${pageType}`) {
             window.isUpdatingHash = true;
             window.location.hash = `#${pageType}`;
             setTimeout(() => {
