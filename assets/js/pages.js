@@ -31,11 +31,11 @@ class PageManager {
                 initialPage = hash;
             }
         } else {
-            // Detect page from standalone HTML filename (author.html, tech-blog.html)
+            // Detect page from standalone URL path (Cloudflare strips .html extensions)
             const path = window.location.pathname;
-            if (path.includes('author.html')) {
+            if (path.includes('/author')) {
                 initialPage = 'author';
-            } else if (path.includes('tech-blog.html')) {
+            } else if (path.includes('/tech-blog')) {
                 initialPage = 'tech-blog';
             }
         }
@@ -388,7 +388,7 @@ class PageManager {
         
         // Update URL hash to maintain state (but prevent hashchange event)
         // Skip hash update on standalone pages (author.html, tech-blog.html) to avoid Google redirect errors
-        const isStandalonePage = window.location.pathname.includes('author.html') || window.location.pathname.includes('tech-blog.html');
+        const isStandalonePage = window.location.pathname.includes('/author') || window.location.pathname.includes('/tech-blog');
         if (!isStandalonePage && window.location.hash !== `#${pageType}`) {
             window.isUpdatingHash = true;
             window.location.hash = `#${pageType}`;
