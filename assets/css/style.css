@@ -6232,17 +6232,25 @@ footer {
     color: var(--text);
 }
 
+.author-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
 .author-title {
     color: var(--text-light);
     font-size: 1rem;
-    margin-bottom: 12px;
+    margin-bottom: 0;
 }
 
 .author-memberships {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 0;
 }
 
 .membership-badge {
@@ -6267,8 +6275,9 @@ footer {
 
 .author-links {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .social-link {
@@ -6459,7 +6468,8 @@ footer {
 
 .contact-methods {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 12px;
     margin-top: 15px;
 }

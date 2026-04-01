@@ -2,14 +2,17 @@
 class AuthorModule {
     constructor() {
         this.authorData = {
-            name: "Sriram Rajendran",
+            name: "Sriramprabhu Rajendran",
+            alternateName: "Sriram Rajendran",
             title: "Senior Engineering Leader",
             experience: "20 years",
+            email: "sriramprabhu.rajendran@ieee.org",
             photo: "assets/images/author-photo.jpg",
             social: {
                 linkedin: "https://www.linkedin.com/in/rsri",
                 github: "https://github.com/sriramrajendran",
                 scholar: "https://scholar.google.com/citations?user=OGYePQEAAAAJ",
+                orcid: "https://orcid.org/0009-0009-6137-0877",
                 beaconoftech: "https://beaconoftech.com/#author"
             }
         };
@@ -36,10 +39,12 @@ class AuthorModule {
                 </div>
                 <div class="author-info">
                     <h3>${this.authorData.name}</h3>
-                    <p class="author-title">${this.authorData.title}</p>
-                    <div class="author-memberships">
-                        <span class="membership-badge">🏛️ Senior IEEE Member</span>
-                        <span class="membership-badge">👑 ioasd.org Royal Fellow</span>
+                    <div class="author-title-row">
+                        <p class="author-title">${this.authorData.title}</p>
+                        <div class="author-memberships">
+                            <span class="membership-badge">🏛️ Senior IEEE Member</span>
+                            <span class="membership-badge">👑 ioasd.org Royal Fellow</span>
+                        </div>
                     </div>
                     <div class="author-links">
                         <a href="${this.authorData.social.linkedin}" target="_blank" class="social-link">
@@ -50,6 +55,9 @@ class AuthorModule {
                         </a>
                         <a href="${this.authorData.social.scholar}" target="_blank" class="social-link">
                             <span class="social-icon">🎓</span> Google Scholar
+                        </a>
+                        <a href="${this.authorData.social.orcid}" target="_blank" class="social-link">
+                            <span class="social-icon">🔬</span> ORCID
                         </a>
                     </div>
                 </div>
@@ -310,9 +318,12 @@ class AuthorModule {
                 <h5>📝 Technical Blogs and Talks</h5>
                 <ul class="achievement-list">
                     <li><a href="https://hackernoon.com/the-builders-dilemma-balancing-creativity-and-consistency-in-agentic-workflows" target="_blank" rel="noopener">The Builder's Dilemma: Balancing Creativity and Consistency in Agentic Workflows</a><br><small>HackerNoon</small></li>
-                    <li><a href="https://medium.com/@rajen.sriram/evolution-of-story-points-the-construction-to-curation-shift-97b06b9114fc" target="_blank" rel="noopener">Evolution of Story Points: The Construction to Curation Shift</a><br><small>Medium</small></li>
+                    <li><a href="https://dev.to/rsri/mutation-testing-the-missing-safety-net-for-ai-generated-code-54kn" target="_blank" rel="noopener">Mutation Testing: The Missing Safety Net for AI-Generated Code</a><br><small>Dev.to</small></li>
+                    <li><a href="https://dev.to/rsri/why-your-next-enterprise-chatbot-should-write-its-own-graphql-queries-4inh" target="_blank" rel="noopener">Why Your Next Enterprise Chatbot Should Write Its Own GraphQL Queries</a><br><small>Dev.to</small></li>
                     <li><a href="https://dev.to/rsri/beyond-the-single-prompt-orchestrating-parallel-context-isolation-pci-with-claude-code-f58" target="_blank" rel="noopener">Beyond the Single Prompt: Orchestrating Parallel Context Isolation (PCI) with Claude Code</a><br><small>Dev.to</small></li>
+                    <li><a href="https://medium.com/@rajen.sriram/evolution-of-story-points-the-construction-to-curation-shift-97b06b9114fc" target="_blank" rel="noopener">Evolution of Story Points: The Construction to Curation Shift</a><br><small>Medium</small></li>
                     <li><a href="https://www.apidays.global/events/new-york" target="_blank" rel="noopener">Agent-Ready Payments — Engineering APIs for the Execution Layer</a><br><small>API days NY 2026</small></li>
+                    <li>Published multiple technical articles on beaconoftech.com covering Generative AI, cloud-native architectures, and financial services technology.</li>
                     <li>Actively involved in local tech forums and cohorts for exchanging emerging technologies around Gen AI, Cloud, and Payments — building working models, POCs, and innovations in the engineering and payment space.</li>
                 </ul>
                 
@@ -325,9 +336,10 @@ class AuthorModule {
                 
                 <h5>⚖️ Judging</h5>
                 <ul class="achievement-list">
-                    <li><small>Globee</small> Judge for Globee Awards for Artificial Intelligence</li>
-                    <li><small>Globee</small> Judge for Globee Awards for Excellence</li>
-                    <li><small>Academic</small> Hackathon judge at multiple universities (UCLA, UTD, etc.)</li>
+                    <li><a href="https://globeeawards.com/2026-judges-artificial-intelligence" target="_blank" rel="noopener">Judge for Globee Awards for Artificial Intelligence</a></li>
+                    <li><a href="https://globeeawards.com/2026-judges-excellence-awards" target="_blank" rel="noopener">Judge for Globee Awards for Excellence</a></li>
+                    <li>Judge for Globee Awards for Achievement</li>
+                    <li>Hackathon judge at multiple universities (UCLA, UTD, etc.)</li>
                 </ul>
                 
                 <h5>🤝 Committee Memberships</h5>
@@ -380,6 +392,9 @@ class AuthorModule {
             <div class="author-section">
                 <h4>📧 Get in Touch</h4>
                 <p>Interested in collaboration, have questions about technology leadership, or want to discuss innovative projects? Feel free to reach out!</p>
+                <div class="contact-info" style="margin-bottom: 1.5rem;">
+                    <p><strong>Email:</strong> <a href="mailto:${this.authorData.email}" style="color: var(--primary);">${this.authorData.email}</a></p>
+                </div>
                 <div class="contact-methods">
                     <a href="${this.authorData.social.linkedin}" target="_blank" class="contact-button">
                         <span class="button-icon">💼</span> Connect on LinkedIn
@@ -389,6 +404,9 @@ class AuthorModule {
                     </a>
                     <a href="${this.authorData.social.scholar}" target="_blank" class="contact-button">
                         <span class="button-icon">🎓</span> Google Scholar
+                    </a>
+                    <a href="${this.authorData.social.orcid}" target="_blank" class="contact-button">
+                        <span class="button-icon">🔬</span> ORCID
                     </a>
                 </div>
             </div>
