@@ -293,14 +293,13 @@ class AuthorModule {
                 <h5>📄 Peer-Reviewed IEEE Conference Papers</h5>
                 <p>Reviewed numerous research papers for IEEE and various international conferences (AMLDS, CEECT, CITIC, ICBDA, ICCITX, ICCPCT, ISGAIE, STESI, IC2PCT, 2AI, and so on). Provided technical evaluations on cloud computing, microservices architecture, event-driven systems, AI integration, responsible AI and financial technology systems.</p>
                 
-                <h5>📝 Technical Blogs and Talks</h5>
+                <h5>📝 Technical Blogs</h5>
                 <ul class="achievement-list">
                     <li><a href="https://hackernoon.com/the-builders-dilemma-balancing-creativity-and-consistency-in-agentic-workflows" target="_blank" rel="noopener">The Builder's Dilemma: Balancing Creativity and Consistency in Agentic Workflows</a><br><small>HackerNoon</small></li>
                     <li><a href="https://dev.to/rsri/mutation-testing-the-missing-safety-net-for-ai-generated-code-54kn" target="_blank" rel="noopener">Mutation Testing: The Missing Safety Net for AI-Generated Code</a><br><small>Dev.to</small></li>
                     <li><a href="https://dev.to/rsri/why-your-next-enterprise-chatbot-should-write-its-own-graphql-queries-4inh" target="_blank" rel="noopener">Why Your Next Enterprise Chatbot Should Write Its Own GraphQL Queries</a><br><small>Dev.to</small></li>
                     <li><a href="https://dev.to/rsri/beyond-the-single-prompt-orchestrating-parallel-context-isolation-pci-with-claude-code-f58" target="_blank" rel="noopener">Beyond the Single Prompt: Orchestrating Parallel Context Isolation (PCI) with Claude Code</a><br><small>Dev.to</small></li>
                     <li><a href="https://medium.com/@rajen.sriram/evolution-of-story-points-the-construction-to-curation-shift-97b06b9114fc" target="_blank" rel="noopener">Evolution of Story Points: The Construction to Curation Shift</a><br><small>Medium</small></li>
-                    <li>Actively involved in local tech forums and cohorts for exchanging emerging technologies around Gen AI, Cloud — building working models, POCs, and innovations in the engineering space.</li>
                 </ul>
             </div>
         `;
@@ -348,21 +347,12 @@ class AuthorModule {
             <div class="author-section">
                 <h4>📧 Get in Touch</h4>
                 <p>Interested in collaboration, have questions about technology leadership, or want to discuss innovative projects? Feel free to reach out!</p>
-                <div class="contact-info" style="margin-bottom: 1.5rem;">
-                    <p><strong>Email:</strong> <a href="mailto:${this.authorData.email}" style="color: var(--primary);">${this.authorData.email}</a></p>
-                </div>
                 <div class="contact-methods">
                     <a href="${this.authorData.social.linkedin}" target="_blank" class="contact-button">
                         <span class="button-icon">💼</span> Connect on LinkedIn
                     </a>
                     <a href="${this.authorData.social.github}" target="_blank" class="contact-button">
                         <span class="button-icon">💻</span> View on GitHub
-                    </a>
-                    <a href="${this.authorData.social.scholar}" target="_blank" class="contact-button">
-                        <span class="button-icon">🎓</span> Google Scholar
-                    </a>
-                    <a href="${this.authorData.social.orcid}" target="_blank" class="contact-button">
-                        <span class="button-icon">🔬</span> ORCID
                     </a>
                 </div>
             </div>
