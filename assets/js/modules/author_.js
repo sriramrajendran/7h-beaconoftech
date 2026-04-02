@@ -20,6 +20,9 @@ class AuthorModule {
 
     generateAuthorContent() {
         return `
+            <div class="page-header">
+            </div>
+            
             <div class="author-container">
                 ${this.generateProfileSection()}
                 ${this.generateContentSections()}
@@ -37,6 +40,10 @@ class AuthorModule {
                     <h3>${this.authorData.name}</h3>
                     <div class="author-title-row">
                         <p class="author-title">${this.authorData.title}</p>
+                        <div class="author-memberships">
+                            <span class="membership-badge">🏛️ Senior IEEE Member</span>
+                            <span class="membership-badge">👑 ioasd.org Royal Fellow</span>
+                        </div>
                     </div>
                     <div class="author-links">
                         <a href="${this.authorData.social.linkedin}" target="_blank" class="social-link">
@@ -44,6 +51,12 @@ class AuthorModule {
                         </a>
                         <a href="${this.authorData.social.github}" target="_blank" class="social-link">
                             <span class="social-icon">💻</span> GitHub
+                        </a>
+                        <a href="${this.authorData.social.scholar}" target="_blank" class="social-link">
+                            <span class="social-icon">🎓</span> Google Scholar
+                        </a>
+                        <a href="${this.authorData.social.orcid}" target="_blank" class="social-link">
+                            <span class="social-icon">🔬</span> ORCID
                         </a>
                     </div>
                 </div>
@@ -275,7 +288,7 @@ class AuthorModule {
                     <li><strong>Passion & Vision:</strong> Staying at the frontier of tech trends including Gen AI, LLMs, and emerging AI and cloud technologies. Passionate about experimenting with new tools and sharing knowledge through blogs and community engagement.</li>
                     <li><strong>Leadership Philosophy:</strong> Strong sense of engineering craftsmanship and accountability for team success. Encourages out-of-the-box thinking, cutting-edge technology adoption, and a collaborative, empowering work environment.</li>
                     <li><strong>Strategic Collaboration:</strong> Strategic collaboration across product executive leadership, design, and engineering disciplines, adept at balancing competing priorities while fostering inclusive, high-performing teams.</li>
-                    <li><strong>Diversity & Inclusion:</strong> Champion of innovation, dedicated to fostering innovation, diversity, and inclusion while driving impactful business outcomes and building enduring value for customers.</li>
+                    <li><strong>Diversity & Inclusion:</strong> Champion of innovation and leader of Equality Allies and Women In Tech BRGs. Dedicated to fostering innovation, diversity, and inclusion while driving impactful business outcomes and building enduring value for customers.</li>
                 </ul>
             </div>
         `;
@@ -283,6 +296,56 @@ class AuthorModule {
 
     generateBeyondIndustrySection() {
         return `
+            <div class="author-section">
+                <h4>🌐 Beyond Industrial Experience</h4>
+                
+                <h5>📄 Peer-Reviewed IEEE Conference Papers</h5>
+                <p>Reviewed 50+ research papers for IEEE and various international conferences. Provided technical evaluations on cloud computing, microservices architecture, event-driven systems, AI integration, responsible AI and financial technology systems.</p>
+                <ul class="achievement-list" style="margin-left: 20px;">
+                    <li>AMLDS 2026 <small>Osaka, Japan</small></li>
+                    <li>CEECT 2026 <small>Bangkok, Thailand</small></li>
+                    <li>CITIC 2026 <small>Malaysia</small></li>
+                    <li>ICBDA 2026 <small>Tokyo, Japan</small></li>
+                    <li>ICCITX 2026 <small>France/Morocco/Vietnam</small></li>
+                    <li>ICCPCT 2026 <small>Kerala, India</small></li>
+                    <li>ISGAIE 2026 <small>Morocco</small></li>
+                    <li>STESI 2026 <small>Jaipur, India</small></li>
+                    <li>IC2PCT 2026 <small>Noida, India</small></li>
+                    <li>2AI 2026 <small>Kashmir, India</small></li>
+                </ul>
+                
+                <h5>📝 Technical Blogs and Talks</h5>
+                <ul class="achievement-list">
+                    <li><a href="https://hackernoon.com/the-builders-dilemma-balancing-creativity-and-consistency-in-agentic-workflows" target="_blank" rel="noopener">The Builder's Dilemma: Balancing Creativity and Consistency in Agentic Workflows</a><br><small>HackerNoon</small></li>
+                    <li><a href="https://dev.to/rsri/mutation-testing-the-missing-safety-net-for-ai-generated-code-54kn" target="_blank" rel="noopener">Mutation Testing: The Missing Safety Net for AI-Generated Code</a><br><small>Dev.to</small></li>
+                    <li><a href="https://dev.to/rsri/why-your-next-enterprise-chatbot-should-write-its-own-graphql-queries-4inh" target="_blank" rel="noopener">Why Your Next Enterprise Chatbot Should Write Its Own GraphQL Queries</a><br><small>Dev.to</small></li>
+                    <li><a href="https://dev.to/rsri/beyond-the-single-prompt-orchestrating-parallel-context-isolation-pci-with-claude-code-f58" target="_blank" rel="noopener">Beyond the Single Prompt: Orchestrating Parallel Context Isolation (PCI) with Claude Code</a><br><small>Dev.to</small></li>
+                    <li><a href="https://medium.com/@rajen.sriram/evolution-of-story-points-the-construction-to-curation-shift-97b06b9114fc" target="_blank" rel="noopener">Evolution of Story Points: The Construction to Curation Shift</a><br><small>Medium</small></li>
+                    <li><a href="https://www.apidays.global/events/new-york" target="_blank" rel="noopener">Agent-Ready Payments — Engineering APIs for the Execution Layer</a><br><small>API days NY 2026</small></li>
+                    <li>Published multiple technical articles on beaconoftech.com covering Generative AI, cloud-native architectures, and financial services technology.</li>
+                    <li>Actively involved in local tech forums and cohorts for exchanging emerging technologies around Gen AI, Cloud, and Payments — building working models, POCs, and innovations in the engineering and payment space.</li>
+                </ul>
+                
+                <h5>💡 Patents</h5>
+                <ul class="achievement-list">
+                    <li><a href="https://patents.google.com/patent/US11704637B2/en" target="_blank" rel="noopener">Patent US11704637B2: System and method to accept third-party payments</a></li>
+                    <li>[In transit] Multi story recon and controls for accuracy transaction processing</li>
+                    <li>[In transit] Personified lending financial educator and simplified payments</li>
+                </ul>
+                
+                <h5>⚖️ Judging</h5>
+                <ul class="achievement-list">
+                    <li><a href="https://globeeawards.com/2026-judges-artificial-intelligence" target="_blank" rel="noopener">Judge for Globee Awards for Artificial Intelligence</a></li>
+                    <li><a href="https://globeeawards.com/2026-judges-excellence-awards" target="_blank" rel="noopener">Judge for Globee Awards for Excellence</a></li>
+                    <li>Judge for Globee Awards for Achievement</li>
+                    <li>Hackathon judge at multiple universities (UCLA, UTD, etc.)</li>
+                </ul>
+                
+                <h5>🤝 Committee Memberships</h5>
+                <ul class="achievement-list">
+                    <li><a href="https://bdaa-conference.com/#vbid-42783c3b-8n7crxx1" target="_blank" rel="noopener">BDAA International Committee</a> <small>Active</small></li>
+                </ul>
+            </div>
         `;
     }
 
@@ -328,12 +391,21 @@ class AuthorModule {
             <div class="author-section">
                 <h4>📧 Get in Touch</h4>
                 <p>Interested in collaboration, have questions about technology leadership, or want to discuss innovative projects? Feel free to reach out!</p>
+                <div class="contact-info" style="margin-bottom: 1.5rem;">
+                    <p><strong>Email:</strong> <a href="mailto:${this.authorData.email}" style="color: var(--primary);">${this.authorData.email}</a></p>
+                </div>
                 <div class="contact-methods">
                     <a href="${this.authorData.social.linkedin}" target="_blank" class="contact-button">
                         <span class="button-icon">💼</span> Connect on LinkedIn
                     </a>
                     <a href="${this.authorData.social.github}" target="_blank" class="contact-button">
                         <span class="button-icon">💻</span> View on GitHub
+                    </a>
+                    <a href="${this.authorData.social.scholar}" target="_blank" class="contact-button">
+                        <span class="button-icon">🎓</span> Google Scholar
+                    </a>
+                    <a href="${this.authorData.social.orcid}" target="_blank" class="contact-button">
+                        <span class="button-icon">🔬</span> ORCID
                     </a>
                 </div>
             </div>

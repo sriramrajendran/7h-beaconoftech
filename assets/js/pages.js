@@ -326,9 +326,9 @@ class PageManager {
         // Define taglines for different sections
         const taglines = {
             // Technology pages
-            'tech-blog': 'Tech Hub For Insights',
-            'tech-playbooks': 'Tech Hub For Insights',
-            'tech-projects': 'Tech Hub For Insights',
+            'tech-blog': 'Tech Insights',
+            'tech-playbooks': 'Tech Insights',
+            'tech-projects': 'Tech Insights',
             
             // Analytics pages
             'portfolio': 'Market Analytics',
@@ -342,7 +342,7 @@ class PageManager {
             'crypto': 'Market Analytics',
             
             // About page
-            'author': 'Tech Hub For Insights'
+            'author': 'Tech Insights'
         };
         
         // Update tagline based on page type
