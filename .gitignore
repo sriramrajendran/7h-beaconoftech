@@ -149,3 +149,6 @@ input/imported_portfolio.csv
 temp/
 
 input/.alerts_state.json
+
+# Backup files
+**/bkp_*

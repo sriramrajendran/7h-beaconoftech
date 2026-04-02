@@ -7,8 +7,10 @@
   Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 # Cache static assets (shorter cache for JS to allow updates)
-/assets/*.js
-  Cache-Control: public, max-age=3600
+/assets/js/*
+  Cache-Control: public, max-age=600
+/assets/js/modules/*
+  Cache-Control: public, max-age=600
 /assets/*.css
   Cache-Control: public, max-age=86400
 /assets/*.svg
@@ -20,4 +22,4 @@
 
 # Cache HTML files
 /*.html
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=300
