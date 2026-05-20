@@ -26,6 +26,8 @@
   Cache-Control: public, max-age=31536000, immutable
   X-Frame-Options: SAMEORIGIN
   Access-Control-Allow-Origin: *
+/assets/credentials/*/manifest.json
+  Cache-Control: public, max-age=60
 
 # Cache HTML files
 /*.html
