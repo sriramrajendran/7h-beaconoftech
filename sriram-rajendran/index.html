@@ -1181,7 +1181,7 @@
 
         // Load files from manifest.json if it exists
         async function loadFromManifest(folderPath) {
-            const manifestPath = `${folderPath}manifest.json`;
+            const manifestPath = `${folderPath}manifest.json?v=${Date.now()}`;
             try {
                 const response = await fetch(manifestPath);
                 if (response.ok) {
