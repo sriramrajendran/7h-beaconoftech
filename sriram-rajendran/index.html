@@ -280,6 +280,257 @@
         .credential-link:hover {
             text-decoration: underline;
         }
+        
+        .modal-backdrop-custom {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1050;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-backdrop-custom.show {
+            display: flex;
+        }
+        
+        .modal-content-custom {
+            background: white;
+            border-radius: 1rem;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .modal-header-custom {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title-custom {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        
+        .modal-close-custom {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            line-height: 1;
+            color: #64748b;
+            cursor: pointer;
+            padding: 0;
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-close-custom:hover {
+            color: #1e293b;
+        }
+        
+        .modal-body-custom {
+            padding: 1.5rem;
+        }
+        
+        .modal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .modal-item {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .modal-item:hover {
+            transform: scale(1.02);
+        }
+        
+        .modal-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .modal-item-caption {
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            color: #1e293b;
+        }
+        
+        .modal-item a {
+            display: block;
+            padding: 0.75rem;
+            text-align: center;
+            background: rgba(59, 130, 246, 0.1);
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .modal-item a:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        /* Carousel Styles */
+        .carousel-container {
+            position: relative;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .carousel-track {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+
+        .carousel-track::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .carousel-track::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        .carousel-track::-webkit-scrollbar-thumb {
+            background: rgba(59, 130, 246, 0.5);
+            border-radius: 4px;
+        }
+
+        .carousel-track::-webkit-scrollbar-thumb:hover {
+            background: rgba(59, 130, 246, 0.7);
+        }
+
+        .carousel-item {
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+            width: 300px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .carousel-item:hover {
+            transform: scale(1.02);
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .carousel-item .pdf-placeholder {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(59, 130, 246, 0.05);
+            padding: 2rem;
+        }
+
+        .carousel-item .pdf-placeholder span {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-item-caption {
+            padding: 1rem;
+            font-size: 0.875rem;
+            color: #1e293b;
+            font-weight: 500;
+        }
+
+        .carousel-item-link {
+            display: block;
+            padding: 0.75rem;
+            text-align: center;
+            background: rgba(59, 130, 246, 0.1);
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .carousel-item-link:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .carousel-nav button {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #2563eb;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .carousel-nav button:hover {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        .carousel-nav button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .section-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #2563eb;
+            margin: 1.5rem 0 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #64748b;
+        }
+
+        .empty-state span {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -298,6 +549,8 @@
                     <li class="nav-item"><a class="nav-link" href="#patents">Patents</a></li>
                     <li class="nav-item"><a class="nav-link" href="#speaking">Speaking</a></li>
                     <li class="nav-item"><a class="nav-link" href="#judging">Judging</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#recognition">Recognition</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#technical-committee">Technical Committee</a></li>
                     <li class="nav-item"><a class="nav-link" href="#blogs">Blogs</a></li>
                     <li class="nav-item"><a class="nav-link" href="#volunteering">Volunteering</a></li>
                 </ul>
@@ -311,7 +564,7 @@
             <div class="row g-4 align-items-center">
                 <div class="col-lg-8">
                     <div class="kicker">Generative AI • Cloud-Native Architectures • Enterprise Systems</div>
-                    <h1 class="display-5">Engineering Secure Systems and Applied Intelligence</h1>
+                    <h1 class="display-5">Engineering Secure AI and Architecting Cloud Systems</h1>
                     <p class="mb-4">
                         Senior Engineering Leader with 20+ years of experience in financial services, specializing in 
                         Generative AI, cloud-native architectures, and enterprise-scale systems. IEEE Senior Member, 
@@ -396,43 +649,38 @@
         <!-- Research & Publications -->
         <section id="research" class="mb-5">
             <h2 class="section-title">Research & Publications</h2>
+            <button class="btn btn-sm btn-outline-dark mb-3" onclick="openModal('research')">📷 Credentials & Gallery</button>
             <div class="row g-4">
                 <div class="col-lg-6">
                     <div class="soft-card p-4">
-                        <h3 class="h6 mb-3">Published Papers</h3>
-                        <div class="list-item">
-                            <strong>IEEE AIS 2026:</strong> Coordinating Specialized AI Agents for Compliance-Preserving Migration of Monolithic Java Systems to Cloud-Native Architectures
-                        </div>
+                        <h3 class="h6 mb-3">Scholarly Articles - Published</h3>
                         <div class="list-item">
                             <strong>International Journal of Computer Science and Security:</strong> Optimizing Kafka-Based Event Streams for Low-Latency Financial Transaction Processing on Multi-Cloud Platform
+                            <a href="https://www.cscjournals.org/library/manuscriptinfo.php?mc=IJE-526" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">View</a>
+                        </div>
+                        <div class="list-item">
+                            <strong>IEEE Conference AIS 2026:</strong> Coordinating Specialized AI Agents for Compliance-Preserving Migration of Monolithic Java Systems to Cloud-Native Architectures - The 2nd International Conference on Artificial Intelligence Systems, San Antonio, TX
+                            <a href="https://ais-conference.org/2026/program_details.php" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">View</a>
                         </div>
                         <div class="list-item">
                             <strong>International Journal of Computer Applications:</strong> Event-Driven Architecture Patterns for Real-Time Financial Risk Assessment in Distributed Cloud Environments
+                            <a href="https://www.ijcaonline.org/archives/volume187/number102/real-time-resilience-scaling-financial-risk-assessment-with-event-driven-cloud-architectures" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">View</a>
+                        </div>
+                        <h3 class="h6 mb-3 mt-4">Scholarly Articles - Accepted</h3>
+                        <div class="list-item">
+                            <strong>IEEE Conference ICCBI 2026:</strong> Behavioral-Centric AI: Enhancing Cognitive Efficiency in High-Stakes Obligation Management – 5th International Conference on Computer Networks, Big Data, and IoT, Dubai
                         </div>
                         <div class="list-item">
-                            <strong>IEEE ICCBI 2026:</strong> Behavioral-Centric AI: Enhancing Cognitive Efficiency in High-Stakes Obligation Management
-                        </div>
-                        <div class="list-item">
-                            <strong>IEEE CE2CT 2026:</strong> Decoupling Complex Domain Logic: A Bounded Context Approach to High-Scale Orchestration
+                            <strong>IEEE Conference CE2CT 2026:</strong> Decoupling Complex Domain Logic: A Bounded Context Approach to High-Scale Orchestration - 2026 Second International Conference on Advances in Computer Science, Electrical, Electronics, and Communication Technologies, India
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="soft-card p-4">
                         <h3 class="h6 mb-3">Peer Review Statistics</h3>
-                        <p class="mb-3">Reviewed 80+ research papers for IEEE and international conferences including:</p>
-                        <ul class="text-white-50">
-                            <li>ICETM 2026 (NJ, USA)</li>
-                            <li>CE2CT 2026 (Uttarakhand, India)</li>
-                            <li>AIIoT 2026 (Seattle, USA)</li>
-                            <li>ARIIA 2026 (India)</li>
-                            <li>ICoIAS 2026 (China)</li>
-                            <li>ICETCI 2026 (India)</li>
-                            <li>AMLDS 2026 (Osaka, Japan)</li>
-                            <li>ICBDA 2026 (Tokyo, Japan)</li>
-                            <li>ICCITX 2026 (Paris, France)</li>
-                            <li>And 10+ more conferences</li>
-                        </ul>
+                        <div class="list-item"><strong>80+ papers reviewed</strong> across various IEEE and international conferences</div>
+                        <div class="list-item"><strong>18+ conferences</strong> served as peer reviewer</div>
+                        <div class="list-item"><strong>Conferences:</strong> ICETM, CE2CT, AIIoT, ICBDA, IEEE AIS, and others</div>
                     </div>
                 </div>
             </div>
@@ -441,6 +689,7 @@
         <!-- Patents & Innovation -->
         <section id="patents" class="mb-5">
             <h2 class="section-title">Patents & Innovation</h2>
+            <button class="btn btn-sm btn-outline-dark mb-3" onclick="openModal('patents')">📷 Credentials & Gallery</button>
             <div class="soft-card p-4">
                 <div class="list-item">
                     <strong>US11704637B2:</strong> System and method to accept third-party orchestration
@@ -458,6 +707,7 @@
         <!-- Speaking & Media -->
         <section id="speaking" class="mb-5">
             <h2 class="section-title">Speaking & Media</h2>
+            <button class="btn btn-sm btn-outline-dark mb-3" onclick="openModal('speaking')">📷 Credentials & Gallery</button>
             <div class="row g-4">
                 <div class="col-lg-6">
                     <div class="soft-card p-4">
@@ -473,9 +723,6 @@
                         <div class="list-item">
                             <strong>CIMA 2026, India:</strong> Speaker
                             <a href="https://www.scrs.in/conference/CIMA2026/speaker/talk/22986" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">View Talk</a>
-                        </div>
-                        <div class="list-item">
-                            <strong>MinneAnalytics:</strong> Speaker
                         </div>
                         <div class="list-item mt-3 pt-3 border-top">
                             <strong>Community Engagement:</strong> Actively involved in local tech forums, cohorts for exchanging emerging technologies around Gen AI, Cloud, Payments domain and coming up with working models, POCs, innovations in the engineering and payment space.
@@ -502,9 +749,10 @@
             </div>
         </section>
 
-        <!-- Judging & Recognition -->
+        <!-- Judging -->
         <section id="judging" class="mb-5">
-            <h2 class="section-title">Judging & Recognition</h2>
+            <h2 class="section-title">Judging</h2>
+            <button class="btn btn-sm btn-outline-dark mb-3" onclick="openModal('judging')">📷 Credentials & Gallery</button>
             <div class="row g-4">
                 <div class="col-lg-6">
                     <div class="soft-card p-4">
@@ -533,7 +781,13 @@
                     </div>
                 </div>
             </div>
-            <div class="row g-4 mt-2">
+        </section>
+
+        <!-- Recognition -->
+        <section id="recognition" class="mb-5">
+            <h2 class="section-title">Recognition</h2>
+            <button class="btn btn-sm btn-outline-dark mb-3" onclick="openModal('recognition')">📷 Credentials & Gallery</button>
+            <div class="row g-4">
                 <div class="col-lg-6">
                     <div class="soft-card p-4">
                         <h3 class="h6 mb-3">Professional Memberships</h3>
@@ -551,6 +805,25 @@
                         <div class="list-item">AWS Certified Solutions Architect – Associate (2017, renewed 2025)</div>
                         <div class="list-item">IBM Certified SOA Solutions Architect (2014)</div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Committee Member -->
+        <section id="technical-committee" class="mb-5">
+            <h2 class="section-title">Technical Committee Member</h2>
+            <div class="soft-card p-4">
+                <div class="list-item">
+                    <strong>BDAA International Committee</strong>
+                    <a href="https://bdaa-conference.com" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">Visit</a>
+                </div>
+                <div class="list-item">
+                    <strong>IEEE World AI IoT Congress</strong>
+                    <a href="https://worldaiiotcongress.org/technical-committee" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">Visit</a>
+                </div>
+                <div class="list-item">
+                    <strong>2AI Committee</strong>
+                    <a href="https://2ai-conference.org/committee/OrganizingCommitte" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">Visit</a>
                 </div>
             </div>
         </section>
@@ -626,6 +899,21 @@
 
     </main>
 
+    <!-- Modal for Credentials and Gallery -->
+    <div id="credentialsGalleryModal" class="modal-backdrop-custom">
+        <div class="modal-content-custom">
+            <div class="modal-header-custom">
+                <h3 id="modalTitle" class="modal-title-custom">Credentials & Gallery</h3>
+                <button class="modal-close-custom" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody" class="modal-body-custom">
+                <div class="modal-grid" id="modalGrid">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="site-footer">
         <div class="container">
@@ -637,7 +925,17 @@
                     <a href="#home">Home</a>
                     <a href="#about">About</a>
                     <a href="#research">Research</a>
+                    <a href="#patents">Patents</a>
+                    <a href="#speaking">Speaking</a>
+                    <a href="#judging">Judging</a>
+                    <a href="#recognition">Recognition</a>
+                    <a href="#technical-committee">Technical Committee</a>
+                    <a href="#blogs">Blogs</a>
+                    <a href="#volunteering">Volunteering</a>
                 </nav>
+            </div>
+            <div class="footer-bottom mt-3 text-white-50">
+                <small>Personal profile page for professional portfolio and credentials.</small>
             </div>
         </div>
     </footer>
@@ -645,40 +943,202 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Smooth scrolling -->
+    <!-- Smooth Scrolling & Active Nav Highlight -->
     <script>
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
                     });
                 }
             });
         });
-        
-        // Active nav highlighting
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
-        
+
         window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
             let current = '';
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
-                if (scrollY >= sectionTop - 100) {
+                if (window.pageYOffset >= sectionTop - 100) {
                     current = section.getAttribute('id');
                 }
             });
-            
+
             navLinks.forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('href') === `#${current}`) {
                     link.classList.add('active');
                 }
             });
+        });
+
+        // Modal Functions
+        async function openModal(section) {
+            const modal = document.getElementById('credentialsGalleryModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalGrid = document.getElementById('modalGrid');
+
+            // Set title based on section
+            const titles = {
+                'research': 'Research & Publications - Credentials & Gallery',
+                'patents': 'Patents & Innovation - Credentials & Gallery',
+                'speaking': 'Speaking & Media - Credentials & Gallery',
+                'judging': 'Judging - Credentials & Gallery',
+                'recognition': 'Recognition - Credentials & Gallery'
+            };
+            modalTitle.textContent = titles[section] || 'Credentials & Gallery';
+
+            // Clear previous content
+            modalGrid.innerHTML = '';
+
+            // Define folder path for credentials
+            const credentialsPath = `../assets/credentials/${section}/`;
+
+            // Load files dynamically
+            await loadFilesFromFolder(credentialsPath, 'Credentials', modalGrid);
+
+            // Show modal
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Function to dynamically load files from a folder
+        async function loadFilesFromFolder(folderPath, sectionLabel, container) {
+            const supportedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf'];
+            const files = [];
+
+            // First, try to load from manifest.json if it exists
+            const manifestFiles = await loadFromManifest(folderPath);
+            if (manifestFiles.length > 0) {
+                files.push(...manifestFiles);
+            } else {
+                // Fallback: Try to load files with numeric naming convention (1.jpg, 2.jpg, etc.)
+                // Stop checking once we find a gap (no file exists for a number)
+                for (let i = 1; i <= 100; i++) {
+                    let foundForNumber = false;
+                    for (const ext of supportedExtensions) {
+                        const filePath = `${folderPath}${i}.${ext}`;
+                        const exists = await checkFileExists(filePath);
+                        if (exists) {
+                            files.push({
+                                src: filePath,
+                                type: ext === 'pdf' ? 'pdf' : 'image',
+                                caption: `${sectionLabel} ${i}`
+                            });
+                            foundForNumber = true;
+                            break; // Move to next number if this extension exists
+                        }
+                    }
+                    // If no file found for this number, stop checking higher numbers
+                    if (!foundForNumber && i > 1) {
+                        break;
+                    }
+                }
+            }
+
+            if (files.length > 0) {
+                // Full-width grid layout (no section label)
+                const gridDiv = document.createElement('div');
+                gridDiv.style.display = 'grid';
+                gridDiv.style.gridTemplateColumns = 'repeat(auto-fill, minmax(500px, 1fr))';
+                gridDiv.style.gap = '2rem';
+
+                files.forEach(file => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.style.border = '1px solid rgba(0,0,0,0.1)';
+                    itemDiv.style.borderRadius = '0.75rem';
+                    itemDiv.style.overflow = 'hidden';
+
+                    if (file.type === 'image') {
+                        itemDiv.innerHTML = `
+                            <img src="${file.src}" alt="${file.caption}" style="width:100%;height:450px;object-fit:contain;background:#f8fafc;" onerror="this.parentElement.style.display='none'">
+                            <div style="padding:1rem;font-size:1rem;font-weight:500;color:#1e293b;">${file.caption}</div>
+                        `;
+                    } else if (file.type === 'pdf') {
+                        itemDiv.innerHTML = `
+                            <iframe src="${file.src}" style="width:100%;height:600px;border:none;" onerror="this.parentElement.innerHTML='<div style=\\'padding:2rem;text-align:center;background:rgba(59,130,246,0.05);\\'><span style=\\'font-size:2rem;\\'>📄</span><div style=\\'padding:0.75rem;font-size:0.875rem;\\'>${file.caption}</div><a href=\\'${file.src}\\' target=\\'_blank\\' style=\\'display:inline-block;margin-top:1rem;padding:0.5rem 1rem;background:rgba(59,130,246,0.1);color:#2563eb;text-decoration:none;font-size:0.875rem;\\'>Open PDF in new tab</a></div>'"></iframe>
+                            <div style="padding:1rem;font-size:1rem;font-weight:500;color:#1e293b;">${file.caption}</div>
+                        `;
+                    }
+
+                    gridDiv.appendChild(itemDiv);
+                });
+
+                container.appendChild(gridDiv);
+            } else {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'empty-state';
+                emptyDiv.innerHTML = '<span>📁</span><div>No files found in this section</div>';
+                container.appendChild(emptyDiv);
+            }
+        }
+
+        // Check if a file exists by trying to fetch it
+        async function checkFileExists(url) {
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                return response.ok;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        // Load files from manifest.json if it exists
+        async function loadFromManifest(folderPath) {
+            const manifestPath = `${folderPath}manifest.json`;
+            try {
+                const response = await fetch(manifestPath);
+                if (response.ok) {
+                    const manifest = await response.json();
+                    const files = manifest.files || [];
+                    // Prepend folder path to each file's src
+                    return files.map(file => ({
+                        ...file,
+                        src: folderPath + file.src
+                    }));
+                }
+            } catch (error) {
+                // Manifest doesn't exist or is invalid
+            }
+            return [];
+        }
+
+        // Scroll carousel
+        function scrollCarousel(trackId, scrollAmount) {
+            const track = document.getElementById(trackId);
+            if (track) {
+                track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('credentialsGalleryModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Close modal on backdrop click
+        document.getElementById('credentialsGalleryModal').addEventListener('click', (e) => {
+            if (e.target.id === 'credentialsGalleryModal') {
+                closeModal();
+            }
         });
     </script>
 </body>
