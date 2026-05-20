@@ -95,8 +95,9 @@
         }
         
         .section-title {
-            color: #2563eb;
-            font-weight: 700;
+            color: #475569;
+            font-weight: 600;
+            font-size: 1.5rem;
             margin-bottom: 1.5rem;
         }
         
@@ -532,6 +533,81 @@
             display: block;
             margin-bottom: 1rem;
         }
+
+        /* Credentials Grid Section */
+        .credentials-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.02) 0%, rgba(16, 185, 129, 0.02) 100%);
+            border-radius: 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .credentials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .credential-item-grid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1.5rem 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .credential-item-grid:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .credential-icon {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+            border-radius: 1rem;
+            margin-bottom: 0.75rem;
+            font-size: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .credential-item-grid:hover .credential-icon {
+            transform: scale(1.1);
+        }
+
+        .credential-name {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #0f172a;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            word-break: break-word;
+        }
+
+        .credential-category {
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -551,9 +627,10 @@
                     <li class="nav-item"><a class="nav-link" href="#speaking">Speaking</a></li>
                     <li class="nav-item"><a class="nav-link" href="#judging">Judging</a></li>
                     <li class="nav-item"><a class="nav-link" href="#recognition">Recognition</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#technical-committee">Technical Committee</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#technical-committee">TPC</a></li>
                     <li class="nav-item"><a class="nav-link" href="#blogs">Articles</a></li>
                     <li class="nav-item"><a class="nav-link" href="#volunteering">Volunteering</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#credentials">Credentials</a></li>
                 </ul>
             </div>
         </div>
@@ -953,6 +1030,15 @@
             </div>
         </section>
 
+        <!-- Credentials Section -->
+        <section id="credentials" class="credentials-section">
+            <h2 class="section-title">Credentials</h2>
+            <p class="text-muted mb-4">Browse all certificates, patents, speaking engagements, and recognitions</p>
+            <div class="credentials-grid" id="credentialsGrid">
+                <!-- Dynamic credentials will be loaded here -->
+            </div>
+        </section>
+
     </main>
 
     <!-- Modal for Credentials and Gallery -->
@@ -988,6 +1074,7 @@
                     <a href="#technical-committee">Technical Committee</a>
                     <a href="#blogs">Blogs</a>
                     <a href="#volunteering">Volunteering</a>
+                    <a href="#credentials">Credentials</a>
                 </nav>
             </div>
             <div class="footer-bottom mt-3 text-white-50">
@@ -998,11 +1085,6 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- PDF.js for rendering PDFs -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    </script>
     
     <!-- Smooth Scrolling & Active Nav Highlight -->
     <script>
@@ -1248,6 +1330,51 @@
                 closeModal();
             }
         });
+
+        // Load credentials grid on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadCredentialsGrid();
+        });
+
+        // Load credentials into grid
+        async function loadCredentialsGrid() {
+            const grid = document.getElementById('credentialsGrid');
+            const categories = ['research', 'patents', 'speaking', 'judging', 'recognition', 'volunteering'];
+            
+            for (const category of categories) {
+                const folderPath = `../assets/credentials/${category}/`;
+                const files = await loadFromManifest(folderPath);
+                
+                files.forEach(file => {
+                    const item = document.createElement('a');
+                    item.className = 'credential-item-grid';
+                    item.href = file.src;
+                    item.target = '_blank';
+                    item.rel = 'noopener noreferrer';
+                    
+                    const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
+                    
+                    if (file.type === 'image') {
+                        item.innerHTML = `
+                            <img src="${file.src}" alt="${file.caption}" class="credential-icon" style="width: 64px; height: 64px; object-fit: cover; border-radius: 0.75rem;" onerror="this.outerHTML='<div class=\\'credential-icon\\'>🖼️</div>'">
+                            <div class="credential-name">${file.caption}</div>
+                            <div class="credential-category">${categoryLabel}</div>
+                        `;
+                    } else {
+                        // For PDFs and other types, show a styled icon
+                        item.innerHTML = `
+                            <div class="credential-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); font-size: 1.5rem;">
+                                📄
+                            </div>
+                            <div class="credential-name">${file.caption}</div>
+                            <div class="credential-category">${categoryLabel}</div>
+                        `;
+                    }
+                    
+                    grid.appendChild(item);
+                });
+            }
+        }
     </script>
 </body>
 </html>
