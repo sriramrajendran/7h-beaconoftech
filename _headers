@@ -21,8 +21,10 @@
   Cache-Control: public, max-age=31536000, immutable
 /assets/*.pdf
   Cache-Control: public, max-age=31536000, immutable
+  X-Frame-Options: SAMEORIGIN
 /assets/credentials/*
   Cache-Control: public, max-age=31536000, immutable
+  X-Frame-Options: SAMEORIGIN
   Access-Control-Allow-Origin: *
 
 # Cache HTML files
