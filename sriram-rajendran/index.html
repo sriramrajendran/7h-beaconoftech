@@ -997,6 +997,9 @@
                         top: offsetPosition,
                         behavior: 'smooth'
                     });
+
+                    // Update URL hash without jumping
+                    history.pushState(null, null, this.getAttribute('href'));
                 }
             });
         });
@@ -1033,7 +1036,8 @@
                 'patents': 'Patents & Innovation - Credentials & Gallery',
                 'speaking': 'Speaking & Media - Credentials & Gallery',
                 'judging': 'Judging - Credentials & Gallery',
-                'recognition': 'Recognition - Credentials & Gallery'
+                'recognition': 'Recognition - Credentials & Gallery',
+                'volunteering': 'Volunteering & Mentorship - Credentials & Gallery'
             };
             modalTitle.textContent = titles[section] || 'Credentials & Gallery';
 
