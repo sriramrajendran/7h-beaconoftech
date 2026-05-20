@@ -11,6 +11,7 @@ Allow: /assets/js/
 Allow: /assets/images/
 Allow: /assets/credentials/
 Allow: /assets/logo.svg
+Allow: /*.pdf
 
 # Block unnecessary files and directories
 Disallow: /tests/
