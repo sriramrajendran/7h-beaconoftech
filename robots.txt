@@ -23,6 +23,7 @@ Disallow: /README.md
 Disallow: /package.json
 Disallow: /.git*
 Disallow: /node_modules/
+Disallow: /sriram-rajendran/
 
 # Googlebot - no crawl delay, let Google crawl freely
 User-agent: Googlebot
