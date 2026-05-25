@@ -887,6 +887,7 @@
         .credential-icon {
             width: 200px;
             height: 200px;
+            max-width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -979,6 +980,42 @@
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
+            .modal-content-custom {
+                max-width: 95%;
+                max-height: 85%;
+            }
+
+            .modal-header-custom {
+                padding: 1rem 1.25rem;
+            }
+
+            .modal-title-custom {
+                font-size: 1rem;
+            }
+
+            .modal-body-custom {
+                padding: 1rem;
+            }
+
+            .modal-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .modal-item img {
+                height: 100px;
+            }
+
+            .modal-item-caption {
+                padding: 0.5rem;
+                font-size: 0.7rem;
+            }
+
+            .modal-item a {
+                padding: 0.5rem;
+                font-size: 0.7rem;
+            }
+
             h1.display-5 {
                 font-size: 2rem;
             }
@@ -988,7 +1025,73 @@
             }
 
             .credentials-grid {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .credential-item-grid {
+                padding: 1rem 0.5rem;
+            }
+
+            .credential-icon {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1;
+                font-size: 2.5rem;
+                border-radius: 0.75rem;
+            }
+
+            .credential-name {
+                font-size: 0.625rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .credentials-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+
+            .credential-item-grid {
+                padding: 0.75rem 0.4rem;
+            }
+
+            .credential-icon {
+                font-size: 2rem;
+                border-radius: 0.5rem;
+            }
+
+            .modal-content-custom {
+                max-width: 98%;
+                max-height: 90%;
+                border-radius: 0.75rem;
+            }
+
+            .modal-header-custom {
+                padding: 0.75rem 1rem;
+            }
+
+            .modal-body-custom {
+                padding: 0.75rem;
+            }
+
+            .modal-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+
+            .modal-item img {
+                height: 80px;
+            }
+
+            .modal-item-caption {
+                padding: 0.4rem;
+                font-size: 0.625rem;
+            }
+
+            .modal-item a {
+                padding: 0.4rem;
+                font-size: 0.625rem;
             }
         }
     </style>
@@ -1770,7 +1873,7 @@
                         `;
                     } else if (file.type === 'image') {
                         item.innerHTML = `
-                            <img src="${file.src}" alt="${file.caption}" class="credential-icon" style="width: 200px; height: 200px; object-fit: cover; border-radius: 1.25rem;" onerror="this.outerHTML='<div class=\\'credential-icon\\'>🖼️</div>'">
+                            <img src="${file.src}" alt="${file.caption}" class="credential-icon" style="object-fit: cover;" onerror="this.outerHTML='<div class=\\'credential-icon\\'>🖼️</div>'">
                             <div class="credential-name">${file.caption}</div>
                             <div class="credential-category">${categoryLabel}</div>
                         `;
