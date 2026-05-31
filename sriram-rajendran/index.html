@@ -105,6 +105,135 @@
             color: var(--primary) !important;
             background: var(--primary-lighter);
         }
+
+        .dropdown-menu {
+            border: 1px solid var(--border);
+            border-radius: 0.625rem;
+            box-shadow: var(--shadow-md);
+            padding: 0.5rem 0;
+            background: var(--surface);
+            margin-top: 0;
+        }
+
+        @media (min-width: 992px) {
+            .navbar-nav .dropdown:hover > .dropdown-menu {
+                display: block;
+            }
+            .navbar-nav .dropdown > .dropdown-menu {
+                display: none;
+            }
+        }
+
+        .dropdown-item {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            color: var(--primary);
+            background: var(--primary-lighter);
+        }
+
+        .group-header {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .group-header::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 1.5rem;
+            background: linear-gradient(180deg, var(--primary), var(--primary-light));
+            border-radius: 2px;
+        }
+
+        .impact-timeline {
+            position: relative;
+        }
+
+        .impact-card {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .impact-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: -2rem;
+            width: 2px;
+            background: linear-gradient(180deg, var(--primary-light), var(--border));
+        }
+
+        .impact-card:last-child::before {
+            bottom: 0;
+        }
+
+        .impact-card::after {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 2px solid var(--surface);
+            box-shadow: 0 0 0 2px var(--primary-light);
+        }
+
+        .impact-year {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .impact-title {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9375rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .impact-details {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .impact-savings {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.625rem;
+            border-radius: 9999px;
+            margin-top: 0.5rem;
+        }
+
+        section#projects-impacts.mb-5 {
+            background: linear-gradient(135deg, var(--surface) 0%, #eff6ff 100%);
+        }
         
         .soft-card {
             background: var(--surface-elevated);
@@ -303,7 +432,7 @@
             font-family: 'Space Grotesk', sans-serif;
             color: var(--dark);
             font-weight: 700;
-            font-size: 1.75rem;
+            font-size: 1.375rem;
             margin-bottom: 0.75rem;
             letter-spacing: -0.03em;
             position: relative;
@@ -322,8 +451,8 @@
         }
 
         section.mb-5 {
-            margin-bottom: 4rem !important;
-            padding: 2.5rem;
+            margin-bottom: 1.5rem !important;
+            padding: 1.5rem;
             background: var(--surface);
             border-radius: var(--radius-lg);
             border: 1px solid var(--border);
@@ -1108,14 +1237,25 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#research">Research</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#patents">Patents</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#speaking">Speaking</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#judging">Judging</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#recognition">Recognition</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#technical-committee">TPC</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#blogs">Articles</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#volunteering">Volunteering</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#mentoring-and-coaching" role="button" aria-expanded="false">Mentoring & Coaching</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#projects-impacts">Projects & Impacts</a></li>
+                            <li><a class="dropdown-item" href="#patents">Patents</a></li>
+                            <li><a class="dropdown-item" href="#research">Research</a></li>
+                            <li><a class="dropdown-item" href="#volunteering">Volunteering</a></li>
+                            <li><a class="dropdown-item" href="#judging">Judging & Mentoring</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#public-influence" role="button" aria-expanded="false">Public Influence</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#speaking">Speaking</a></li>
+                            <li><a class="dropdown-item" href="#blogs">Articles</a></li>
+                            <li><a class="dropdown-item" href="#technical-committee">TPC</a></li>
+                            <li><a class="dropdown-item" href="#recognition">Recognition</a></li>
+                        </ul>
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="#credentials">Credentials</a></li>
                 </ul>
             </div>
@@ -1211,6 +1351,86 @@
             </div>
         </section>
 
+        <!-- ═══ Mentoring & Coaching ═══ -->
+        <div id="mentoring-and-coaching" class="group-header">Mentoring & Coaching</div>
+
+        <!-- Projects & Impacts -->
+        <section id="projects-impacts" class="mb-5">
+            <h2 class="section-title">Projects & Impacts</h2>
+            <div class="row g-4">
+                <div class="col-lg-12">
+                    <div class="soft-card p-4">
+                        <div class="impact-timeline">
+                            <div class="impact-card">
+                                <div class="impact-year">2025</div>
+                                <div class="impact-title">Core Modernization</div>
+                                <div class="impact-details">
+                                    Exiting mainframe and migration of core to microservices & cloud-native platform.
+                                    <div class="d-flex flex-wrap gap-2 mt-2">
+                                        <a href="https://aws.amazon.com/solutions/case-studies/innovators/capital-one/" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark">AWS Case Study</a>
+                                        <a href="https://www.autofinancenews.net/allposts/technology/capital-one-looks-to-raise-the-bar-on-technology" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark">AutoFinance News</a>
+                                    </div>
+                                </div>
+                                <span class="impact-savings">$8M YoY</span>
+                            </div>
+                            <div class="impact-card">
+                                <div class="impact-year">2024</div>
+                                <div class="impact-title">Auto Payments Tech Modernization</div>
+                                <div class="impact-details">
+                                    Auto portfolio customer base migrated to new payments platform, enabling real-time payments. Faster clearing savings.
+                                    <div class="d-flex flex-wrap gap-2 mt-2">
+                                        <a href="https://aws.amazon.com/solutions/case-studies/innovators/capital-one/" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark">AWS Case Study</a>
+                                        <a href="https://www.vertexuxstudio.com/case-studies/transforming-auto-finance" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark">Vertex UX Studio</a>
+                                        <a href="https://www.ciodive.com/news/capital-one-tech-modernization-discover-card-integration/738009" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark">CIO Dive</a>
+                                        <a href="https://www.autofinancenews.net/allposts/technology/capital-ones-tech-stack-drives-growth-opportunities/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark">AutoFinance News</a>
+                                    </div>
+                                </div>
+                                <span class="impact-savings">$10M YoY</span>
+                            </div>
+                            <div class="impact-card">
+                                <div class="impact-year">2019</div>
+                                <div class="impact-title">Debit Card Processing & Vendor Payments</div>
+                                <div class="impact-details">
+                                    Debit card processing for auto loan payments. Establishing platform for vendor payments.
+                                </div>
+                                <span class="impact-savings">$6M YoY</span>
+                            </div>
+                            <div class="impact-card">
+                                <div class="impact-year">2018</div>
+                                <div class="impact-title">Cloud Migration</div>
+                                <div class="impact-details">
+                                    Data center exit and 100% vesting into cloud. Strategic pivot with resiliency improvements.
+                                    <div class="d-flex flex-wrap gap-2 mt-2">
+                                        <a href="https://www.forbes.com/sites/oracle/2018/11/14/how-capital-one-became-the-first-us-bank-to-go-all-in-on-the-public-cloud/" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark">Forbes</a>
+                                        <a href="https://www.capitalone.com/tech/cloud/" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark">Capital One Tech</a>
+                                        <a href="https://aws.amazon.com/blogs/industries/capital-one-brings-sustainability-to-its-cloud-migration/" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark">AWS Blog</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Patents & Innovation -->
+        <section id="patents" class="mb-5">
+            <h2 class="section-title">Patents & Innovation</h2>
+            <button class="btn btn-sm btn-outline-dark mb-3" onclick="openModal('patents')">📷 Credentials & Gallery</button>
+            <div class="soft-card p-4">
+                <div class="list-item">
+                    <strong>US11704637B2:</strong> System and method to accept third-party data 
+                    <a href="https://patents.google.com/patent/US11704637B2/en" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">View Patent</a>
+                </div>
+                <div class="list-item">
+                    <strong>In Transit:</strong> Multi-story recon and controls for accuracy transaction processing
+                </div>
+                <div class="list-item">
+                    <strong>In Transit:</strong> Personified lending educator
+                </div>
+            </div>
+        </section>
+
         <!-- Research & Publications -->
         <section id="research" class="mb-5">
             <h2 class="section-title">Research & Publications</h2>
@@ -1271,23 +1491,76 @@
             </div>
         </section>
 
-        <!-- Patents & Innovation -->
-        <section id="patents" class="mb-5">
-            <h2 class="section-title">Patents & Innovation</h2>
-            <button class="btn btn-sm btn-outline-dark mb-3" onclick="openModal('patents')">📷 Credentials & Gallery</button>
-            <div class="soft-card p-4">
-                <div class="list-item">
-                    <strong>US11704637B2:</strong> System and method to accept third-party data 
-                    <a href="https://patents.google.com/patent/US11704637B2/en" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">View Patent</a>
+        <!-- Volunteering & Mentorship -->
+        <section id="volunteering" class="mb-5">
+            <h2 class="section-title">Volunteering & Mentorship</h2>
+            <button class="btn btn-sm btn-outline-dark mb-3" onclick="openModal('volunteering')">📷 Credentials & Gallery</button>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="soft-card p-4">
+                        <h3 class="h6 mb-3">Volunteering</h3>
+                        <div class="list-item">
+                            <strong>DIB BRG:</strong> Leader for Allies Business Resource Group at Workplace (2018 - Present)
+                        </div>
+                        <div class="list-item">
+                            <strong>Girls Inc Coders:</strong> Mentor for program inspiring and guiding students in technology and app development
+                        </div>
+                        <div class="list-item">
+                            <strong>Monster Coding Jam:</strong> Mentor for student coding program
+                        </div>
+                        <div class="list-item">
+                            <strong>Chetna:</strong> Contributed to enhancing the organization's website as part of a human rights initiative
+                        </div>
+                    </div>
                 </div>
-                <div class="list-item">
-                    <strong>In Transit:</strong> Multi-story recon and controls for accuracy transaction processing
-                </div>
-                <div class="list-item">
-                    <strong>In Transit:</strong> Personified lending educator
+                <div class="col-lg-6">
+                    <div class="soft-card p-4">
+                        <h3 class="h6 mb-3">Mentorship</h3>
+                        <div class="list-item">
+                            <strong>ADPList Mentor:</strong> Active mentor on ADPList for engineering and technology professionals
+                            <a href="https://adplist.org/mentors/sriramprabhu-rajendran-moxrqalw" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">View Profile</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
+
+        <!-- Judging & Mentoring -->
+        <section id="judging" class="mb-5">
+            <h2 class="section-title">Judging & Mentoring</h2>
+            <button class="btn btn-sm btn-outline-dark mb-3" onclick="openModal('judging')">📷 Credentials & Gallery</button>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="soft-card p-4">
+                        <h3 class="h6 mb-3">Hackathon & Capstone Judging</h3>
+                        <div class="list-item">UCLA (LA Hacks) - Hackathon Judge</div>
+                        <div class="list-item">Georgia Tech - Capstone Projects Judge</div>
+                        <div class="list-item">Kennesaw State University - Capstone Projects Judge</div>
+                        <div class="list-item">University of Kansas (HackKU) - Hackathon Judge</div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="soft-card p-4">
+                        <h3 class="h6 mb-3">Industry Awards Judging</h3>
+                        <div class="list-item">
+                            <strong>Globee Awards - Artificial Intelligence:</strong> Judge
+                            <a href="https://globeeawards.com/2026-judges-artificial-intelligence" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">View</a>
+                        </div>
+                        <div class="list-item">
+                            <strong>Globee Awards - Excellence:</strong> Judge
+                            <a href="https://globeeawards.com/2026-judges-excellence-awards" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">View</a>
+                        </div>
+                        <div class="list-item">
+                            <strong>Globee Awards - Achievement:</strong> Judge
+                            <a href="https://globeeawards.com/2026-judges-achievement-awards" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ Public Influence ═══ -->
+        <div id="public-influence" class="group-header">Public Influence</div>
 
         <!-- Speaking & Media -->
         <section id="speaking" class="mb-5">
@@ -1343,85 +1616,7 @@
             </div>
         </section>
 
-        <!-- Judging -->
-        <section id="judging" class="mb-5">
-            <h2 class="section-title">Judging</h2>
-            <button class="btn btn-sm btn-outline-dark mb-3" onclick="openModal('judging')">📷 Credentials & Gallery</button>
-            <div class="row g-4">
-                <div class="col-lg-6">
-                    <div class="soft-card p-4">
-                        <h3 class="h6 mb-3">Hackathon & Capstone Judging</h3>
-                        <div class="list-item">UCLA (LA Hacks) - Hackathon Judge</div>
-                        <div class="list-item">Georgia Tech - Capstone Projects Judge</div>
-                        <div class="list-item">Kennesaw State University - Capstone Projects Judge</div>
-                        <div class="list-item">University of Kansas (HackKU) - Hackathon Judge</div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="soft-card p-4">
-                        <h3 class="h6 mb-3">Industry Awards Judging</h3>
-                        <div class="list-item">
-                            <strong>Globee Awards - Artificial Intelligence:</strong> Judge
-                            <a href="https://globeeawards.com/2026-judges-artificial-intelligence" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">View</a>
-                        </div>
-                        <div class="list-item">
-                            <strong>Globee Awards - Excellence:</strong> Judge
-                            <a href="https://globeeawards.com/2026-judges-excellence-awards" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">View</a>
-                        </div>
-                        <div class="list-item">
-                            <strong>Globee Awards - Achievement:</strong> Judge
-                            <a href="https://globeeawards.com/2026-judges-achievement-awards" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">View</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Recognition -->
-        <section id="recognition" class="mb-5">
-            <h2 class="section-title">Recognition</h2>
-            <button class="btn btn-sm btn-outline-dark mb-3" onclick="openModal('recognition')">📷 Credentials & Gallery</button>
-            <div class="row g-4">
-                <div class="col-lg-6">
-                    <div class="soft-card p-4">
-                        <h3 class="h6 mb-3">Professional Memberships</h3>
-                        <div class="list-item"><strong>IEEE Senior Member</strong></div>
-                        <div class="list-item"><strong>IETE Fellow</strong></div>
-                        <div class="list-item"><strong>SAS Eminent Fellow</strong></div>
-                        <div class="list-item"><strong>IOASD Royal Fellow</strong></div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="soft-card p-4">
-                        <h3 class="h6 mb-3">Certifications</h3>
-                        <div class="list-item">AWS Certified Solutions Architect – Professional (2022)</div>
-                        <div class="list-item">AWS Certified Solutions Architect – Associate (2017, renewed 2025)</div>
-                        <div class="list-item">IBM Certified SOA Solutions Architect (2014)</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Technical Committee Member -->
-        <section id="technical-committee" class="mb-5">
-            <h2 class="section-title">Technical Committee Member</h2>
-            <div class="soft-card p-4">
-                <div class="list-item">
-                    <strong>BDAA International Committee</strong>
-                    <a href="https://bdaa-conference.com" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">Visit</a>
-                </div>
-                <div class="list-item">
-                    <strong>IEEE World AI IoT Congress</strong>
-                    <a href="https://worldaiiotcongress.org/technical-committee" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">Visit</a>
-                </div>
-                <div class="list-item">
-                    <strong>2AI Committee</strong>
-                    <a href="https://2ai-conference.org/committee/OrganizingCommitte" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">Visit</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Technical Blogs -->
+        <!-- Technical Articles -->
         <section id="blogs" class="mb-5">
             <h2 class="section-title">Technical Articles</h2>
             <div class="row g-4">
@@ -1498,35 +1693,45 @@
             </div>
         </section>
 
-        <!-- Volunteering & Mentorship -->
-        <section id="volunteering" class="mb-5">
-            <h2 class="section-title">Volunteering & Mentorship</h2>
-            <button class="btn btn-sm btn-outline-dark mb-3" onclick="openModal('volunteering')">📷 Credentials & Gallery</button>
+        <!-- Technical Committee Member -->
+        <section id="technical-committee" class="mb-5">
+            <h2 class="section-title">Technical Committee Member</h2>
+            <div class="soft-card p-4">
+                <div class="list-item">
+                    <strong>BDAA International Committee</strong>
+                    <a href="https://bdaa-conference.com" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">Visit</a>
+                </div>
+                <div class="list-item">
+                    <strong>IEEE World AI IoT Congress</strong>
+                    <a href="https://worldaiiotcongress.org/technical-committee" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">Visit</a>
+                </div>
+                <div class="list-item">
+                    <strong>2AI Committee</strong>
+                    <a href="https://2ai-conference.org/committee/OrganizingCommitte" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">Visit</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recognition -->
+        <section id="recognition" class="mb-5">
+            <h2 class="section-title">Recognition</h2>
+            <button class="btn btn-sm btn-outline-dark mb-3" onclick="openModal('recognition')">📷 Credentials & Gallery</button>
             <div class="row g-4">
                 <div class="col-lg-6">
                     <div class="soft-card p-4">
-                        <h3 class="h6 mb-3">Volunteering</h3>
-                        <div class="list-item">
-                            <strong>DIB BRG:</strong> Leader for Allies Business Resource Group at Workplace (2018 - Present)
-                        </div>
-                        <div class="list-item">
-                            <strong>Girls Inc Coders:</strong> Mentor for program inspiring and guiding students in technology and app development
-                        </div>
-                        <div class="list-item">
-                            <strong>Monster Coding Jam:</strong> Mentor for student coding program
-                        </div>
-                        <div class="list-item">
-                            <strong>Chetna:</strong> Contributed to enhancing the organization's website as part of a human rights initiative
-                        </div>
+                        <h3 class="h6 mb-3">Professional Memberships</h3>
+                        <div class="list-item"><strong>IEEE Senior Member</strong></div>
+                        <div class="list-item"><strong>IETE Fellow</strong></div>
+                        <div class="list-item"><strong>SAS Eminent Fellow</strong></div>
+                        <div class="list-item"><strong>IOASD Royal Fellow</strong></div>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="soft-card p-4">
-                        <h3 class="h6 mb-3">Mentorship</h3>
-                        <div class="list-item">
-                            <strong>ADPList Mentor:</strong> Active mentor on ADPList for engineering and technology professionals
-                            <a href="https://adplist.org/mentors/sriramprabhu-rajendran-moxrqalw" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-dark ms-2">View Profile</a>
-                        </div>
+                        <h3 class="h6 mb-3">Certifications</h3>
+                        <div class="list-item">AWS Certified Solutions Architect – Professional (2022)</div>
+                        <div class="list-item">AWS Certified Solutions Architect – Associate (2017, renewed 2025)</div>
+                        <div class="list-item">IBM Certified SOA Solutions Architect (2014)</div>
                     </div>
                 </div>
             </div>
@@ -1568,14 +1773,8 @@
                 <nav class="footer-nav">
                     <a href="#home">Home</a>
                     <a href="#about">About</a>
-                    <a href="#research">Research</a>
-                    <a href="#patents">Patents</a>
-                    <a href="#speaking">Speaking</a>
-                    <a href="#judging">Judging</a>
-                    <a href="#recognition">Recognition</a>
-                    <a href="#technical-committee">Technical Committee</a>
-                    <a href="#blogs">Blogs</a>
-                    <a href="#volunteering">Volunteering</a>
+                    <a href="#mentoring-and-coaching">Mentoring & Coaching</a>
+                    <a href="#public-influence">Public Influence</a>
                     <a href="#credentials">Credentials</a>
                 </nav>
             </div>
@@ -1592,6 +1791,23 @@
     <script>
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                // On mobile, dropdown-toggle click should toggle menu, not navigate
+                if (window.innerWidth < 992 && this.classList.contains('dropdown-toggle')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const parent = this.closest('.dropdown');
+                    // Close other open dropdowns
+                    document.querySelectorAll('.nav-item.dropdown.show').forEach(d => {
+                        if (d !== parent) {
+                            d.classList.remove('show');
+                            d.querySelector('.dropdown-menu').classList.remove('show');
+                        }
+                    });
+                    parent.classList.toggle('show');
+                    this.nextElementSibling.classList.toggle('show');
+                    return;
+                }
+
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
@@ -1604,15 +1820,54 @@
                         behavior: 'smooth'
                     });
 
-                    // Update URL hash without jumping
-                    history.pushState(null, null, this.getAttribute('href'));
+                    // Update URL hash — use parent group hash for dropdown items
+                    const sectionToGroup = {
+                        '#projects-impacts': '#mentoring-and-coaching',
+                        '#patents': '#mentoring-and-coaching',
+                        '#research': '#mentoring-and-coaching',
+                        '#volunteering': '#mentoring-and-coaching',
+                        '#judging': '#mentoring-and-coaching',
+                        '#speaking': '#public-influence',
+                        '#blogs': '#public-influence',
+                        '#technical-committee': '#public-influence',
+                        '#recognition': '#public-influence'
+                    };
+                    const href = this.getAttribute('href');
+                    const urlHash = sectionToGroup[href] || href;
+                    history.pushState(null, null, urlHash);
+
+                    // Close mobile nav on navigation
+                    if (window.innerWidth < 992) {
+                        const navCollapse = document.getElementById('mainNav');
+                        const bsCollapse = bootstrap.Collapse.getInstance(navCollapse);
+                        if (bsCollapse) bsCollapse.hide();
+                        // Close open dropdowns
+                        document.querySelectorAll('.nav-item.dropdown.show').forEach(d => {
+                            d.classList.remove('show');
+                            d.querySelector('.dropdown-menu').classList.remove('show');
+                        });
+                    }
                 }
             });
         });
 
+        // Section-to-dropdown mapping for active highlighting
+        const dropdownSections = {
+            'projects-impacts': 'Mentoring & Coaching',
+            'patents': 'Mentoring & Coaching',
+            'research': 'Mentoring & Coaching',
+            'volunteering': 'Mentoring & Coaching',
+            'judging': 'Mentoring & Coaching',
+            'speaking': 'Public Influence',
+            'blogs': 'Public Influence',
+            'technical-committee': 'Public Influence',
+            'recognition': 'Public Influence'
+        };
+
         window.addEventListener('scroll', () => {
             const sections = document.querySelectorAll('section');
             const navLinks = document.querySelectorAll('.nav-link');
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
             
             let current = '';
             sections.forEach(section => {
@@ -1622,12 +1877,33 @@
                 }
             });
 
+            // Clear all active states
+            navLinks.forEach(link => link.classList.remove('active'));
+            dropdownItems.forEach(item => item.classList.remove('active'));
+
+            // Highlight direct nav links
             navLinks.forEach(link => {
-                link.classList.remove('active');
                 if (link.getAttribute('href') === `#${current}`) {
                     link.classList.add('active');
                 }
             });
+
+            // Highlight dropdown items and parent toggle
+            dropdownItems.forEach(item => {
+                if (item.getAttribute('href') === `#${current}`) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Highlight parent dropdown toggle when child section is active
+            if (dropdownSections[current]) {
+                document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+                    if (toggle.textContent.trim() === dropdownSections[current]) {
+                        toggle.classList.add('active');
+                    }
+                });
+            }
+
         });
 
         // Modal Functions
@@ -1641,7 +1917,7 @@
                 'research': 'Research & Publications - Credentials & Gallery',
                 'patents': 'Patents & Innovation - Credentials & Gallery',
                 'speaking': 'Speaking & Media - Credentials & Gallery',
-                'judging': 'Judging - Credentials & Gallery',
+                'judging': 'Judging & Mentoring - Credentials & Gallery',
                 'recognition': 'Recognition - Credentials & Gallery',
                 'volunteering': 'Volunteering & Mentorship - Credentials & Gallery'
             };
