@@ -70,3 +70,4 @@ Now, Need grouping to be done under these  major sections:
         - currently sub headings are bigger than main headings, make them slightly smaller size
 
         and so on
+        
