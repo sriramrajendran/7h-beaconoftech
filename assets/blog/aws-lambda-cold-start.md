@@ -5,7 +5,7 @@
 
 ---
 
-**Published:** January 2026  
+**Published:** October 2024  
 **Reading Time:** 12 minutes  
 **Category:** Cloud & Serverless  
 **Tags:** #AWS #Lambda #Serverless #Performance #Optimization

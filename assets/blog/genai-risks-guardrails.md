@@ -5,7 +5,7 @@
 
 ---
 
-**Published:** January 2026  
+**Published:** February 2025  
 **Reading Time:** 18 minutes  
 **Category:** AI Security & Safety  
 **Tags:** #GenAI #AISafety #Security #RiskManagement #ResponsibleAI
