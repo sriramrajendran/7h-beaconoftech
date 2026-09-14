@@ -294,15 +294,23 @@ class AuthorModule {
                         <div class="publications-list">
                             <div class="publication-item">
                                 <span class="publication-source">IEEE ICCBI</span>
-                                <span>Behavioral-Centric AI: Enhancing Cognitive Efficiency in High-Stakes Obligation Management (Dubai) <a href="https://www.iccbi.com/schedule.html" target="_blank" rel="noopener">View</a></span>
+                                <span>Behavioral-Centric AI: Enhancing Cognitive Efficiency in High-Stakes Obligation Management (Dubai)
+                                    <a href="https://www.iccbi.com/schedule.html" target="_blank" rel="noopener">View</a>
+                                    <a href="https://ieeexplore.ieee.org/document/11619689" target="_blank" rel="noopener">IEEE Xplore</a>
+                                </span>
                             </div>
                             <div class="publication-item">
                                 <span class="publication-source">IEEE AIS</span>
-                                <span>Coordinating Specialized AI Agents for Compliance-Preserving Migration (San Antonio, TX) <a href="https://ais-conference.org/2026/program_details.php" target="_blank" rel="noopener">View</a></span>
+                                <span>Coordinating Specialized AI Agents for Compliance-Preserving Migration (San Antonio, TX)
+                                    <a href="https://ais-conference.org/2026/program_details.php" target="_blank" rel="noopener">View</a>
+                                    <a href="https://ieeexplore.ieee.org/abstract/document/11621268" target="_blank" rel="noopener">IEEE Xplore</a>
+                                </span>
                             </div>
                             <div class="publication-item">
                                 <span class="publication-source">IEEE CE2CT</span>
-                                <span>Decoupling Complex Domain Logic: A Bounded Context Approach (India)</span>
+                                <span>Decoupling Complex Domain Logic: A Bounded Context Approach (India)
+                                    <a href="https://ce2ct.gehu.ac.in/" target="_blank" rel="noopener">Conference</a>
+                                </span>
                             </div>
                             <div class="publication-item">
                                 <span class="publication-source">IJE</span>
@@ -310,7 +318,10 @@ class AuthorModule {
                             </div>
                             <div class="publication-item">
                                 <span class="publication-source">IJCA</span>
-                                <span>Event-Driven Architecture Patterns for Real-Time Financial Risk Assessment <a href="https://www.ijcaonline.org/archives/volume187/number102/real-time-resilience-scaling-financial-risk-assessment-with-event-driven-cloud-architectures/" target="_blank" rel="noopener">View</a></span>
+                                <span>Event-Driven Architecture Patterns for Real-Time Financial Risk Assessment
+                                    <a href="https://www.ijcaonline.org/archives/volume187/number102/real-time-resilience-scaling-financial-risk-assessment-with-event-driven-cloud-architectures" target="_blank" rel="noopener">View</a>
+                                    <a href="https://www.ijcaonline.org/archives/volume187/number102/" target="_blank" rel="noopener">Issue</a>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -320,11 +331,48 @@ class AuthorModule {
                             <a href="https://scholar.google.com/citations?user=OGYePQEAAAAJ" target="_blank" rel="noopener" class="conference-tag">Google Scholar</a>
                             <a href="https://www.researchgate.net/profile/Sriramprabhu-Rajendran" target="_blank" rel="noopener" class="conference-tag">ResearchGate</a>
                             <a href="https://orcid.org/0009-0009-6137-0877" target="_blank" rel="noopener" class="conference-tag">ORCID</a>
+                            <a href="https://www.linkedin.com/in/rsri" target="_blank" rel="noopener" class="conference-tag">LinkedIn</a>
+                            <a href="https://github.com/sriramrajendran" target="_blank" rel="noopener" class="conference-tag">GitHub</a>
                         </div>
                         <h5>Peer Review</h5>
                         <ul class="achievement-list">
                             <li><strong>100+ papers reviewed</strong> for IEEE and various international conferences across 30+ venues</li>
                         </ul>
+                        <h5>Conferences Reviewed For</h5>
+                        <div class="conference-tags">
+                            <a href="https://amity.edu/ICETM2026/Default.asp" target="_blank" rel="noopener" class="conference-tag">ICETM <small>(Long Island, NY)</small></a>
+                            <a href="https://ce2ct.gehu.ac.in/" target="_blank" rel="noopener" class="conference-tag">CE2CT <small>(India)</small></a>
+                            <a href="https://worldaiiotcongress.org/" target="_blank" rel="noopener" class="conference-tag">AIIoT <small>(Seattle, WA)</small></a>
+                            <a href="https://ariia.in/" target="_blank" rel="noopener" class="conference-tag">ARIIA <small>(India)</small></a>
+                            <a href="https://www.icias.org/" target="_blank" rel="noopener" class="conference-tag">ICoIAS <small>(China)</small></a>
+                            <a href="https://ietcint.com/" target="_blank" rel="noopener" class="conference-tag">ICETCI <small>(India)</small></a>
+                            <a href="https://amlds.site/" target="_blank" rel="noopener" class="conference-tag">AMLDS <small>(Osaka, Japan)</small></a>
+                            <a href="https://www.stesi.in/" target="_blank" rel="noopener" class="conference-tag">STESI <small>(India)</small></a>
+                            <a href="https://www.icbda.org/" target="_blank" rel="noopener" class="conference-tag">ICBDA <small>(Tokyo, Japan)</small></a>
+                            <a href="https://www.ieee-discover.org/" target="_blank" rel="noopener" class="conference-tag">IEEE DISCOVER <small>(India)</small></a>
+                            <a href="https://iccitx.chaire-connected-innovation.fr/" target="_blank" rel="noopener" class="conference-tag">ICCITX <small>(Paris, France)</small></a>
+                            <a href="https://www.iccpct.in/" target="_blank" rel="noopener" class="conference-tag">ICCPCT <small>(India)</small></a>
+                            <a href="https://difcon.mmu.edu.my/citic.html" target="_blank" rel="noopener" class="conference-tag">CITIC <small>(Malaysia)</small></a>
+                            <a href="https://www.ic2pct.co.in/" target="_blank" rel="noopener" class="conference-tag">IC2PCT <small>(India)</small></a>
+                            <a href="https://www.iecon2026.org/#top" target="_blank" rel="noopener" class="conference-tag">IECON <small>(India)</small></a>
+                            <a href="https://ic4.co.in/" target="_blank" rel="noopener" class="conference-tag">InC4 <small>(India)</small></a>
+                            <a href="https://research-conf.com/" target="_blank" rel="noopener" class="conference-tag">ISGAIE <small>(Morocco)</small></a>
+                            <a href="https://icdcece.in/" target="_blank" rel="noopener" class="conference-tag">ICDCECE <small>(India)</small></a>
+                            <a href="https://iciccs.in/" target="_blank" rel="noopener" class="conference-tag">ICICACS <small>(India)</small></a>
+                            <a href="https://2ai-conference.org/" target="_blank" rel="noopener" class="conference-tag">2AI <small>(India)</small></a>
+                            <a href="https://conf-imns.org/2026/index.html" target="_blank" rel="noopener" class="conference-tag">IMNS <small>(Atlanta, GA)</small></a>
+                            <a href="https://2026.aspac-temscon.com/" target="_blank" rel="noopener" class="conference-tag">TEMSCON-ASPAC <small>(India)</small></a>
+                            <a href="https://ceect.org/" target="_blank" rel="noopener" class="conference-tag">CEECT <small>(India)</small></a>
+                            <a href="https://cvmi2026.coeptech.ac.in" target="_blank" rel="noopener" class="conference-tag">CVMI <small>(India)</small></a>
+                            <a href="https://iciscn.in/index.php" target="_blank" rel="noopener" class="conference-tag">ICISCN <small>(India)</small></a>
+                            <a href="https://sasigd.org/" target="_blank" rel="noopener" class="conference-tag">SASIGD <small>(India)</small></a>
+                            <a href="https://www.cicba.in/" target="_blank" rel="noopener" class="conference-tag">CICBA <small>(India)</small></a>
+                            <a href="https://2026.softcom.fesb.unist.hr" target="_blank" rel="noopener" class="conference-tag">SoftCom <small>(Split, Croatia)</small></a>
+                            <a href="https://temsmet2026.sithyd.edu.in/index.html" target="_blank" rel="noopener" class="conference-tag">TEMSMET <small>(Hyderabad)</small></a>
+                            <a href="https://ieee-uemcon.org/" target="_blank" rel="noopener" class="conference-tag">UEMCON <small>(NY)</small></a>
+                            <a href="https://icacit.org.pe/symposium/" target="_blank" rel="noopener" class="conference-tag">ICACIT <small>(Chile)</small></a>
+                            <a href="https://www.icecer.com/" target="_blank" rel="noopener" class="conference-tag">ICECER <small>(Turkey)</small></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -348,7 +396,7 @@ class AuthorModule {
                             </div>
                             <div class="publication-item">
                                 <span class="publication-source">Dataversity</span>
-                                <a href="https://www.dataversity.net/articles/the-context-poisoning-crisis-why-metadata-is-the-new-security-perimeter/" target="_blank" rel="noopener">The Context Poisoning Crisis: Why Metadata Is the New Security Perimeter</a>
+                                <a href="https://www.dataversity.net/articles/the-context-poisoning-crisis-why-metadata-is-the-new-security-perimeter" target="_blank" rel="noopener">The Context Poisoning Crisis: Why Metadata Is the New Security Perimeter</a>
                             </div>
                             <div class="publication-item">
                                 <span class="publication-source">HackerNoon</span>
@@ -364,7 +412,7 @@ class AuthorModule {
                             </div>
                             <div class="publication-item">
                                 <span class="publication-source">BizTech</span>
-                                <a href="https://biztechfoundation.org/2026/04/04/agents-over-oracles-moving-enterprise-ai-from-conversation-to-coordination/" target="_blank" rel="noopener">Agents Over Oracles: Moving Enterprise AI from Conversation to Coordination</a>
+                                <a href="https://biztechfoundation.org/2026/04/04/agents-over-oracles-moving-enterprise-ai-from-conversation-to-coordination" target="_blank" rel="noopener">Agents Over Oracles: Moving Enterprise AI from Conversation to Coordination</a>
                             </div>
                         </div>
                     </div>
@@ -392,6 +440,10 @@ class AuthorModule {
                                 <a href="https://medium.com/@rajen.sriram/evolution-of-story-points-the-construction-to-curation-shift-97b06b9114fc" target="_blank" rel="noopener">Evolution of Story Points: The Construction to Curation Shift</a>
                             </div>
                             <div class="publication-item">
+                                <span class="publication-source">BizTech Bytes</span>
+                                <a href="https://www.linkedin.com/feed/update/urn:li:activity:7465037320950452224/" target="_blank" rel="noopener">Enterprise AI Thought Leadership - Guest Post</a>
+                            </div>
+                            <div class="publication-item">
                                 <span class="publication-source">BeaconOfTech</span>
                                 <a href="https://beaconoftech.com/#author" target="_blank" rel="noopener">Personal Technical Blog - Author Page</a>
                             </div>
@@ -413,7 +465,8 @@ class AuthorModule {
                             <div class="publication-item">
                                 <span class="publication-source">API Days</span>
                                 <span>Agent-Ready Orchestration - Engineering APIs for the Execution Layer (NY)
-                                    <a href="https://apidays.global/archive/2025/new-york-d3c79" target="_blank" rel="noopener">Event</a>
+                                    <a href="https://www.apidays.global/archive/2026/new-york" target="_blank" rel="noopener">Event</a>
+                                    <a href="https://apidays.global/archive/2025/new-york-d3c79" target="_blank" rel="noopener">Archive</a>
                                     <a href="https://www.youtube.com/watch?v=IK5hQhuRM0E" target="_blank" rel="noopener">Watch</a>
                                 </span>
                             </div>
@@ -421,12 +474,16 @@ class AuthorModule {
                                 <span class="publication-source">CIMA 2026</span>
                                 <span>Keynote Speaker (India)
                                     <a href="https://www.scrs.in/conference/CIMA2026/speaker/talk/22986" target="_blank" rel="noopener">Talk</a>
+                                    <a href="https://www.scrs.in/conference/CIMA2026" target="_blank" rel="noopener">Conference</a>
                                     <a href="https://scrs.in/conference/CIMA2026/page/CIMA_2026_Program_Schedule" target="_blank" rel="noopener">Schedule</a>
                                 </span>
                             </div>
                             <div class="publication-item">
                                 <span class="publication-source">API World</span>
-                                <span>Speaker (Santa Clara, CA) <a href="https://apiworld.co/speakers/" target="_blank" rel="noopener">Speakers</a></span>
+                                <span>Speaker (Santa Clara, CA)
+                                    <a href="https://apiworld.co/speakers" target="_blank" rel="noopener">Speakers</a>
+                                    <a href="https://apiworld.co/speakers/" target="_blank" rel="noopener">Speakers 2</a>
+                                </span>
                             </div>
                             <div class="publication-item">
                                 <span class="publication-source">CloudX</span>
@@ -442,7 +499,8 @@ class AuthorModule {
                             <div class="publication-item">
                                 <span class="publication-source">MITechCon</span>
                                 <span>Speaker
-                                    <a href="https://mitechcon.net/speakers/sriramprabhu-rajendran/" target="_blank" rel="noopener">Profile</a>
+                                    <a href="https://www.mitechcon.net/speakers/sriramprabhu-rajendran/" target="_blank" rel="noopener">Profile</a>
+                                    <a href="https://www.mitechcon.org/speakers/" target="_blank" rel="noopener">Speakers</a>
                                     <a href="https://mitechcon.events/MITechCon2026#/speakers" target="_blank" rel="noopener">Directory</a>
                                 </span>
                             </div>
@@ -497,7 +555,7 @@ class AuthorModule {
                             </div>
                             <div class="publication-item">
                                 <span class="publication-source">ValiantCEO</span>
-                                <a href="https://valiantceo.com/sriramprabhu-rajendran-insights-from-an-independent-researcher-thought-leader/" target="_blank" rel="noopener">Insights from an Independent Researcher and Thought Leader</a>
+                                <a href="https://valiantceo.com/sriramprabhu-rajendran-insights-from-an-independent-researcher-thought-leader" target="_blank" rel="noopener">Insights from an Independent Researcher and Thought Leader</a>
                             </div>
                         </div>
                     </div>
@@ -540,27 +598,39 @@ class AuthorModule {
                         <div class="publications-list">
                             <div class="publication-item">
                                 <span class="publication-source">Globee AI</span>
-                                <span>Judge <a href="https://globeeawards.com/2026-judges-artificial-intelligence/" target="_blank" rel="noopener">View</a> <a href="https://credential.globeeawards.com/c1930da5-d4d2-4d21-bcab-3d393b8ad792#acc.01CRyJ7X" target="_blank" rel="noopener">Credential</a></span>
+                                <span>Judge <a href="https://globeeawards.com/2026-judges-artificial-intelligence" target="_blank" rel="noopener">View</a> <a href="https://globeeawards.com/2026-judges-artificial-intelligence/" target="_blank" rel="noopener">View 2</a> <a href="https://credential.globeeawards.com/c1930da5-d4d2-4d21-bcab-3d393b8ad792#acc.01CRyJ7X" target="_blank" rel="noopener">Credential</a></span>
                             </div>
                             <div class="publication-item">
                                 <span class="publication-source">Globee Excellence</span>
-                                <span>Judge <a href="https://globeeawards.com/2026-judges-excellence-awards/" target="_blank" rel="noopener">View</a> <a href="https://credential.globeeawards.com/f1aed24e-a05d-43f3-b570-b63329c34f87#acc.gZGReXmv" target="_blank" rel="noopener">Credential</a></span>
+                                <span>Judge <a href="https://globeeawards.com/2026-judges-excellence-awards" target="_blank" rel="noopener">View</a> <a href="https://globeeawards.com/2026-judges-excellence-awards/" target="_blank" rel="noopener">View 2</a> <a href="https://credential.globeeawards.com/f1aed24e-a05d-43f3-b570-b63329c34f87#acc.gZGReXmv" target="_blank" rel="noopener">Credential</a></span>
                             </div>
                             <div class="publication-item">
                                 <span class="publication-source">Globee Achievement</span>
-                                <span>Judge <a href="https://globeeawards.com/2026-judges-achievement-awards/" target="_blank" rel="noopener">View</a> <a href="https://credential.globeeawards.com/af705e86-b4e6-42d3-b984-450cc0759d26#acc.Ev0bqfCZ" target="_blank" rel="noopener">Credential</a></span>
+                                <span>Judge <a href="https://globeeawards.com/2026-judges-achievement-awards" target="_blank" rel="noopener">View</a> <a href="https://globeeawards.com/2026-judges-achievement-awards/" target="_blank" rel="noopener">View 2</a> <a href="https://credential.globeeawards.com/af705e86-b4e6-42d3-b984-450cc0759d26#acc.Ev0bqfCZ" target="_blank" rel="noopener">Credential</a></span>
                             </div>
                         </div>
                         <h5>Technical Program Committees</h5>
                         <div class="publications-list">
                             <div class="publication-item">
-                                <span><strong>BDAA International Committee</strong> <a href="https://bdaa-conference.com/" target="_blank" rel="noopener">Visit</a></span>
+                                <span><strong>BDAA International Committee</strong> <a href="https://bdaa-conference.com" target="_blank" rel="noopener">Visit</a> <a href="https://bdaa-conference.com/" target="_blank" rel="noopener">Visit 2</a></span>
                             </div>
                             <div class="publication-item">
-                                <span><strong>IEEE World AI IoT Congress</strong> <a href="https://worldaiiotcongress.org/technical-committee/" target="_blank" rel="noopener">Visit</a></span>
+                                <span><strong>IEEE World AI IoT Congress</strong> <a href="https://worldaiiotcongress.org/technical-committee" target="_blank" rel="noopener">Visit</a> <a href="https://worldaiiotcongress.org/technical-committee/" target="_blank" rel="noopener">Visit 2</a></span>
                             </div>
                             <div class="publication-item">
-                                <span><strong>2AI Conference Committee</strong> <a href="https://2ai-conference.org/committee/organizingCommitte" target="_blank" rel="noopener">Visit</a></span>
+                                <span><strong>2AI Conference Committee</strong> <a href="https://2ai-conference.org/committee/OrganizingCommitte" target="_blank" rel="noopener">Visit</a></span>
+                            </div>
+                            <div class="publication-item">
+                                <span><strong>CITIC</strong> <a href="https://difcon.mmu.edu.my/citic.html" target="_blank" rel="noopener">Visit</a></span>
+                            </div>
+                            <div class="publication-item">
+                                <span><strong>CICBA</strong> <a href="https://www.cicba.in/committee.html" target="_blank" rel="noopener">Visit</a></span>
+                            </div>
+                            <div class="publication-item">
+                                <span><strong>IEEE UEMCON</strong> <a href="https://ieee-uemcon.org/technical-program-committee/" target="_blank" rel="noopener">Visit</a></span>
+                            </div>
+                            <div class="publication-item">
+                                <span><strong>ICACIT</strong> <a href="https://icacit.org.pe/symposium/reviews/" target="_blank" rel="noopener">Visit</a></span>
                             </div>
                         </div>
                     </div>
