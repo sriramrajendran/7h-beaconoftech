@@ -272,74 +272,130 @@ class AuthorModule {
     }
 
     generatePublicationsSection() {
-        const linkBtn = (url, label) => `<a href="${url}" target="_blank" rel="noopener" style="display:inline-block;padding:0.2rem 0.6rem;border:1px solid #e2e8f0;border-radius:0.375rem;font-size:0.8rem;font-weight:500;color:#3b82f6;text-decoration:none;margin:0.15rem 0.25rem 0.15rem 0;transition:all 0.2s ease;">${label}</a>`;
-        const badge = (label) => `<span style="display:inline-block;background:#dbeafe;color:#1e40af;padding:0.35rem 0.75rem;border-radius:0.375rem;font-size:0.8rem;font-weight:600;margin:1rem 0 0.5rem;">${label}</span>`;
-        const item = (content) => `<div style="padding:0.7rem 0;border-bottom:1px solid #f1f5f9;font-size:0.9rem;line-height:1.6;">${content}</div>`;
-
         return `
             <div class="author-section">
                 <h4>📄 Patent</h4>
-                ${item(`<strong>US11704637B2:</strong> System and method to accept third-party data
-                    ${linkBtn('https://patents.google.com/patent/US11704637B2/en', 'View Patent')}
-                    ${linkBtn('https://www.goveda.com/patent/US-11704637-B2', 'Goveda')}
-                    ${linkBtn('https://dallasinnovates.com/dallas-invents-158-patents-granted-for-week-of-july-18/', 'Dallas Innovates')}`)}
+                <div class="publications-list">
+                    <div class="publication-item">
+                        <span class="publication-source">US Patent</span>
+                        <span><strong>US11704637B2:</strong> System and method to accept third-party data
+                            <a href="https://patents.google.com/patent/US11704637B2/en" target="_blank" rel="noopener">View Patent</a>
+                            <a href="https://www.goveda.com/patent/US-11704637-B2" target="_blank" rel="noopener">Goveda</a>
+                            <a href="https://dallasinnovates.com/dallas-invents-158-patents-granted-for-week-of-july-18/" target="_blank" rel="noopener">Dallas Innovates</a>
+                        </span>
+                    </div>
+                </div>
             </div>
             <div class="author-section">
                 <h4>📄 Research and Publications</h4>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:1.5rem;">
-                    <div>
-                        <h5 style="font-size:0.95rem;font-weight:600;border-bottom:2px solid #e2e8f0;padding-bottom:0.5rem;margin-bottom:0.5rem;">Scholarly Articles - Published</h5>
-                        ${item(`<strong>IEEE ICCBI 2026:</strong> Behavioral-Centric AI: Enhancing Cognitive Efficiency in High-Stakes Obligation Management (Dubai)
-                            ${linkBtn('https://www.iccbi.com/schedule.html', 'View')}`)}
-                        ${item(`<strong>IEEE AIS 2026:</strong> Coordinating Specialized AI Agents for Compliance-Preserving Migration (San Antonio, TX)
-                            ${linkBtn('https://ais-conference.org/2026/program_details.php', 'View')}`)}
-                        ${item(`<strong>IEEE CE2CT 2026:</strong> Decoupling Complex Domain Logic: A Bounded Context Approach (India)`)}
-                        ${item(`<strong>International Journal of Engineering (IJE-526):</strong> Optimizing Kafka-Based Event Streams for Low-Latency Financial Transaction Processing
-                            ${linkBtn('https://www.cscjournals.org/library/manuscriptinfo.php?mc=IJE-526', 'View')}`)}
-                        ${item(`<strong>IJCA:</strong> Event-Driven Architecture Patterns for Real-Time Financial Risk Assessment
-                            ${linkBtn('https://www.ijcaonline.org/archives/volume187/number102/real-time-resilience-scaling-financial-risk-assessment-with-event-driven-cloud-architectures/', 'View')}`)}
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h5>Scholarly Articles - Published</h5>
+                        <div class="publications-list">
+                            <div class="publication-item">
+                                <span class="publication-source">IEEE ICCBI</span>
+                                <span>Behavioral-Centric AI: Enhancing Cognitive Efficiency in High-Stakes Obligation Management (Dubai) <a href="https://www.iccbi.com/schedule.html" target="_blank" rel="noopener">View</a></span>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">IEEE AIS</span>
+                                <span>Coordinating Specialized AI Agents for Compliance-Preserving Migration (San Antonio, TX) <a href="https://ais-conference.org/2026/program_details.php" target="_blank" rel="noopener">View</a></span>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">IEEE CE2CT</span>
+                                <span>Decoupling Complex Domain Logic: A Bounded Context Approach (India)</span>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">IJE</span>
+                                <span>Optimizing Kafka-Based Event Streams for Low-Latency Financial Transaction Processing <a href="https://www.cscjournals.org/library/manuscriptinfo.php?mc=IJE-526" target="_blank" rel="noopener">View</a></span>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">IJCA</span>
+                                <span>Event-Driven Architecture Patterns for Real-Time Financial Risk Assessment <a href="https://www.ijcaonline.org/archives/volume187/number102/real-time-resilience-scaling-financial-risk-assessment-with-event-driven-cloud-architectures/" target="_blank" rel="noopener">View</a></span>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <h5 style="font-size:0.95rem;font-weight:600;border-bottom:2px solid #e2e8f0;padding-bottom:0.5rem;margin-bottom:0.5rem;">Research Profiles</h5>
-                        ${item(`${linkBtn('https://scholar.google.com/citations?user=OGYePQEAAAAJ', 'Google Scholar')}
-                            ${linkBtn('https://www.researchgate.net/profile/Sriramprabhu-Rajendran', 'ResearchGate')}
-                            ${linkBtn('https://orcid.org/0009-0009-6137-0877', 'ORCID')}`)}
-
-                        <h5 style="font-size:0.95rem;font-weight:600;border-bottom:2px solid #e2e8f0;padding-bottom:0.5rem;margin:1rem 0 0.5rem;">Peer Review</h5>
-                        ${item(`<strong>100+ papers reviewed</strong> for IEEE and various international conferences across 30+ venues`)}
+                    <div class="skill-category">
+                        <h5>Research Profiles</h5>
+                        <div class="conference-tags">
+                            <a href="https://scholar.google.com/citations?user=OGYePQEAAAAJ" target="_blank" rel="noopener" class="conference-tag">Google Scholar</a>
+                            <a href="https://www.researchgate.net/profile/Sriramprabhu-Rajendran" target="_blank" rel="noopener" class="conference-tag">ResearchGate</a>
+                            <a href="https://orcid.org/0009-0009-6137-0877" target="_blank" rel="noopener" class="conference-tag">ORCID</a>
+                        </div>
+                        <h5>Peer Review</h5>
+                        <ul class="achievement-list">
+                            <li><strong>100+ papers reviewed</strong> for IEEE and various international conferences across 30+ venues</li>
+                        </ul>
                     </div>
                 </div>
             </div>
             <div class="author-section">
                 <h4>📝 Technical Articles</h4>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:1.5rem;">
-                    <div>
-                        <h5 style="font-size:0.95rem;font-weight:600;border-bottom:2px solid #e2e8f0;padding-bottom:0.5rem;margin-bottom:0.5rem;">Peer Reviewed Articles</h5>
-                        ${badge('LeadDev')}
-                        ${item(`<a href="https://leaddev.com/reporting/its-time-to-rethink-how-we-measure-engineering-productivity" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;">It is Time to Rethink How We Measure Engineering Productivity</a>`)}
-                        ${item(`<a href="https://leaddev.com/community/sriramprabhu-rajendran" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;">Author Profile - LeadDev</a>`)}
-                        ${badge('DZone')}
-                        ${item(`<a href="https://dzone.com/articles/data-contracts-circuit-breaker" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;">Data Contracts as "Circuit Breaker" for Model Reliability</a>`)}
-                        ${badge('Dataversity')}
-                        ${item(`<a href="https://www.dataversity.net/articles/the-context-poisoning-crisis-why-metadata-is-the-new-security-perimeter/" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;">The Context Poisoning Crisis: Why Metadata Is the New Security Perimeter</a>`)}
-                        ${badge('HackerNoon')}
-                        ${item(`<a href="https://hackernoon.com/the-builders-dilemma-balancing-creativity-and-consistency-in-agentic-workflows" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;">The Builder Dilemma: Balancing Creativity and Consistency in Agentic Workflows</a>`)}
-                        ${item(`<a href="https://hackernoon.com/your-ai-generated-code-tests-might-be-lying-to-you" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;">Your AI-Generated Code Tests Might Be Lying to You</a>`)}
-                        ${item(`<a href="https://hackernoon.com/cut-inter-agent-latency-by-80percent-with-grpc-streaming" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;">Cut Inter-Agent Latency by 80% with gRPC Streaming</a>`)}
-                        ${badge('BizTech Foundation')}
-                        ${item(`<a href="https://biztechfoundation.org/2026/04/04/agents-over-oracles-moving-enterprise-ai-from-conversation-to-coordination/" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;">Agents Over Oracles: Moving Enterprise AI from Conversation to Coordination</a>`)}
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h5>Peer Reviewed Articles</h5>
+                        <div class="publications-list">
+                            <div class="publication-item">
+                                <span class="publication-source">LeadDev</span>
+                                <a href="https://leaddev.com/reporting/its-time-to-rethink-how-we-measure-engineering-productivity" target="_blank" rel="noopener">It is Time to Rethink How We Measure Engineering Productivity</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">LeadDev</span>
+                                <a href="https://leaddev.com/community/sriramprabhu-rajendran" target="_blank" rel="noopener">Author Profile</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">DZone</span>
+                                <a href="https://dzone.com/articles/data-contracts-circuit-breaker" target="_blank" rel="noopener">Data Contracts as "Circuit Breaker" for Model Reliability</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">Dataversity</span>
+                                <a href="https://www.dataversity.net/articles/the-context-poisoning-crisis-why-metadata-is-the-new-security-perimeter/" target="_blank" rel="noopener">The Context Poisoning Crisis: Why Metadata Is the New Security Perimeter</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">HackerNoon</span>
+                                <a href="https://hackernoon.com/the-builders-dilemma-balancing-creativity-and-consistency-in-agentic-workflows" target="_blank" rel="noopener">The Builder Dilemma: Balancing Creativity and Consistency</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">HackerNoon</span>
+                                <a href="https://hackernoon.com/your-ai-generated-code-tests-might-be-lying-to-you" target="_blank" rel="noopener">Your AI-Generated Code Tests Might Be Lying to You</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">HackerNoon</span>
+                                <a href="https://hackernoon.com/cut-inter-agent-latency-by-80percent-with-grpc-streaming" target="_blank" rel="noopener">Cut Inter-Agent Latency by 80% with gRPC Streaming</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">BizTech</span>
+                                <a href="https://biztechfoundation.org/2026/04/04/agents-over-oracles-moving-enterprise-ai-from-conversation-to-coordination/" target="_blank" rel="noopener">Agents Over Oracles: Moving Enterprise AI from Conversation to Coordination</a>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <h5 style="font-size:0.95rem;font-weight:600;border-bottom:2px solid #e2e8f0;padding-bottom:0.5rem;margin-bottom:0.5rem;">Blogs</h5>
-                        ${badge('Dev.to')}
-                        ${item(`<a href="https://dev.to/rsri/mutation-testing-the-missing-safety-net-for-ai-generated-code-54kn" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;">Mutation Testing: The Missing Safety Net for AI-Generated Code</a>`)}
-                        ${item(`<a href="https://dev.to/rsri/why-your-next-enterprise-chatbot-should-write-its-own-graphql-queries-4inh" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;">Why Your Next Enterprise Chatbot Should Write Its Own GraphQL Queries</a>`)}
-                        ${item(`<a href="https://dev.to/rsri/beyond-the-single-prompt-orchestrating-parallel-context-isolation-pci-with-claude-code-f58" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;">Beyond the Single Prompt: Orchestrating Parallel Context Isolation with Claude Code</a>`)}
-                        ${item(`<a href="https://dev.to/rsri/why-story-points-dont-work-in-the-ai-era-and-what-should-take-their-place-instead-5a27" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;">Why Story Points Do Not Work in the AI Era</a>`)}
-                        ${badge('Medium')}
-                        ${item(`<a href="https://medium.com/@rajen.sriram/evolution-of-story-points-the-construction-to-curation-shift-97b06b9114fc" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;">Evolution of Story Points: The Construction to Curation Shift</a>`)}
-                        ${badge('BeaconOfTech')}
-                        ${item(`<a href="https://beaconoftech.com/#author" target="_blank" rel="noopener" style="color:#1e293b;text-decoration:none;">Personal Technical Blog - Author Page</a>`)}
+                    <div class="skill-category">
+                        <h5>Blogs</h5>
+                        <div class="publications-list">
+                            <div class="publication-item">
+                                <span class="publication-source">Dev.to</span>
+                                <a href="https://dev.to/rsri/mutation-testing-the-missing-safety-net-for-ai-generated-code-54kn" target="_blank" rel="noopener">Mutation Testing: The Missing Safety Net for AI-Generated Code</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">Dev.to</span>
+                                <a href="https://dev.to/rsri/why-your-next-enterprise-chatbot-should-write-its-own-graphql-queries-4inh" target="_blank" rel="noopener">Why Your Next Enterprise Chatbot Should Write Its Own GraphQL Queries</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">Dev.to</span>
+                                <a href="https://dev.to/rsri/beyond-the-single-prompt-orchestrating-parallel-context-isolation-pci-with-claude-code-f58" target="_blank" rel="noopener">Beyond the Single Prompt: Orchestrating Parallel Context Isolation</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">Dev.to</span>
+                                <a href="https://dev.to/rsri/why-story-points-dont-work-in-the-ai-era-and-what-should-take-their-place-instead-5a27" target="_blank" rel="noopener">Why Story Points Do Not Work in the AI Era</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">Medium</span>
+                                <a href="https://medium.com/@rajen.sriram/evolution-of-story-points-the-construction-to-curation-shift-97b06b9114fc" target="_blank" rel="noopener">Evolution of Story Points: The Construction to Curation Shift</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">BeaconOfTech</span>
+                                <a href="https://beaconoftech.com/#author" target="_blank" rel="noopener">Personal Technical Blog - Author Page</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -347,58 +403,103 @@ class AuthorModule {
     }
 
     generateSpeakingSection() {
-        const linkBtn = (url, label) => `<a href="${url}" target="_blank" rel="noopener" style="display:inline-block;padding:0.2rem 0.6rem;border:1px solid #e2e8f0;border-radius:0.375rem;font-size:0.8rem;font-weight:500;color:#3b82f6;text-decoration:none;margin:0.15rem 0.25rem 0.15rem 0;transition:all 0.2s ease;">${label}</a>`;
-        const item = (content) => `<div style="padding:0.7rem 0;border-bottom:1px solid #f1f5f9;font-size:0.9rem;line-height:1.6;">${content}</div>`;
-
         return `
             <div class="author-section">
                 <h4>🎤 Speaking and Media</h4>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:1.5rem;">
-                    <div>
-                        <h5 style="font-size:0.95rem;font-weight:600;border-bottom:2px solid #e2e8f0;padding-bottom:0.5rem;margin-bottom:0.5rem;">Conference Speaking</h5>
-                        ${item(`<strong>API Days, NY:</strong> Agent-Ready Orchestration - Engineering APIs for the Execution Layer
-                            ${linkBtn('https://apidays.global/archive/2025/new-york-d3c79', 'View Event')}
-                            ${linkBtn('https://www.youtube.com/watch?v=IK5hQhuRM0E', 'Watch')}`)}
-                        ${item(`<strong>CIMA 2026, India:</strong> Keynote Speaker
-                            ${linkBtn('https://www.scrs.in/conference/CIMA2026/speaker/talk/22986', 'View Talk')}
-                            ${linkBtn('https://scrs.in/conference/CIMA2026/page/CIMA_2026_Program_Schedule', 'Schedule')}`)}
-                        ${item(`<strong>API World, Santa Clara, CA:</strong> Speaker
-                            ${linkBtn('https://apiworld.co/speakers/', 'View Speakers')}`)}
-                        ${item(`<strong>CloudX Conference, Santa Clara, CA:</strong> Speaker
-                            ${linkBtn('https://cloudxconf.com/speakers/', 'View Speakers')}`)}
-                        ${item(`<strong>F50 Physical AI Summit, Dallas:</strong> Featured Speaker
-                            ${linkBtn('https://physical.f50.ai/dallas', 'View Event')}
-                            ${linkBtn('https://physical.f50.ai/schedule', 'Schedule')}`)}
-                        ${item(`<strong>MITechCon 2026:</strong> Speaker
-                            ${linkBtn('https://mitechcon.net/speakers/sriramprabhu-rajendran/', 'Speaker Profile')}
-                            ${linkBtn('https://mitechcon.events/MITechCon2026#/speakers', 'Directory')}`)}
-                        ${item(`<strong>MCNA 2026, San Antonio:</strong> Speaker
-                            ${linkBtn('https://mcna-conference.org/2026/program.php', 'Program')}`)}
-                        ${item(`<strong>IEEE CE2CT 2026, India:</strong> Presenter
-                            ${linkBtn('https://ce2ct.gehu.ac.in/download/Final-Program-Schedule_CE2CT_2026_July%202-4-2026.pdf', 'Schedule')}`)}
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h5>Conference Speaking</h5>
+                        <div class="publications-list">
+                            <div class="publication-item">
+                                <span class="publication-source">API Days</span>
+                                <span>Agent-Ready Orchestration - Engineering APIs for the Execution Layer (NY)
+                                    <a href="https://apidays.global/archive/2025/new-york-d3c79" target="_blank" rel="noopener">Event</a>
+                                    <a href="https://www.youtube.com/watch?v=IK5hQhuRM0E" target="_blank" rel="noopener">Watch</a>
+                                </span>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">CIMA 2026</span>
+                                <span>Keynote Speaker (India)
+                                    <a href="https://www.scrs.in/conference/CIMA2026/speaker/talk/22986" target="_blank" rel="noopener">Talk</a>
+                                    <a href="https://scrs.in/conference/CIMA2026/page/CIMA_2026_Program_Schedule" target="_blank" rel="noopener">Schedule</a>
+                                </span>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">API World</span>
+                                <span>Speaker (Santa Clara, CA) <a href="https://apiworld.co/speakers/" target="_blank" rel="noopener">Speakers</a></span>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">CloudX</span>
+                                <span>Speaker (Santa Clara, CA) <a href="https://cloudxconf.com/speakers/" target="_blank" rel="noopener">Speakers</a></span>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">F50 AI Summit</span>
+                                <span>Featured Speaker (Dallas)
+                                    <a href="https://physical.f50.ai/dallas" target="_blank" rel="noopener">Event</a>
+                                    <a href="https://physical.f50.ai/schedule" target="_blank" rel="noopener">Schedule</a>
+                                </span>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">MITechCon</span>
+                                <span>Speaker
+                                    <a href="https://mitechcon.net/speakers/sriramprabhu-rajendran/" target="_blank" rel="noopener">Profile</a>
+                                    <a href="https://mitechcon.events/MITechCon2026#/speakers" target="_blank" rel="noopener">Directory</a>
+                                </span>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">MCNA 2026</span>
+                                <span>Speaker (San Antonio) <a href="https://mcna-conference.org/2026/program.php" target="_blank" rel="noopener">Program</a></span>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">IEEE CE2CT</span>
+                                <span>Presenter (India) <a href="https://ce2ct.gehu.ac.in/download/Final-Program-Schedule_CE2CT_2026_July%202-4-2026.pdf" target="_blank" rel="noopener">Schedule</a></span>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <h5 style="font-size:0.95rem;font-weight:600;border-bottom:2px solid #e2e8f0;padding-bottom:0.5rem;margin-bottom:0.5rem;">Media Features and Interviews</h5>
-                        ${item(`<strong>CDO Magazine:</strong> Agentic AI Governance: 3 Ways Data Governance Must Evolve for Autonomous AI
-                            ${linkBtn('https://www.cdomagazine.tech/opinion-analysis/agentic-ai-governance-3-ways-data-governance-must-evolve-for-autonomous-ai', 'Read')}`)}
-                        ${item(`<strong>TechTarget:</strong> Hybrid Architecture as a Permanent Enterprise Model
-                            ${linkBtn('https://www.techtarget.com/searcherp/feature/Hybrid-architecture-as-a-permanent-enterprise-model', 'Read')}`)}
-                        ${item(`<strong>Dice:</strong> Speed vs. Risk: Experts Weigh In on Using AI Coding Assistants
-                            ${linkBtn('https://www.dice.com/career-advice/speed-vs.-risk-experts-weigh-in-on-using-ai-coding-assistants', 'Read')}`)}
-                        ${item(`<strong>The Digital Project Manager:</strong> How Leaders Are Helping Project Managers Level Up
-                            ${linkBtn('https://thedigitalprojectmanager.com/career/how-leaders-are-helping-project-managers-level-up/', 'Read')}`)}
-                        ${item(`<strong>FinTech Bloom:</strong> Architecture of Resilience: Building Compliant Open API Ecosystems
-                            ${linkBtn('https://fintechbloom.com/architecture-of-resilience-building-compliant-open-api-ecosystems-for-regulated-industries/', 'Read')}`)}
-                        ${item(`<strong>She Rises Studios:</strong> Resilient Leadership: The Case for Self-Healing in the Next Generation of Systems
-                            ${linkBtn('https://www.sherisesstudios.com/post/resilient-leadership-the-case-for-self-healing-in-the-next-generation-of-systems-1', 'Read')}`)}
-                        ${item(`<strong>Authority Magazine:</strong> AI Beyond Writing: Practical Everyday Use Cases for AI
-                            ${linkBtn('https://medium.com/authority-magazine/ai-beyond-writing-sriramprabhu-rajendran-on-practical-everyday-use-cases-for-ai-2b33e1f51c07', 'Read')}`)}
-                        ${item(`<strong>Authority Magazine:</strong> Guardians of AI: How AI Leaders Are Keeping AI Safe and Ethical
-                            ${linkBtn('https://medium.com/authority-magazine/guardians-of-ai-sriramprabhu-rajendran-on-how-ai-leaders-are-keeping-ai-safe-ethical-cea3c043b358', 'Read')}`)}
-                        ${item(`<strong>Authority Magazine:</strong> Creating a Culture of Courage
-                            ${linkBtn('https://medium.com/authority-magazine/creating-a-culture-of-courage-sriramprabhu-rajendran-independent-researcher-and-industry-thought-9e9d6df296a3', 'Read')}`)}
-                        ${item(`<strong>ValiantCEO:</strong> Insights from an Independent Researcher and Thought Leader
-                            ${linkBtn('https://valiantceo.com/sriramprabhu-rajendran-insights-from-an-independent-researcher-thought-leader/', 'Read')}`)}
+                    <div class="skill-category">
+                        <h5>Media Features and Interviews</h5>
+                        <div class="publications-list">
+                            <div class="publication-item">
+                                <span class="publication-source">CDO Magazine</span>
+                                <a href="https://www.cdomagazine.tech/opinion-analysis/agentic-ai-governance-3-ways-data-governance-must-evolve-for-autonomous-ai" target="_blank" rel="noopener">Agentic AI Governance: 3 Ways Data Governance Must Evolve</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">TechTarget</span>
+                                <a href="https://www.techtarget.com/searcherp/feature/Hybrid-architecture-as-a-permanent-enterprise-model" target="_blank" rel="noopener">Hybrid Architecture as a Permanent Enterprise Model</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">Dice</span>
+                                <a href="https://www.dice.com/career-advice/speed-vs.-risk-experts-weigh-in-on-using-ai-coding-assistants" target="_blank" rel="noopener">Speed vs. Risk: Experts Weigh In on Using AI Coding Assistants</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">DPM</span>
+                                <a href="https://thedigitalprojectmanager.com/career/how-leaders-are-helping-project-managers-level-up/" target="_blank" rel="noopener">How Leaders Are Helping Project Managers Level Up</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">FinTech Bloom</span>
+                                <a href="https://fintechbloom.com/architecture-of-resilience-building-compliant-open-api-ecosystems-for-regulated-industries/" target="_blank" rel="noopener">Architecture of Resilience: Building Compliant Open API Ecosystems</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">She Rises</span>
+                                <a href="https://www.sherisesstudios.com/post/resilient-leadership-the-case-for-self-healing-in-the-next-generation-of-systems-1" target="_blank" rel="noopener">Resilient Leadership: The Case for Self-Healing Systems</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">Authority Mag</span>
+                                <a href="https://medium.com/authority-magazine/ai-beyond-writing-sriramprabhu-rajendran-on-practical-everyday-use-cases-for-ai-2b33e1f51c07" target="_blank" rel="noopener">AI Beyond Writing: Practical Everyday Use Cases for AI</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">Authority Mag</span>
+                                <a href="https://medium.com/authority-magazine/guardians-of-ai-sriramprabhu-rajendran-on-how-ai-leaders-are-keeping-ai-safe-ethical-cea3c043b358" target="_blank" rel="noopener">Guardians of AI: How AI Leaders Are Keeping AI Safe</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">Authority Mag</span>
+                                <a href="https://medium.com/authority-magazine/creating-a-culture-of-courage-sriramprabhu-rajendran-independent-researcher-and-industry-thought-9e9d6df296a3" target="_blank" rel="noopener">Creating a Culture of Courage</a>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">ValiantCEO</span>
+                                <a href="https://valiantceo.com/sriramprabhu-rajendran-insights-from-an-independent-researcher-thought-leader/" target="_blank" rel="noopener">Insights from an Independent Researcher and Thought Leader</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -410,37 +511,58 @@ class AuthorModule {
     }
 
     generateJudgingSection() {
-        const linkBtn = (url, label) => `<a href="${url}" target="_blank" rel="noopener" style="display:inline-block;padding:0.2rem 0.6rem;border:1px solid #e2e8f0;border-radius:0.375rem;font-size:0.8rem;font-weight:500;color:#3b82f6;text-decoration:none;margin:0.15rem 0.25rem 0.15rem 0;transition:all 0.2s ease;">${label}</a>`;
-        const item = (content) => `<div style="padding:0.7rem 0;border-bottom:1px solid #f1f5f9;font-size:0.9rem;line-height:1.6;">${content}</div>`;
-
         return `
             <div class="author-section">
                 <h4>⚖️ Judging and Technical Committees</h4>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:1.5rem;">
-                    <div>
-                        <h5 style="font-size:0.95rem;font-weight:600;border-bottom:2px solid #e2e8f0;padding-bottom:0.5rem;margin-bottom:0.5rem;">Hackathon and Capstone Judging</h5>
-                        ${item(`UCLA (LA Hacks) - Hackathon Judge ${linkBtn('https://la-hacks-2025.devpost.com/', 'View')}`)}
-                        ${item(`Georgia Tech - Capstone Projects Judge`)}
-                        ${item(`Kennesaw State University - Capstone Projects Judge ${linkBtn('https://campus.kennesaw.edu/colleges-departments/ccse/events/computing-showcase/sp26-cday-program.php', 'View')}`)}
-                        ${item(`University of Kansas (HackKU) - Hackathon Judge`)}
-                        ${item(`${linkBtn('https://devpost.com/sriramprabhu-rajendran/challenges', 'Devpost Judging Portfolio')}`)}
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h5>Hackathon and Capstone Judging</h5>
+                        <div class="publications-list">
+                            <div class="publication-item">
+                                <span>UCLA (LA Hacks) - Hackathon Judge <a href="https://la-hacks-2025.devpost.com/" target="_blank" rel="noopener">View</a></span>
+                            </div>
+                            <div class="publication-item">
+                                <span>Georgia Tech - Capstone Projects Judge</span>
+                            </div>
+                            <div class="publication-item">
+                                <span>Kennesaw State University - Capstone Projects Judge <a href="https://campus.kennesaw.edu/colleges-departments/ccse/events/computing-showcase/sp26-cday-program.php" target="_blank" rel="noopener">View</a></span>
+                            </div>
+                            <div class="publication-item">
+                                <span>University of Kansas (HackKU) - Hackathon Judge</span>
+                            </div>
+                            <div class="publication-item">
+                                <a href="https://devpost.com/sriramprabhu-rajendran/challenges" target="_blank" rel="noopener">Devpost Judging Portfolio</a>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <h5 style="font-size:0.95rem;font-weight:600;border-bottom:2px solid #e2e8f0;padding-bottom:0.5rem;margin-bottom:0.5rem;">Industry Awards Judging</h5>
-                        ${item(`<strong>Globee Awards - Artificial Intelligence:</strong> Judge
-                            ${linkBtn('https://globeeawards.com/2026-judges-artificial-intelligence/', 'View')}
-                            ${linkBtn('https://credential.globeeawards.com/c1930da5-d4d2-4d21-bcab-3d393b8ad792#acc.01CRyJ7X', 'Credential')}`)}
-                        ${item(`<strong>Globee Awards - Excellence:</strong> Judge
-                            ${linkBtn('https://globeeawards.com/2026-judges-excellence-awards/', 'View')}
-                            ${linkBtn('https://credential.globeeawards.com/f1aed24e-a05d-43f3-b570-b63329c34f87#acc.gZGReXmv', 'Credential')}`)}
-                        ${item(`<strong>Globee Awards - Achievement:</strong> Judge
-                            ${linkBtn('https://globeeawards.com/2026-judges-achievement-awards/', 'View')}
-                            ${linkBtn('https://credential.globeeawards.com/af705e86-b4e6-42d3-b984-450cc0759d26#acc.Ev0bqfCZ', 'Credential')}`)}
-
-                        <h5 style="font-size:0.95rem;font-weight:600;border-bottom:2px solid #e2e8f0;padding-bottom:0.5rem;margin:1rem 0 0.5rem;">Technical Program Committees</h5>
-                        ${item(`<strong>BDAA International Committee</strong> ${linkBtn('https://bdaa-conference.com/', 'Visit')}`)}
-                        ${item(`<strong>IEEE World AI IoT Congress</strong> ${linkBtn('https://worldaiiotcongress.org/technical-committee/', 'Visit')}`)}
-                        ${item(`<strong>2AI Conference Committee</strong> ${linkBtn('https://2ai-conference.org/committee/organizingCommitte', 'Visit')}`)}
+                    <div class="skill-category">
+                        <h5>Industry Awards Judging</h5>
+                        <div class="publications-list">
+                            <div class="publication-item">
+                                <span class="publication-source">Globee AI</span>
+                                <span>Judge <a href="https://globeeawards.com/2026-judges-artificial-intelligence/" target="_blank" rel="noopener">View</a> <a href="https://credential.globeeawards.com/c1930da5-d4d2-4d21-bcab-3d393b8ad792#acc.01CRyJ7X" target="_blank" rel="noopener">Credential</a></span>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">Globee Excellence</span>
+                                <span>Judge <a href="https://globeeawards.com/2026-judges-excellence-awards/" target="_blank" rel="noopener">View</a> <a href="https://credential.globeeawards.com/f1aed24e-a05d-43f3-b570-b63329c34f87#acc.gZGReXmv" target="_blank" rel="noopener">Credential</a></span>
+                            </div>
+                            <div class="publication-item">
+                                <span class="publication-source">Globee Achievement</span>
+                                <span>Judge <a href="https://globeeawards.com/2026-judges-achievement-awards/" target="_blank" rel="noopener">View</a> <a href="https://credential.globeeawards.com/af705e86-b4e6-42d3-b984-450cc0759d26#acc.Ev0bqfCZ" target="_blank" rel="noopener">Credential</a></span>
+                            </div>
+                        </div>
+                        <h5>Technical Program Committees</h5>
+                        <div class="publications-list">
+                            <div class="publication-item">
+                                <span><strong>BDAA International Committee</strong> <a href="https://bdaa-conference.com/" target="_blank" rel="noopener">Visit</a></span>
+                            </div>
+                            <div class="publication-item">
+                                <span><strong>IEEE World AI IoT Congress</strong> <a href="https://worldaiiotcongress.org/technical-committee/" target="_blank" rel="noopener">Visit</a></span>
+                            </div>
+                            <div class="publication-item">
+                                <span><strong>2AI Conference Committee</strong> <a href="https://2ai-conference.org/committee/organizingCommitte" target="_blank" rel="noopener">Visit</a></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -448,31 +570,36 @@ class AuthorModule {
     }
 
     generateMembershipsSection() {
-        const linkBtn = (url, label) => `<a href="${url}" target="_blank" rel="noopener" style="display:inline-block;padding:0.2rem 0.6rem;border:1px solid #e2e8f0;border-radius:0.375rem;font-size:0.8rem;font-weight:500;color:#3b82f6;text-decoration:none;margin:0.15rem 0.25rem 0.15rem 0;transition:all 0.2s ease;">${label}</a>`;
-        const item = (content) => `<div style="padding:0.7rem 0;border-bottom:1px solid #f1f5f9;font-size:0.9rem;line-height:1.6;">${content}</div>`;
-
         return `
             <div class="author-section">
                 <h4>🏛️ Recognition</h4>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:1.5rem;">
-                    <div>
-                        <h5 style="font-size:0.95rem;font-weight:600;border-bottom:2px solid #e2e8f0;padding-bottom:0.5rem;margin-bottom:0.5rem;">Professional Memberships</h5>
-                        ${item(`<strong>IEEE Senior Member</strong> ${linkBtn('https://ieeexplore.ieee.org/Xplore/guesthome.jsp', 'IEEE')}`)}
-                        ${item(`<strong>Sigma Xi Full Member</strong> ${linkBtn('https://hub.sigmaxi.org/personalsnapshot', 'Portal')}`)}
-                        ${item(`<strong>IETE Fellow</strong> ${linkBtn('https://www.iete.org/iete-membership/', 'IETE')}`)}
-                        ${item(`<strong>SAS Eminent Fellow</strong> ${linkBtn('https://www.sassociety.com/membership-id-sas-sefm-753-2026/', 'View')} ${linkBtn('https://www.sassociety.com/category/sefm/page/2/', 'Fellows List')}`)}
-                        ${item(`<strong>IOASD Royal Fellow</strong> ${linkBtn('https://ioasd.org/2025/08/page/3/', 'IOASD')}`)}
-                        ${item(`<strong>SCRS Fellow</strong> ${linkBtn('https://scrs.in/scrs-fellow/2034', 'View')}`)}
-                        ${item(`<strong>IAENG Member</strong> ${linkBtn('https://www.iaeng.org/', 'IAENG')}`)}
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h5>Professional Memberships</h5>
+                        <div class="publications-list">
+                            <div class="publication-item"><span><strong>IEEE Senior Member</strong> <a href="https://ieeexplore.ieee.org/Xplore/guesthome.jsp" target="_blank" rel="noopener">IEEE</a></span></div>
+                            <div class="publication-item"><span><strong>Sigma Xi Full Member</strong> <a href="https://hub.sigmaxi.org/personalsnapshot" target="_blank" rel="noopener">Portal</a></span></div>
+                            <div class="publication-item"><span><strong>IETE Fellow</strong> <a href="https://www.iete.org/iete-membership/" target="_blank" rel="noopener">IETE</a></span></div>
+                            <div class="publication-item"><span><strong>SAS Eminent Fellow</strong> <a href="https://www.sassociety.com/membership-id-sas-sefm-753-2026/" target="_blank" rel="noopener">View</a> <a href="https://www.sassociety.com/category/sefm/page/2/" target="_blank" rel="noopener">Fellows List</a></span></div>
+                            <div class="publication-item"><span><strong>IOASD Royal Fellow</strong> <a href="https://ioasd.org/2025/08/page/3/" target="_blank" rel="noopener">IOASD</a></span></div>
+                            <div class="publication-item"><span><strong>SCRS Fellow</strong> <a href="https://scrs.in/scrs-fellow/2034" target="_blank" rel="noopener">View</a></span></div>
+                            <div class="publication-item"><span><strong>IAENG Member</strong> <a href="https://www.iaeng.org/" target="_blank" rel="noopener">IAENG</a></span></div>
+                        </div>
                     </div>
-                    <div>
-                        <h5 style="font-size:0.95rem;font-weight:600;border-bottom:2px solid #e2e8f0;padding-bottom:0.5rem;margin-bottom:0.5rem;">Certifications</h5>
-                        ${item(`AWS Certified Solutions Architect - Professional (2022)`)}
-                        ${item(`AWS Certified Solutions Architect - Associate (2017, renewed 2025)`)}
-                        ${item(`IBM Certified SOA Solutions Architect (2014)`)}
-
-                        <h5 style="font-size:0.95rem;font-weight:600;border-bottom:2px solid #e2e8f0;padding-bottom:0.5rem;margin:1rem 0 0.5rem;">Mentorship</h5>
-                        ${item(`<strong>ADPList Mentor:</strong> Active mentor for engineering and technology professionals ${linkBtn('https://adplist.org/mentors/sriramprabhu-rajendran-moxrqalw', 'View Profile')}`)}
+                    <div class="skill-category">
+                        <h5>Certifications</h5>
+                        <ul class="achievement-list">
+                            <li>AWS Certified Solutions Architect - Professional <small>2022</small></li>
+                            <li>AWS Certified Solutions Architect - Associate <small>2017, renewed 2025</small></li>
+                            <li>IBM Certified SOA Solutions Architect <small>2014</small></li>
+                        </ul>
+                        <h5>Mentorship</h5>
+                        <div class="publications-list">
+                            <div class="publication-item">
+                                <span class="publication-source">ADPList</span>
+                                <span>Active mentor for engineering and technology professionals <a href="https://adplist.org/mentors/sriramprabhu-rajendran-moxrqalw" target="_blank" rel="noopener">View Profile</a></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
